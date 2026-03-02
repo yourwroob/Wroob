@@ -80,7 +80,7 @@ const Landing = () => {
               <Button size="lg" variant="secondary" className="gap-2" asChild>
                 <Link to="/signup?role=student">I'm a Student</Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 gap-2" asChild>
+              <Button size="lg" variant="secondary" className="gap-2" asChild>
                 <Link to="/signup?role=employer">I'm an Employer</Link>
               </Button>
             </div>
