@@ -60,6 +60,9 @@ function MagnetizeButton({
 
   return (
     <Button
+      size={size}
+      variant={variant}
+      asChild={asChild}
       className={cn("relative touch-none overflow-visible", className)}
       onMouseEnter={handleInteractionStart}
       onMouseLeave={handleInteractionEnd}
