@@ -5,13 +5,13 @@ import { useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
-import { MapPin, Clock, Building2, Calendar, ArrowLeft, CheckCircle } from "lucide-react";
+import { MapPin, Clock, Building2, Calendar, ArrowLeft, CheckCircle, ExternalLink } from "lucide-react";
 import { format } from "date-fns";
+import { motion } from "framer-motion";
 
 const InternshipDetail = () => {
   const { id } = useParams();
@@ -96,83 +96,122 @@ const InternshipDetail = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="container max-w-3xl py-10">
-        <Button variant="ghost" className="mb-6 gap-1" onClick={() => navigate(-1)}>
+        <Button variant="ghost" size="sm" className="mb-8 gap-1.5 text-muted-foreground" onClick={() => navigate(-1)}>
           <ArrowLeft className="h-4 w-4" /> Back
         </Button>
 
-        <div className="space-y-6">
+        <motion.div
+          className="space-y-8"
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          {/* Header */}
           <div>
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h1 className="font-display text-3xl font-bold">{internship.title}</h1>
-                <p className="mt-2 flex items-center gap-2 text-muted-foreground">
+                <h1 className="font-display text-3xl font-bold md:text-4xl">{internship.title}</h1>
+                <div className="mt-3 flex items-center gap-2 text-muted-foreground">
                   <Building2 className="h-4 w-4" />
-                  {internship.employer_profiles?.company_name || "Company"}
-                </p>
+                  <span className="font-medium">{internship.employer_profiles?.company_name || "Company"}</span>
+                  {internship.employer_profiles?.website && (
+                    <a href={internship.employer_profiles.website} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
+                      <ExternalLink className="h-3.5 w-3.5" />
+                    </a>
+                  )}
+                </div>
               </div>
               {score !== null && (
-                <Badge variant={score >= 70 ? "default" : "secondary"} className="text-lg px-4 py-1 shrink-0">
+                <Badge variant={score >= 70 ? "default" : "secondary"} className="text-base px-4 py-1.5 shrink-0 font-semibold">
                   {score}% match
                 </Badge>
               )}
             </div>
-            <div className="mt-4 flex flex-wrap gap-3 text-sm text-muted-foreground">
-              {internship.location && <span className="flex items-center gap-1"><MapPin className="h-4 w-4" />{internship.location}</span>}
-              <span className="flex items-center gap-1"><Clock className="h-4 w-4" />{internship.type}</span>
-              {internship.deadline && <span className="flex items-center gap-1"><Calendar className="h-4 w-4" />Deadline: {format(new Date(internship.deadline), "MMM d, yyyy")}</span>}
+
+            {/* Meta tags */}
+            <div className="mt-6 flex flex-wrap gap-2">
+              {internship.location && (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5 text-sm font-medium">
+                  <MapPin className="h-3.5 w-3.5" />{internship.location}
+                </span>
+              )}
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5 text-sm font-medium capitalize">
+                <Clock className="h-3.5 w-3.5" />{internship.type}
+              </span>
+              {internship.deadline && (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5 text-sm font-medium">
+                  <Calendar className="h-3.5 w-3.5" />Deadline: {format(new Date(internship.deadline), "MMM d, yyyy")}
+                </span>
+              )}
+              {internship.industry && (
+                <span className="rounded-full bg-secondary px-3 py-1.5 text-sm font-medium">{internship.industry}</span>
+              )}
             </div>
           </div>
 
-          <Card>
-            <CardHeader><CardTitle>Description</CardTitle></CardHeader>
-            <CardContent><p className="whitespace-pre-wrap text-sm">{internship.description}</p></CardContent>
-          </Card>
+          {/* Description */}
+          <div className="space-y-2">
+            <h2 className="font-display text-lg font-semibold">About the role</h2>
+            <p className="whitespace-pre-wrap text-sm leading-relaxed text-muted-foreground">{internship.description}</p>
+          </div>
 
+          {/* Requirements */}
           {internship.requirements && (
-            <Card>
-              <CardHeader><CardTitle>Requirements</CardTitle></CardHeader>
-              <CardContent><p className="whitespace-pre-wrap text-sm">{internship.requirements}</p></CardContent>
-            </Card>
+            <div className="space-y-2">
+              <h2 className="font-display text-lg font-semibold">Requirements</h2>
+              <p className="whitespace-pre-wrap text-sm leading-relaxed text-muted-foreground">{internship.requirements}</p>
+            </div>
           )}
 
-          <Card>
-            <CardHeader><CardTitle>Required Skills</CardTitle></CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2">
-                {internship.skills_required.map((s: string) => (
-                  <Badge key={s} variant={studentSkills.includes(s) ? "default" : "outline"}>{s}</Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          {/* Skills */}
+          <div className="space-y-3">
+            <h2 className="font-display text-lg font-semibold">Required Skills</h2>
+            <div className="flex flex-wrap gap-2">
+              {internship.skills_required.map((s: string) => (
+                <span
+                  key={s}
+                  className={`rounded-full px-3 py-1.5 text-sm font-medium ${
+                    studentSkills.includes(s)
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-secondary text-secondary-foreground"
+                  }`}
+                >
+                  {s}
+                </span>
+              ))}
+            </div>
+          </div>
 
+          {/* Apply section */}
           {role === "student" && (
-            <div>
+            <div className="sticky bottom-6 pt-4">
               {hasApplied ? (
-                <div className="flex items-center gap-2 rounded-lg bg-success/10 p-4 text-success">
+                <div className="flex items-center gap-2 rounded-xl bg-success/10 p-4 text-success">
                   <CheckCircle className="h-5 w-5" />
                   <span className="font-medium">You've already applied to this internship</span>
                 </div>
               ) : showApplyForm ? (
-                <Card>
-                  <CardHeader><CardTitle>Apply</CardTitle></CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <Label>Cover Letter (optional)</Label>
-                      <Textarea value={coverLetter} onChange={(e) => setCoverLetter(e.target.value)} placeholder="Why are you interested in this internship?" rows={6} />
-                    </div>
-                    <div className="flex gap-3">
-                      <Button onClick={handleApply} disabled={applying}>{applying ? "Submitting..." : "Submit Application"}</Button>
-                      <Button variant="outline" onClick={() => setShowApplyForm(false)}>Cancel</Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                <div className="rounded-xl border bg-card p-6 space-y-4">
+                  <h3 className="font-display text-lg font-semibold">Apply</h3>
+                  <div className="space-y-2">
+                    <Label>Cover Letter (optional)</Label>
+                    <Textarea value={coverLetter} onChange={(e) => setCoverLetter(e.target.value)} placeholder="Why are you interested in this internship?" rows={6} />
+                  </div>
+                  <div className="flex gap-3">
+                    <Button onClick={handleApply} disabled={applying} className="rounded-full px-8">
+                      {applying ? "Submitting..." : "Submit Application"}
+                    </Button>
+                    <Button variant="outline" onClick={() => setShowApplyForm(false)} className="rounded-full">Cancel</Button>
+                  </div>
+                </div>
               ) : (
-                <Button size="lg" className="w-full" onClick={() => setShowApplyForm(true)}>Apply Now</Button>
+                <Button size="lg" className="w-full rounded-full h-14 text-base font-semibold" onClick={() => setShowApplyForm(true)}>
+                  Apply Now
+                </Button>
               )}
             </div>
           )}
-        </div>
+        </motion.div>
       </div>
     </div>
   );

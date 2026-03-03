@@ -5,11 +5,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MapPin, Clock, Building2, Search, Briefcase } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { motion } from "framer-motion";
 
 interface Internship {
   id: string;
@@ -72,83 +72,103 @@ const Internships = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="container py-10">
-        <div className="mb-8">
-          <h1 className="font-display text-3xl font-bold">Browse Internships</h1>
-          <p className="mt-2 text-muted-foreground">Discover opportunities that match your skills</p>
-        </div>
+        <div className="flex flex-col gap-8 lg:flex-row">
+          {/* Filters sidebar */}
+          <aside className="w-full shrink-0 lg:w-64">
+            <div className="sticky top-24 space-y-6">
+              <div>
+                <h1 className="font-display text-2xl font-bold">Discover</h1>
+                <p className="mt-1 text-sm text-muted-foreground">Find internships matching your skills</p>
+              </div>
+              <div className="space-y-4">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-10" />
+                </div>
+                <Select value={typeFilter} onValueChange={setTypeFilter}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Types</SelectItem>
+                    <SelectItem value="remote">Remote</SelectItem>
+                    <SelectItem value="onsite">On-site</SelectItem>
+                    <SelectItem value="hybrid">Hybrid</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </aside>
 
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input placeholder="Search internships..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-10" />
-          </div>
-          <Select value={typeFilter} onValueChange={setTypeFilter}>
-            <SelectTrigger className="w-full sm:w-40">
-              <SelectValue placeholder="Type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value="remote">Remote</SelectItem>
-              <SelectItem value="onsite">On-site</SelectItem>
-              <SelectItem value="hybrid">Hybrid</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        {loading ? (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {[...Array(6)].map((_, i) => (
-              <Card key={i}><CardContent className="p-6"><Skeleton className="h-40" /></CardContent></Card>
-            ))}
-          </div>
-        ) : filtered.length === 0 ? (
-          <div className="py-20 text-center">
-            <Briefcase className="mx-auto h-12 w-12 text-muted-foreground/50" />
-            <h3 className="mt-4 font-display text-xl font-semibold">No internships found</h3>
-            <p className="mt-2 text-muted-foreground">Try adjusting your filters</p>
-          </div>
-        ) : (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((intern) => {
-              const score = calcMatchScore(intern.skills_required);
-              return (
-                <Link key={intern.id} to={`/internships/${intern.id}`}>
-                  <Card className="group h-full transition-all hover:border-primary/20 hover:shadow-md">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <CardTitle className="font-display text-lg group-hover:text-primary transition-colors">{intern.title}</CardTitle>
-                          <p className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
-                            <Building2 className="h-3.5 w-3.5" />
-                            {(intern as any).employer_profiles?.company_name || "Company"}
-                          </p>
+          {/* Results */}
+          <div className="flex-1 min-w-0">
+            {loading ? (
+              <div className="space-y-4">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="rounded-xl border bg-card p-6">
+                    <Skeleton className="h-24" />
+                  </div>
+                ))}
+              </div>
+            ) : filtered.length === 0 ? (
+              <div className="py-20 text-center">
+                <Briefcase className="mx-auto h-12 w-12 text-muted-foreground/30" />
+                <h3 className="mt-4 font-display text-xl font-semibold">No internships found</h3>
+                <p className="mt-2 text-sm text-muted-foreground">Try adjusting your filters</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {filtered.map((intern, idx) => {
+                  const score = calcMatchScore(intern.skills_required);
+                  return (
+                    <motion.div
+                      key={intern.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.05, duration: 0.3 }}
+                    >
+                      <Link to={`/internships/${intern.id}`}>
+                        <div className="group rounded-xl border bg-card p-6 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="min-w-0">
+                              <h3 className="font-display text-lg font-semibold group-hover:text-primary transition-colors truncate">
+                                {intern.title}
+                              </h3>
+                              <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
+                                <Building2 className="h-3.5 w-3.5 shrink-0" />
+                                {(intern as any).employer_profiles?.company_name || "Company"}
+                              </p>
+                            </div>
+                            {studentSkills.length > 0 && score > 0 && (
+                              <Badge variant={score >= 70 ? "default" : "secondary"} className="shrink-0 font-medium">
+                                {score}% match
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="mt-3 line-clamp-2 text-sm text-muted-foreground">{intern.description}</p>
+                          <div className="mt-4 flex items-center justify-between">
+                            <div className="flex flex-wrap gap-1.5">
+                              {intern.skills_required.slice(0, 4).map((s) => (
+                                <span key={s} className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">{s}</span>
+                              ))}
+                              {intern.skills_required.length > 4 && (
+                                <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs text-muted-foreground">+{intern.skills_required.length - 4}</span>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-3 text-xs text-muted-foreground shrink-0">
+                              {intern.location && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{intern.location}</span>}
+                              <span className="flex items-center gap-1 capitalize"><Clock className="h-3 w-3" />{intern.type}</span>
+                            </div>
+                          </div>
                         </div>
-                        {studentSkills.length > 0 && score > 0 && (
-                          <Badge variant={score >= 70 ? "default" : "secondary"} className="shrink-0">
-                            {score}% match
-                          </Badge>
-                        )}
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="line-clamp-2 text-sm text-muted-foreground">{intern.description}</p>
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {intern.skills_required.slice(0, 3).map((s) => (
-                          <Badge key={s} variant="outline" className="text-xs">{s}</Badge>
-                        ))}
-                        {intern.skills_required.length > 3 && <Badge variant="outline" className="text-xs">+{intern.skills_required.length - 3}</Badge>}
-                      </div>
-                      <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
-                        {intern.location && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{intern.location}</span>}
-                        <span className="flex items-center gap-1"><Clock className="h-3 w-3" />{intern.type}</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              );
-            })}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

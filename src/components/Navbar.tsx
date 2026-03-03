@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -9,16 +9,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Bell, Briefcase, LogOut, Menu, User, X } from "lucide-react";
+import { Bell, LogOut, Menu, User, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 const Navbar = () => {
   const { user, role, profile, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     if (!user) return;
@@ -45,51 +54,83 @@ const Navbar = () => {
     return name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2) || "U";
   };
 
-  const navLinks = () => {
-    if (!user || !role) return null;
-    const links: { to: string; label: string }[] = [];
-    if (role === "student") {
-      links.push({ to: "/internships", label: "Browse Internships" });
-      links.push({ to: "/my-applications", label: "My Applications" });
-    } else if (role === "employer") {
-      links.push({ to: "/my-internships", label: "My Internships" });
-      links.push({ to: "/post-internship", label: "Post Internship" });
-    } else if (role === "admin") {
-      links.push({ to: "/admin", label: "Admin Panel" });
+  const isActive = (path: string) => location.pathname === path;
+
+  const centerLinks = () => {
+    if (!user || !role) {
+      return (
+        <>
+          <Link to="/internships" className={cn("text-sm font-medium transition-colors hover:text-foreground", isActive("/internships") ? "text-foreground" : "text-muted-foreground")}>
+            Discover
+          </Link>
+          <Link to="/signup?role=student" className={cn("text-sm font-medium transition-colors hover:text-foreground text-muted-foreground")}>
+            For Students
+          </Link>
+          <Link to="/signup?role=employer" className={cn("text-sm font-medium transition-colors hover:text-foreground text-muted-foreground")}>
+            For Companies
+          </Link>
+        </>
+      );
     }
-    return links.map((l) => (
-      <Link key={l.to} to={l.to} className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground" onClick={() => setMobileOpen(false)}>
-        {l.label}
-      </Link>
-    ));
+    if (role === "student") {
+      return (
+        <>
+          <Link to="/internships" className={cn("text-sm font-medium transition-colors hover:text-foreground", isActive("/internships") ? "text-foreground" : "text-muted-foreground")}>Discover</Link>
+          <Link to="/my-applications" className={cn("text-sm font-medium transition-colors hover:text-foreground", isActive("/my-applications") ? "text-foreground" : "text-muted-foreground")}>My Applications</Link>
+        </>
+      );
+    }
+    if (role === "employer") {
+      return (
+        <>
+          <Link to="/my-internships" className={cn("text-sm font-medium transition-colors hover:text-foreground", isActive("/my-internships") ? "text-foreground" : "text-muted-foreground")}>My Internships</Link>
+          <Link to="/post-internship" className={cn("text-sm font-medium transition-colors hover:text-foreground", isActive("/post-internship") ? "text-foreground" : "text-muted-foreground")}>Post Internship</Link>
+        </>
+      );
+    }
+    if (role === "admin") {
+      return (
+        <Link to="/admin" className={cn("text-sm font-medium transition-colors hover:text-foreground", isActive("/admin") ? "text-foreground" : "text-muted-foreground")}>Admin Panel</Link>
+      );
+    }
+    return null;
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-lg">
+    <header className={cn(
+      "sticky top-0 z-50 w-full transition-all duration-200",
+      scrolled ? "border-b bg-background/95 backdrop-blur-md shadow-sm" : "bg-background"
+    )}>
       <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-8">
-          <Link to="/" className="flex items-center gap-2">
-            <Briefcase className="h-6 w-6 text-primary" />
-            <span className="font-display text-xl font-bold">InternHub</span>
-          </Link>
-          <nav className="hidden items-center gap-6 md:flex">{navLinks()}</nav>
-        </div>
+        {/* Left: Logo */}
+        <Link to="/" className="flex items-center gap-2 shrink-0">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-display font-bold text-sm">
+            IH
+          </div>
+          <span className="font-display text-lg font-bold">InternHub</span>
+        </Link>
 
-        <div className="flex items-center gap-3">
+        {/* Center: Nav links */}
+        <nav className="hidden items-center gap-8 md:flex">
+          {centerLinks()}
+        </nav>
+
+        {/* Right: Auth */}
+        <div className="flex items-center gap-2">
           {user ? (
             <>
               <Button variant="ghost" size="icon" className="relative" onClick={() => navigate("/notifications")}>
-                <Bell className="h-5 w-5" />
+                <Bell className="h-4 w-4" />
                 {unreadCount > 0 && (
-                  <Badge className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full p-0 text-[10px]">
+                  <Badge className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full p-0 text-[9px]">
                     {unreadCount > 9 ? "9+" : unreadCount}
                   </Badge>
                 )}
               </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-                    <Avatar className="h-9 w-9">
+                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <Avatar className="h-8 w-8">
                       <AvatarImage src={profile?.avatar_url} />
                       <AvatarFallback className="bg-primary text-primary-foreground text-xs">{getInitials()}</AvatarFallback>
                     </Avatar>
@@ -107,9 +148,9 @@ const Navbar = () => {
               </DropdownMenu>
             </>
           ) : (
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" onClick={() => navigate("/login")}>Sign In</Button>
-              <Button onClick={() => navigate("/signup")}>Get Started</Button>
+            <div className="hidden items-center gap-2 sm:flex">
+              <Button variant="ghost" size="sm" onClick={() => navigate("/login")}>Log In</Button>
+              <Button size="sm" onClick={() => navigate("/signup")}>Sign Up</Button>
             </div>
           )}
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)}>
@@ -118,8 +159,16 @@ const Navbar = () => {
         </div>
       </div>
       {mobileOpen && (
-        <div className="border-t bg-background p-4 md:hidden">
-          <nav className="flex flex-col gap-3">{navLinks()}</nav>
+        <div className="border-t bg-background p-4 md:hidden animate-fade-in">
+          <nav className="flex flex-col gap-3">
+            {centerLinks()}
+            {!user && (
+              <div className="flex flex-col gap-2 pt-3 border-t">
+                <Button variant="ghost" size="sm" onClick={() => { navigate("/login"); setMobileOpen(false); }}>Log In</Button>
+                <Button size="sm" onClick={() => { navigate("/signup"); setMobileOpen(false); }}>Sign Up</Button>
+              </div>
+            )}
+          </nav>
         </div>
       )}
     </header>
