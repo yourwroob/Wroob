@@ -105,7 +105,7 @@ const Internships = () => {
             {loading ? (
               <div className="space-y-4">
                 {[...Array(5)].map((_, i) => (
-                  <div key={i} className="rounded-xl border bg-card p-6">
+                  <div key={i} className="card-depth p-6">
                     <Skeleton className="h-24" />
                   </div>
                 ))}
@@ -123,12 +123,12 @@ const Internships = () => {
                   return (
                     <motion.div
                       key={intern.id}
-                      initial={{ opacity: 0, y: 10 }}
+                      initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.05, duration: 0.3 }}
+                      transition={{ delay: idx * 0.08, duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
                     >
                       <Link to={`/internships/${intern.id}`}>
-                        <div className="group rounded-xl border bg-card p-6 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                        <div className="group card-depth p-6">
                           <div className="flex items-start justify-between gap-4">
                             <div className="min-w-0">
                               <h3 className="font-display text-lg font-semibold group-hover:text-primary transition-colors truncate">
@@ -140,7 +140,7 @@ const Internships = () => {
                               </p>
                             </div>
                             {studentSkills.length > 0 && score > 0 && (
-                              <Badge variant={score >= 70 ? "default" : "secondary"} className="shrink-0 font-medium">
+                              <Badge className={`shrink-0 font-medium border-0 text-white ${score >= 70 ? "brand-gradient shadow-md shadow-primary/20" : ""}`} variant={score >= 70 ? "default" : "secondary"}>
                                 {score}% match
                               </Badge>
                             )}
