@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Users, Search, CheckCircle, ArrowDown, Briefcase } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
@@ -237,18 +238,7 @@ const Landing = () => {
         </div>
       </motion.section>
 
-      {/* Footer */}
-      <footer className="border-t py-12">
-        <div className="container flex flex-col items-center justify-between gap-4 md:flex-row">
-          <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg brand-gradient text-white">
-              <Briefcase className="h-4 w-4" />
-            </div>
-            <span className="font-display font-bold">InternHub</span>
-          </div>
-          <p className="text-sm text-muted-foreground">© 2026 InternHub. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
