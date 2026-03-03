@@ -4,9 +4,8 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { motion, useAnimation } from "framer-motion"
 import { useEffect, useState, useCallback } from "react"
-import { Button, type ButtonProps } from "@/components/ui/button"
 
-interface MagnetizeButtonProps extends ButtonProps {
+interface MagnetizeButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   particleCount?: number
   attractRadius?: number
 }
@@ -22,9 +21,6 @@ function MagnetizeButton({
   children,
   particleCount = 14,
   attractRadius = 50,
-  size,
-  variant,
-  asChild = false,
   ...props
 }: MagnetizeButtonProps) {
   const [isAttracting, setIsAttracting] = useState(false)
@@ -59,11 +55,8 @@ function MagnetizeButton({
   }, [particlesControl, particles])
 
   return (
-    <Button
-      size={size}
-      variant={variant}
-      asChild={asChild}
-      className={cn("relative touch-none overflow-visible", className)}
+    <div
+      className={cn("relative touch-none inline-block", className)}
       onMouseEnter={handleInteractionStart}
       onMouseLeave={handleInteractionEnd}
       onTouchStart={handleInteractionStart}
@@ -77,16 +70,14 @@ function MagnetizeButton({
           initial={{ x: particles[index]?.x ?? 0, y: particles[index]?.y ?? 0 }}
           animate={particlesControl}
           className={cn(
-            "absolute w-1.5 h-1.5 rounded-full bg-white/70",
+            "absolute top-1/2 left-1/2 w-1.5 h-1.5 rounded-full bg-white/70 pointer-events-none",
             "transition-opacity duration-300",
             isAttracting ? "opacity-100" : "opacity-30"
           )}
         />
       ))}
-      <span className="relative w-full flex items-center justify-center gap-2">
-        {children}
-      </span>
-    </Button>
+      {children}
+    </div>
   )
 }
 
