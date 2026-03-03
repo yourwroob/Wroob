@@ -31,6 +31,11 @@ import OnboardingPreferences from "./pages/onboarding/OnboardingPreferences";
 import OnboardingCulture from "./pages/onboarding/OnboardingCulture";
 import OnboardingResume from "./pages/onboarding/OnboardingResume";
 import OnboardingDone from "./pages/onboarding/OnboardingDone";
+import EmployerOnboardingCompany from "./pages/employer-onboarding/EmployerOnboardingCompany";
+import EmployerOnboardingDetails from "./pages/employer-onboarding/EmployerOnboardingDetails";
+import EmployerOnboardingVerify from "./pages/employer-onboarding/EmployerOnboardingVerify";
+import EmployerOnboardingTeam from "./pages/employer-onboarding/EmployerOnboardingTeam";
+import EmployerOnboardingDone from "./pages/employer-onboarding/EmployerOnboardingDone";
 
 const queryClient = new QueryClient();
 
@@ -57,12 +62,18 @@ const App = () => (
             <Route path="/internships/:id/applicants" element={<ProtectedRoute allowedRoles={["employer"]}><ApplicantReview /></ProtectedRoute>} />
             <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
             <Route path="/admin" element={<ProtectedRoute allowedRoles={["admin"]}><Admin /></ProtectedRoute>} />
-            {/* Onboarding routes */}
+            {/* Student onboarding */}
             <Route path="/onboarding/profile" element={<ProtectedRoute allowedRoles={["student"]}><OnboardingProfile /></ProtectedRoute>} />
             <Route path="/onboarding/preferences" element={<ProtectedRoute allowedRoles={["student"]}><OnboardingPreferences /></ProtectedRoute>} />
             <Route path="/onboarding/culture" element={<ProtectedRoute allowedRoles={["student"]}><OnboardingCulture /></ProtectedRoute>} />
             <Route path="/onboarding/resume" element={<ProtectedRoute allowedRoles={["student"]}><OnboardingResume /></ProtectedRoute>} />
             <Route path="/onboarding/done" element={<ProtectedRoute allowedRoles={["student"]}><OnboardingDone /></ProtectedRoute>} />
+            {/* Employer onboarding */}
+            <Route path="/employer/onboarding/company" element={<ProtectedRoute allowedRoles={["employer"]}><EmployerOnboardingCompany /></ProtectedRoute>} />
+            <Route path="/employer/onboarding/details" element={<ProtectedRoute allowedRoles={["employer"]}><EmployerOnboardingDetails /></ProtectedRoute>} />
+            <Route path="/employer/onboarding/verify" element={<ProtectedRoute allowedRoles={["employer"]}><EmployerOnboardingVerify /></ProtectedRoute>} />
+            <Route path="/employer/onboarding/team" element={<ProtectedRoute allowedRoles={["employer"]}><EmployerOnboardingTeam /></ProtectedRoute>} />
+            <Route path="/employer/onboarding/done" element={<ProtectedRoute allowedRoles={["employer"]}><EmployerOnboardingDone /></ProtectedRoute>} />
             <Route path="/about" element={<About />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/help" element={<Help />} />

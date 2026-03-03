@@ -85,39 +85,96 @@ export type Database = {
         }
         Relationships: []
       }
+      employer_invitations: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          invitation_role: string
+          inviter_id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          invitation_role?: string
+          inviter_id: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          invitation_role?: string
+          inviter_id?: string
+          status?: string
+        }
+        Relationships: []
+      }
       employer_profiles: {
         Row: {
+          company_domain: string | null
           company_name: string | null
           company_size: string | null
           created_at: string
+          funding_stage: string | null
+          hiring_roles: string[] | null
           id: string
           industry: string | null
           logo_url: string | null
+          onboarding_completed_at: string | null
+          onboarding_status: string
+          onboarding_step: number
           updated_at: string
           user_id: string
+          verification_method: string | null
+          verified_at: string | null
+          verified_domain: string | null
           website: string | null
+          work_email_verified: boolean | null
         }
         Insert: {
+          company_domain?: string | null
           company_name?: string | null
           company_size?: string | null
           created_at?: string
+          funding_stage?: string | null
+          hiring_roles?: string[] | null
           id?: string
           industry?: string | null
           logo_url?: string | null
+          onboarding_completed_at?: string | null
+          onboarding_status?: string
+          onboarding_step?: number
           updated_at?: string
           user_id: string
+          verification_method?: string | null
+          verified_at?: string | null
+          verified_domain?: string | null
           website?: string | null
+          work_email_verified?: boolean | null
         }
         Update: {
+          company_domain?: string | null
           company_name?: string | null
           company_size?: string | null
           created_at?: string
+          funding_stage?: string | null
+          hiring_roles?: string[] | null
           id?: string
           industry?: string | null
           logo_url?: string | null
+          onboarding_completed_at?: string | null
+          onboarding_status?: string
+          onboarding_step?: number
           updated_at?: string
           user_id?: string
+          verification_method?: string | null
+          verified_at?: string | null
+          verified_domain?: string | null
           website?: string | null
+          work_email_verified?: boolean | null
         }
         Relationships: []
       }

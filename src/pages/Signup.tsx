@@ -31,7 +31,7 @@ const Signup = () => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "Account created!", description: "Please check your email to verify your account." });
-      navigate(role === "student" ? "/onboarding/profile" : "/dashboard");
+      navigate(role === "student" ? "/onboarding/profile" : "/employer/onboarding/company");
     }
   };
 
