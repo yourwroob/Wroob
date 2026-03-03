@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Users, Search, CheckCircle, ArrowDown } from "lucide-react";
+import { ArrowRight, Users, Search, CheckCircle, ArrowDown, Briefcase } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ScrollProgress from "@/components/ScrollProgress";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -91,8 +91,8 @@ const Landing = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
             >
-              Find what's{" "}
-              <span className="brand-gradient-text">next</span>
+              Find Your Perfect{" "}
+              <span className="brand-gradient-text">Internship</span>
             </motion.h1>
             <motion.p
               className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground md:text-xl leading-relaxed"
@@ -241,8 +241,8 @@ const Landing = () => {
       <footer className="border-t py-12">
         <div className="container flex flex-col items-center justify-between gap-4 md:flex-row">
           <div className="flex items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded brand-gradient text-white font-display font-bold text-[10px]">
-              IH
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg brand-gradient text-white">
+              <Briefcase className="h-4 w-4" />
             </div>
             <span className="font-display font-bold">InternHub</span>
           </div>

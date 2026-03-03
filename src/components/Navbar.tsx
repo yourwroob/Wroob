@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Bell, LogOut, Menu, User, X } from "lucide-react";
+import { Bell, Briefcase, LogOut, Menu, User, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
@@ -104,8 +104,8 @@ const Navbar = () => {
       <div className="container flex h-16 items-center justify-between">
         {/* Left: Logo */}
         <Link to="/" className="flex items-center gap-2 shrink-0">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg brand-gradient text-white font-display font-bold text-sm shadow-md shadow-primary/20">
-            IH
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg brand-gradient text-white shadow-md shadow-primary/20">
+            <Briefcase className="h-4.5 w-4.5" />
           </div>
           <span className="font-display text-lg font-bold">InternHub</span>
         </Link>
