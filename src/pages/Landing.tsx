@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { MagnetizeButton } from "@/components/ui/magnetize-button";
 import { ArrowRight, Users, Search, CheckCircle, ArrowDown, Briefcase } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -227,11 +228,11 @@ const Landing = () => {
             <p className="mt-4 text-lg text-muted-foreground">Join thousands already on InternHub.</p>
             <div className="mt-8">
               <div className="inline-block animated-border rounded-full">
-                <Button size="lg" className="gap-2 rounded-full h-14 px-10 text-base brand-gradient border-0 text-white shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97]" asChild>
+                <MagnetizeButton size="lg" className="gap-2 rounded-full h-14 px-10 text-base brand-gradient border-0 text-white shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97]" asChild>
                   <Link to="/signup">
                     Get Started <ArrowRight className="h-4 w-4" />
                   </Link>
-                </Button>
+                </MagnetizeButton>
               </div>
             </div>
           </div>
