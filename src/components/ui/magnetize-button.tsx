@@ -22,6 +22,8 @@ function MagnetizeButton({
   children,
   particleCount = 14,
   attractRadius = 50,
+  size,
+  variant,
   asChild = false,
   ...props
 }: MagnetizeButtonProps) {
