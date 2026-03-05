@@ -12,7 +12,7 @@ const Footer = () => {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg brand-gradient text-white">
                 <Briefcase className="h-4 w-4" />
               </div>
-              <span className="font-display text-lg font-bold">
+              <span className="font-display font-bold" style={{ fontSize: "17px", letterSpacing: "-0.01em" }}>
                 Intern<span className="brand-gradient-text">Hub</span>
               </span>
             </div>
