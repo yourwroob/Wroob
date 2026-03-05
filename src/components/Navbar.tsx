@@ -107,7 +107,7 @@ const Navbar = () => {
           <div className="flex h-8 w-8 items-center justify-center rounded-lg brand-gradient text-white shadow-md shadow-primary/20">
             <Briefcase className="h-4.5 w-4.5" />
           </div>
-          <span className="font-display text-lg font-bold">InternHub</span>
+          <span className="font-display font-bold" style={{ fontSize: "17px", letterSpacing: "-0.01em" }}>InternHub</span>
         </Link>
 
         {/* Center: Nav links */}
