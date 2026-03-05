@@ -181,7 +181,7 @@ const Landing = () => {
                 <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-2xl brand-gradient text-white shadow-lg shadow-primary/20">
                   <step.icon className="h-6 w-6" />
                 </div>
-                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Step {i + 1}</div>
+                <div className="mb-2 uppercase text-muted-foreground" style={{ font: "var(--text-label)", letterSpacing: "var(--letter-spacing-label)" }}>Step {i + 1}</div>
                 <h3 style={{ font: "var(--text-card-title)", letterSpacing: "var(--letter-spacing-heading)" }}>{step.title}</h3>
                 <p className="mt-3 text-muted-foreground" style={{ font: "var(--text-body)" }}>{step.desc}</p>
               </motion.div>
