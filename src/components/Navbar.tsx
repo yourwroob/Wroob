@@ -75,8 +75,8 @@ const Navbar = () => {
     if (role === "student") {
       return (
         <>
-          <Link to="/internships" className={cn("text-sm font-medium transition-colors hover:text-foreground", isActive("/internships") ? "text-foreground" : "text-muted-foreground")}>Discover</Link>
-          <Link to="/my-applications" className={cn("text-sm font-medium transition-colors hover:text-foreground", isActive("/my-applications") ? "text-foreground" : "text-muted-foreground")}>My Applications</Link>
+          <Link to="/internships" className={cn("transition-colors hover:text-foreground", isActive("/internships") ? "text-foreground font-medium" : "text-muted-foreground")} style={{ font: "var(--text-nav)" }}>Discover</Link>
+          <Link to="/my-applications" className={cn("transition-colors hover:text-foreground", isActive("/my-applications") ? "text-foreground font-medium" : "text-muted-foreground")} style={{ font: "var(--text-nav)" }}>My Applications</Link>
         </>
       );
     }
