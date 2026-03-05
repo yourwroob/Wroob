@@ -36,7 +36,7 @@ const sectionReveal = {
 };
 
 const Landing = () => {
-  const { user } = useAuth();
+  const { user, role } = useAuth();
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.96]);
@@ -132,16 +132,20 @@ const Landing = () => {
               Where students and companies connect
             </h2>
             <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Button size="lg" className="min-w-[200px] gap-2 rounded-full text-base h-14 px-8 brand-gradient border-0 text-white shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97]" asChild>
-                <Link to={user ? "/dashboard" : "/signup?role=employer"}>
-                  Find your next hire
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" className="min-w-[200px] gap-2 rounded-full text-base h-14 px-8 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200" asChild>
-                <Link to={user ? "/dashboard" : "/signup?role=student"}>
-                  Find your next internship
-                </Link>
-              </Button>
+              {(!user || role === "employer") && (
+                <Button size="lg" className="min-w-[200px] gap-2 rounded-full text-base h-14 px-8 brand-gradient border-0 text-white shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97]" asChild>
+                  <Link to={user ? "/dashboard" : "/signup?role=employer"}>
+                    {user ? "Go to Dashboard" : "Find your next hire"}
+                  </Link>
+                </Button>
+              )}
+              {(!user || role === "student") && (
+                <Button size="lg" variant={!user ? "outline" : "default"} className={`min-w-[200px] gap-2 rounded-full text-base h-14 px-8 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 ${user ? "brand-gradient border-0 text-white shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30" : ""}`} asChild>
+                  <Link to={user ? "/dashboard" : "/signup?role=student"}>
+                    {user ? "Go to Dashboard" : "Find your next internship"}
+                  </Link>
+                </Button>
+              )}
             </div>
           </div>
         </div>
