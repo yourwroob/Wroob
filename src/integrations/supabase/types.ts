@@ -178,6 +178,106 @@ export type Database = {
         }
         Relationships: []
       }
+      group_members: {
+        Row: {
+          group_id: string
+          id: string
+          joined_at: string
+          user_id: string
+        }
+        Insert: {
+          group_id: string
+          id?: string
+          joined_at?: string
+          user_id: string
+        }
+        Update: {
+          group_id?: string
+          id?: string
+          joined_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_members_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      group_messages: {
+        Row: {
+          created_at: string
+          group_id: string
+          id: string
+          sender_id: string
+          sender_name: string
+          text: string
+        }
+        Insert: {
+          created_at?: string
+          group_id: string
+          id?: string
+          sender_id: string
+          sender_name?: string
+          text: string
+        }
+        Update: {
+          created_at?: string
+          group_id?: string
+          id?: string
+          sender_id?: string
+          sender_name?: string
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_messages_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      groups: {
+        Row: {
+          centroid_lat: number | null
+          centroid_lng: number | null
+          company_id: string | null
+          created_at: string
+          geohash: string | null
+          id: string
+          internship_id: string | null
+          label: string
+          type: string
+        }
+        Insert: {
+          centroid_lat?: number | null
+          centroid_lng?: number | null
+          company_id?: string | null
+          created_at?: string
+          geohash?: string | null
+          id?: string
+          internship_id?: string | null
+          label: string
+          type: string
+        }
+        Update: {
+          centroid_lat?: number | null
+          centroid_lng?: number | null
+          company_id?: string | null
+          created_at?: string
+          geohash?: string | null
+          id?: string
+          internship_id?: string | null
+          label?: string
+          type?: string
+        }
+        Relationships: []
+      }
       internships: {
         Row: {
           created_at: string
@@ -415,10 +515,13 @@ export type Database = {
           current_company: string | null
           current_job_title: string | null
           experience_years: string | null
+          geohash: string | null
           graduation_year: number | null
           id: string
           is_student: boolean | null
+          lat: number | null
           linkedin_url: string | null
+          lng: number | null
           location: string | null
           major: string | null
           not_employed: boolean | null
@@ -438,10 +541,13 @@ export type Database = {
           current_company?: string | null
           current_job_title?: string | null
           experience_years?: string | null
+          geohash?: string | null
           graduation_year?: number | null
           id?: string
           is_student?: boolean | null
+          lat?: number | null
           linkedin_url?: string | null
+          lng?: number | null
           location?: string | null
           major?: string | null
           not_employed?: boolean | null
@@ -461,10 +567,13 @@ export type Database = {
           current_company?: string | null
           current_job_title?: string | null
           experience_years?: string | null
+          geohash?: string | null
           graduation_year?: number | null
           id?: string
           is_student?: boolean | null
+          lat?: number | null
           linkedin_url?: string | null
+          lng?: number | null
           location?: string | null
           major?: string | null
           not_employed?: boolean | null

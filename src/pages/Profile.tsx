@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { X } from "lucide-react";
+import LocationCapture from "@/components/groups/LocationCapture";
 
 const Profile = () => {
   const { user, role } = useAuth();
@@ -20,6 +21,7 @@ const Profile = () => {
   const [employerProfile, setEmployerProfile] = useState({ company_name: "", industry: "", company_size: "", website: "" });
   const [allSkills, setAllSkills] = useState<{ name: string; category: string }[]>([]);
   const [skillSearch, setSkillSearch] = useState("");
+  const [locationCaptured, setLocationCaptured] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -37,6 +39,12 @@ const Profile = () => {
 
       const { data: skills } = await supabase.from("skills").select("name, category").order("category").order("name");
       if (skills) setAllSkills(skills);
+
+      // Check if location already captured
+      if (role === "student") {
+        const { data: sp2 } = await supabase.from("student_profiles").select("lat, lng").eq("user_id", user.id).single();
+        if (sp2 && (sp2 as any).lat && (sp2 as any).lng) setLocationCaptured(true);
+      }
     };
     fetchData();
   }, [user, role]);
@@ -153,6 +161,21 @@ const Profile = () => {
                   <Label>Resume</Label>
                   <Input type="file" accept=".pdf,.doc,.docx" onChange={handleResumeUpload} />
                   {studentProfile.resume_url && <p className="text-sm text-muted-foreground">Resume uploaded ✓</p>}
+                </div>
+                <div className="space-y-2">
+                  <Label>Local Community Group</Label>
+                  <LocationCapture
+                    captured={locationCaptured}
+                    onCapture={async (lat, lng) => {
+                      if (!user) return;
+                      setLocationCaptured(true);
+                      // Call edge function to assign geo group
+                      await supabase.functions.invoke("geo-group-assign", {
+                        body: { user_id: user.id, lat, lng },
+                      });
+                      toast({ title: "Location saved! You've been added to a local group." });
+                    }}
+                  />
                 </div>
               </CardContent>
             </Card>
