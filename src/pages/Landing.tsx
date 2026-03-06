@@ -48,9 +48,14 @@ const Landing = () => {
       <Navbar />
 
       {/* Hero */}
-      <section ref={heroRef} className="relative overflow-hidden py-28 md:py-40">
-        {/* Background glow */}
-        <div className="hero-glow left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
+      <section ref={heroRef} className="relative overflow-hidden pt-20 pb-24 md:pt-32 md:pb-36 min-h-[90vh] flex flex-col justify-center">
+        {/* Layered background effects */}
+        <div className="hero-glow left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2" />
+        <div className="hero-glow-secondary right-[10%] top-[20%]" />
+        <div className="hero-glow-tertiary left-[15%] bottom-[15%]" />
+        
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 hero-grid-pattern opacity-[0.03] pointer-events-none" />
 
         {/* Floating tags with parallax */}
         <div className="absolute inset-0 pointer-events-none">
@@ -59,7 +64,7 @@ const Landing = () => {
             return (
               <motion.div
                 key={tag.label}
-                className="absolute hidden md:block"
+                className="absolute hidden lg:block"
                 style={{
                   top: tag.top,
                   left: tag.left,
@@ -68,15 +73,15 @@ const Landing = () => {
                   y: useTransform(scrollYProgress, [0, 1], [0, -80 * speed]),
                 }}
                 initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: tag.scale }}
-                transition={{ delay: tag.delay, duration: 0.6 }}
+                animate={{ opacity: 0.7, y: 0, scale: tag.scale }}
+                transition={{ delay: tag.delay, duration: 0.8 }}
               >
                 <motion.div
-                  className="glass rounded-full px-4 py-2 text-muted-foreground shadow-sm"
+                  className="glass rounded-full px-4 py-2 text-muted-foreground/70 shadow-sm"
                   style={{ font: "var(--text-label)", letterSpacing: "var(--letter-spacing-label)" }}
                   animate={{ y: [0, -8, 0] }}
                   transition={{ duration: 4 + tag.delay, repeat: Infinity, ease: "easeInOut" }}
-                  whileHover={{ scale: 1.08, y: -4 }}
+                  whileHover={{ scale: 1.08, y: -4, opacity: 1 }}
                 >
                   {tag.label}
                 </motion.div>
@@ -85,39 +90,114 @@ const Landing = () => {
           })}
         </div>
 
-        <div className="container relative">
+        <div className="container relative z-10">
           <motion.div
             className="mx-auto max-w-3xl text-center"
             style={{ scale: heroScale, opacity: heroOpacity }}
           >
+            {/* Eyebrow badge */}
+            <motion.div
+              className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/5 px-4 py-1.5 mb-8"
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+              </span>
+              <span className="text-muted-foreground" style={{ font: "var(--text-label)", letterSpacing: "var(--letter-spacing-label)" }}>
+                Now matching 10,000+ internships
+              </span>
+            </motion.div>
+
             <motion.h1
-              className="font-display font-bold tracking-[-0.03em]"
-              style={{ font: "var(--text-hero)", letterSpacing: "var(--letter-spacing-hero)", fontSize: "clamp(36px, 6vw, 68px)" }}
+              className="font-display font-bold"
+              style={{ font: "var(--text-hero)", letterSpacing: "-0.035em", fontSize: "clamp(40px, 7vw, 76px)", lineHeight: "1.05" }}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
             >
-              Find Your Perfect{" "}
+              Find Your Perfect
+              <br />
               <span className="brand-gradient-text">Internship</span>
             </motion.h1>
+
             <motion.p
-              className="mx-auto mt-6 text-muted-foreground"
-              style={{ font: "var(--text-body)", maxWidth: "520px" }}
+              className="mx-auto mt-6 md:mt-8 text-muted-foreground"
+              style={{ font: "var(--text-body)", maxWidth: "480px", fontSize: "clamp(15px, 1.8vw, 18px)", lineHeight: "1.7" }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
             >
-              The platform where ambitious students and innovative companies connect through skills-based internship matching.
+              Where ambitious students and innovative companies connect through skills-based matching.
             </motion.p>
+
+            {/* Hero CTAs */}
+            <motion.div
+              className="mt-10 md:mt-12 flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45, duration: 0.6 }}
+            >
+              <MagnetizeButton className="animated-border rounded-full">
+                <Button size="lg" className="gap-2.5 rounded-full h-14 px-10 text-base brand-gradient border-0 text-white shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/35 transition-all duration-300 hover:-translate-y-1 active:scale-[0.97]" asChild>
+                  <Link to={user ? "/dashboard" : "/signup"}>
+                    {user ? "Go to Dashboard" : "Get Started Free"} <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </MagnetizeButton>
+              {!user && (
+                <Button size="lg" variant="outline" className="gap-2 rounded-full h-14 px-8 text-base border-border/60 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 hover:-translate-y-0.5" asChild>
+                  <Link to="/internships">
+                    Browse Internships
+                  </Link>
+                </Button>
+              )}
+            </motion.div>
+
+            {/* Trust indicators */}
+            <motion.div
+              className="mt-14 md:mt-16 flex flex-col items-center gap-3"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7, duration: 0.8 }}
+            >
+              <div className="flex items-center -space-x-2">
+                {[
+                  "bg-gradient-to-br from-blue-400 to-blue-600",
+                  "bg-gradient-to-br from-emerald-400 to-emerald-600",
+                  "bg-gradient-to-br from-violet-400 to-violet-600",
+                  "bg-gradient-to-br from-amber-400 to-amber-600",
+                  "bg-gradient-to-br from-rose-400 to-rose-600",
+                ].map((bg, i) => (
+                  <motion.div
+                    key={i}
+                    className={`h-8 w-8 rounded-full ${bg} ring-2 ring-background flex items-center justify-center text-white font-medium`}
+                    style={{ fontSize: "11px" }}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.8 + i * 0.05 }}
+                  >
+                    {["JK", "AL", "MS", "RD", "TC"][i]}
+                  </motion.div>
+                ))}
+              </div>
+              <p className="text-muted-foreground/60" style={{ font: "var(--text-label)", letterSpacing: "var(--letter-spacing-label)" }}>
+                Trusted by 2,500+ students across top universities
+              </p>
+            </motion.div>
           </motion.div>
         </div>
 
         <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          className="absolute bottom-6 left-1/2 -translate-x-1/2"
           animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.5 }}
         >
-          <ArrowDown className="h-5 w-5 text-muted-foreground/50" />
+          <ArrowDown className="h-4 w-4 text-muted-foreground/40" />
         </motion.div>
       </section>
 
