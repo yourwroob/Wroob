@@ -23,6 +23,7 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [scrolled, setScrolled] = useState(false);
+  const { count: unreadGroupCount, markRead: markGroupsRead } = useUnreadGroupMessages();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
