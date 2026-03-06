@@ -11,6 +11,7 @@ import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
+import SelectRole from "./pages/SelectRole";
 import Profile from "./pages/Profile";
 import Internships from "./pages/Internships";
 import InternshipDetail from "./pages/InternshipDetail";
