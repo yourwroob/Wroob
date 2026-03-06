@@ -26,6 +26,7 @@ import Help from "./pages/Help";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
+import Groups from "./pages/Groups";
 import OnboardingProfile from "./pages/onboarding/OnboardingProfile";
 import OnboardingPreferences from "./pages/onboarding/OnboardingPreferences";
 import OnboardingCulture from "./pages/onboarding/OnboardingCulture";
