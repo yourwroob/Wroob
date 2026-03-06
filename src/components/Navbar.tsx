@@ -9,11 +9,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Bell, Briefcase, LogOut, Menu, User, X } from "lucide-react";
+import { Bell, Briefcase, LogOut, Menu, MessageCircle, User, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useUnreadGroupMessages } from "@/hooks/useUnreadGroupMessages";
 
 const Navbar = () => {
   const { user, role, profile, signOut } = useAuth();
@@ -22,6 +23,7 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [scrolled, setScrolled] = useState(false);
+  const { count: unreadGroupCount, markRead: markGroupsRead } = useUnreadGroupMessages();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -77,6 +79,14 @@ const Navbar = () => {
         <>
           <Link to="/internships" className={cn("transition-colors hover:text-foreground", isActive("/internships") ? "text-foreground font-medium" : "text-muted-foreground")} style={{ font: "var(--text-nav)" }}>Discover</Link>
           <Link to="/my-applications" className={cn("transition-colors hover:text-foreground", isActive("/my-applications") ? "text-foreground font-medium" : "text-muted-foreground")} style={{ font: "var(--text-nav)" }}>My Applications</Link>
+          <Link to="/groups" onClick={markGroupsRead} className={cn("relative transition-colors hover:text-foreground", isActive("/groups") ? "text-foreground font-medium" : "text-muted-foreground")} style={{ font: "var(--text-nav)" }}>
+            Groups
+            {unreadGroupCount > 0 && (
+              <span className="absolute -right-4 -top-2 flex h-4 min-w-[16px] items-center justify-center rounded-full brand-gradient text-white text-[9px] font-bold px-1">
+                {unreadGroupCount > 9 ? "9+" : unreadGroupCount}
+              </span>
+            )}
+          </Link>
         </>
       );
     }
@@ -85,6 +95,14 @@ const Navbar = () => {
         <>
           <Link to="/my-internships" className={cn("transition-colors hover:text-foreground", isActive("/my-internships") ? "text-foreground font-medium" : "text-muted-foreground")} style={{ font: "var(--text-nav)" }}>My Internships</Link>
           <Link to="/post-internship" className={cn("transition-colors hover:text-foreground", isActive("/post-internship") ? "text-foreground font-medium" : "text-muted-foreground")} style={{ font: "var(--text-nav)" }}>Post Internship</Link>
+          <Link to="/groups" onClick={markGroupsRead} className={cn("relative transition-colors hover:text-foreground", isActive("/groups") ? "text-foreground font-medium" : "text-muted-foreground")} style={{ font: "var(--text-nav)" }}>
+            Groups
+            {unreadGroupCount > 0 && (
+              <span className="absolute -right-4 -top-2 flex h-4 min-w-[16px] items-center justify-center rounded-full brand-gradient text-white text-[9px] font-bold px-1">
+                {unreadGroupCount > 9 ? "9+" : unreadGroupCount}
+              </span>
+            )}
+          </Link>
         </>
       );
     }
