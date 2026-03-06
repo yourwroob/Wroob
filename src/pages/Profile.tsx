@@ -40,6 +40,12 @@ const Profile = () => {
 
       const { data: skills } = await supabase.from("skills").select("name, category").order("category").order("name");
       if (skills) setAllSkills(skills);
+
+      // Check if location already captured
+      if (role === "student") {
+        const { data: sp2 } = await supabase.from("student_profiles").select("lat, lng").eq("user_id", user.id).single();
+        if (sp2 && (sp2 as any).lat && (sp2 as any).lng) setLocationCaptured(true);
+      }
     };
     fetchData();
   }, [user, role]);
