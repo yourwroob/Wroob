@@ -398,6 +398,30 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limits: {
+        Row: {
+          function_name: string
+          id: string
+          timestamps: number[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          function_name: string
+          id?: string
+          timestamps?: number[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          function_name?: string
+          id?: string
+          timestamps?: number[]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       skills: {
         Row: {
           category: string | null
@@ -628,6 +652,10 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      set_initial_role: {
+        Args: { _role: Database["public"]["Enums"]["app_role"] }
+        Returns: undefined
       }
     }
     Enums: {
