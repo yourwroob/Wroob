@@ -59,6 +59,10 @@ const Dashboard = () => {
             setOnboardingCheck("done");
           }
         });
+    } else if (!role) {
+      // New OAuth user with no role yet — send to role picker
+      setOnboardingRoute("/select-role");
+      setOnboardingCheck("needs");
     } else {
       setOnboardingCheck("done");
     }

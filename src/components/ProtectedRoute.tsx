@@ -1,5 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -8,6 +8,7 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
   const { user, role, loading } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -18,7 +19,14 @@ const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
   }
 
   if (!user) return <Navigate to="/login" replace />;
-  if (allowedRoles && role && !allowedRoles.includes(role)) return <Navigate to="/dashboard" replace />;
+
+  // Allow access to select-role page even without a role
+  if (location.pathname === "/select-role") return <>{children}</>;
+
+  // If user has no role yet (new OAuth user), redirect to role selection
+  if (!role) return <Navigate to="/select-role" replace />;
+
+  if (allowedRoles && !allowedRoles.includes(role)) return <Navigate to="/dashboard" replace />;
 
   return <>{children}</>;
 };

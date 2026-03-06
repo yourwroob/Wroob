@@ -1,0 +1,105 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { Briefcase, GraduationCap, Building2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+
+const SelectRole = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [selected, setSelected] = useState<"student" | "employer" | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleContinue = async () => {
+    if (!selected || !user) return;
+    setLoading(true);
+
+    try {
+      // Insert role
+      const { error: roleError } = await supabase
+        .from("user_roles")
+        .insert({ user_id: user.id, role: selected });
+
+      if (roleError && !roleError.message.includes("duplicate")) {
+        throw roleError;
+      }
+
+      // Create profile
+      const fullName = user.user_metadata?.full_name || user.user_metadata?.name || "";
+      await supabase.from("profiles").upsert({
+        user_id: user.id,
+        full_name: fullName,
+        avatar_url: user.user_metadata?.avatar_url || null,
+      }, { onConflict: "user_id" });
+
+      // Create role-specific profile
+      if (selected === "student") {
+        await supabase.from("student_profiles").upsert({ user_id: user.id }, { onConflict: "user_id" });
+      } else {
+        await supabase.from("employer_profiles").upsert({ user_id: user.id }, { onConflict: "user_id" });
+      }
+
+      // Navigate to onboarding
+      navigate(selected === "student" ? "/onboarding/profile" : "/employer/onboarding/company", { replace: true });
+    } catch (err: any) {
+      toast({ title: "Error", description: err.message || "Failed to set role.", variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+      <div className="w-full max-w-md">
+        <div className="mb-8 text-center">
+          <Briefcase className="mx-auto h-10 w-10 text-primary" />
+          <h1 className="mt-2 font-display text-2xl font-bold">InternHub</h1>
+        </div>
+        <Card>
+          <CardHeader className="text-center">
+            <CardTitle className="font-display text-2xl">I'm joining as...</CardTitle>
+            <CardDescription>Choose your role to get started</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { value: "student" as const, label: "Student", icon: GraduationCap, desc: "Find internships" },
+                { value: "employer" as const, label: "Employer", icon: Building2, desc: "Post internships" },
+              ].map((r) => (
+                <button
+                  key={r.value}
+                  type="button"
+                  onClick={() => setSelected(r.value)}
+                  className={cn(
+                    "flex flex-col items-center gap-2 rounded-xl border-2 p-6 transition-all",
+                    selected === r.value
+                      ? "border-primary bg-primary/5 text-primary"
+                      : "border-border hover:border-muted-foreground/30"
+                  )}
+                >
+                  <r.icon className="h-8 w-8" />
+                  <span className="text-sm font-semibold">{r.label}</span>
+                  <span className="text-xs text-muted-foreground">{r.desc}</span>
+                </button>
+              ))}
+            </div>
+            <Button
+              className="w-full"
+              disabled={!selected || loading}
+              onClick={handleContinue}
+            >
+              {loading ? "Setting up..." : "Continue"}
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default SelectRole;

@@ -11,6 +11,7 @@ import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
+import SelectRole from "./pages/SelectRole";
 import Profile from "./pages/Profile";
 import Internships from "./pages/Internships";
 import InternshipDetail from "./pages/InternshipDetail";
@@ -53,6 +54,7 @@ const App = () => (
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/select-role" element={<ProtectedRoute><SelectRole /></ProtectedRoute>} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/internships" element={<Internships />} />
