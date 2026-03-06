@@ -45,11 +45,14 @@ const PostInternship = () => {
   const handleSubmit = async (status: "draft" | "published") => {
     if (!user) return;
     setLoading(true);
+    const appCap = form.slots * 2;
     const { error } = await supabase.from("internships").insert({
       ...form,
       employer_id: user.id,
       status,
       deadline: form.deadline || null,
+      app_cap: appCap,
+      application_count: 0,
     });
     setLoading(false);
     if (error) {
