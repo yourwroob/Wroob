@@ -20,9 +20,9 @@ const EmployerOnboardingLayout = ({ currentStep, children }: EmployerOnboardingL
       <aside className="hidden md:flex w-72 flex-col bg-foreground text-background p-8">
         <Link to="/" className="flex items-center gap-2 mb-12">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg brand-gradient">
-            <Briefcase className="h-4 w-4 text-white" />
+            <img src={wroobeLogo} alt="Wroobe" className="h-8 w-8 rounded-lg" />
           </div>
-          <span className="font-display text-lg font-bold text-background">InternHub</span>
+          <span className="font-display text-lg font-bold text-background">Wroobe</span>
         </Link>
 
         <nav className="space-y-6">
