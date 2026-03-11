@@ -65,6 +65,7 @@ const AvatarUpload = ({ userId, currentUrl, fullName, onUpload }: AvatarUploadPr
   const [imgSrc, setImgSrc] = useState("");
   const [crop, setCrop] = useState<Crop>();
   const [uploading, setUploading] = useState(false);
+  const [showPhotoTip, setShowPhotoTip] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
 
   const handleFileSelect = () => {
