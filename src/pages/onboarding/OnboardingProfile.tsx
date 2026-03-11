@@ -37,6 +37,7 @@ const OnboardingProfile = () => {
   const { toast } = useToast();
   const { updateStep } = useOnboardingStatus();
   const [loading, setLoading] = useState(false);
+  const [geoLoading, setGeoLoading] = useState(false);
 
   const [form, setForm] = useState({
     location: "",
