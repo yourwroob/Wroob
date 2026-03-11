@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { MapPin, Loader2 } from "lucide-react";
 
 const SPECIALISATIONS = [
   "Computer Science", "Information Technology", "Electronics", "Mechanical Engineering",
@@ -36,6 +37,7 @@ const OnboardingProfile = () => {
   const { toast } = useToast();
   const { updateStep } = useOnboardingStatus();
   const [loading, setLoading] = useState(false);
+  const [geoLoading, setGeoLoading] = useState(false);
 
   const [form, setForm] = useState({
     location: "",
@@ -125,12 +127,57 @@ const OnboardingProfile = () => {
             <Label className="font-semibold">
               <span className="text-primary mr-1">*</span>Where are you based?
             </Label>
-            <p className="text-xs text-muted-foreground">Tip: You can choose a city, state, or country</p>
-            <Input
-              placeholder="Search for a location"
-              value={form.location}
-              onChange={(e) => setForm((f) => ({ ...f, location: e.target.value }))}
-            />
+            <p className="text-xs text-muted-foreground">Tip: You can type a location or detect it automatically</p>
+            <div className="flex gap-2">
+              <Input
+                placeholder="Search for a location"
+                value={form.location}
+                onChange={(e) => setForm((f) => ({ ...f, location: e.target.value }))}
+                className="flex-1"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                disabled={geoLoading}
+                className="gap-2 shrink-0"
+                onClick={() => {
+                  if (!navigator.geolocation) {
+                    toast({ title: "Geolocation not supported", description: "Your browser doesn't support location detection.", variant: "destructive" });
+                    return;
+                  }
+                  setGeoLoading(true);
+                  navigator.geolocation.getCurrentPosition(
+                    async (pos) => {
+                      try {
+                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
+                        const data = await res.json();
+                        const city = data.address?.city || data.address?.town || data.address?.village || "";
+                        const state = data.address?.state || "";
+                        const country = data.address?.country || "";
+                        const location = [city, state, country].filter(Boolean).join(", ");
+                        setForm((f) => ({ ...f, location }));
+                        toast({ title: "Location detected!", description: location });
+                      } catch {
+                        toast({ title: "Could not resolve location", variant: "destructive" });
+                      }
+                      setGeoLoading(false);
+                    },
+                    (err) => {
+                      setGeoLoading(false);
+                      toast({
+                        title: "Location access denied",
+                        description: err.code === 1 ? "Please enable location in your browser settings." : "Could not get your location. Please try again.",
+                        variant: "destructive",
+                      });
+                    },
+                    { enableHighAccuracy: true, timeout: 10000 }
+                  );
+                }}
+              >
+                {geoLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <MapPin className="h-4 w-4" />}
+                {geoLoading ? "Detecting..." : "Detect"}
+              </Button>
+            </div>
           </div>
 
           {/* Course Specialisation */}
