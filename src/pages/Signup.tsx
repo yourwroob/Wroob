@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Briefcase, GraduationCap, Building2 } from "lucide-react";
+import { GraduationCap, Building2 } from "lucide-react";
+import wroobeLogo from "@/assets/wroobe-logo.png";
 import { cn } from "@/lib/utils";
 import { GoogleSignInButton } from "@/components/GoogleSignInButton";
 
