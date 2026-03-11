@@ -123,9 +123,9 @@ const Navbar = () => {
     )}>
       <div className="container flex h-16 items-center justify-between">
         {/* Left: Logo */}
-        <Link to="/" className="flex items-center gap-2 shrink-0">
-          <img src={wroobeLogo} alt="Wroobe" className="h-8 w-8 rounded-lg" />
-          <span className="font-display font-bold" style={{ fontSize: "17px", letterSpacing: "-0.01em" }}>Wroobe</span>
+        <Link to="/" className="flex items-center gap-2.5 shrink-0">
+          <img src={wroobeLogo} alt="Wroobe" className="h-9 w-9 rounded-lg" />
+          <span className="font-display font-bold" style={{ fontSize: "19px", letterSpacing: "-0.02em" }}>Wroobe</span>
         </Link>
 
         {/* Center: Nav links */}

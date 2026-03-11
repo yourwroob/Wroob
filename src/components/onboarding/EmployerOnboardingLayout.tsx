@@ -18,9 +18,9 @@ const EmployerOnboardingLayout = ({ currentStep, children }: EmployerOnboardingL
     <div className="flex min-h-screen">
       {/* Dark sidebar */}
       <aside className="hidden md:flex w-72 flex-col bg-foreground text-background p-8">
-        <Link to="/" className="flex items-center gap-2 mb-12">
-          <img src={wroobeLogo} alt="Wroobe" className="h-8 w-8 rounded-lg" />
-          <span className="font-display text-lg font-bold text-background">Wroobe</span>
+        <Link to="/" className="flex items-center gap-2.5 mb-12">
+          <img src={wroobeLogo} alt="Wroobe" className="h-9 w-9 rounded-lg" />
+          <span className="font-display text-lg font-bold text-background" style={{ letterSpacing: "-0.02em" }}>Wroobe</span>
         </Link>
 
         <nav className="space-y-6">
