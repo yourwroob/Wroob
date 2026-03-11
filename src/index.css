@@ -4,15 +4,15 @@
 
 @layer base {
   :root {
-    --font-primary: 'Satoshi', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
 
-    --text-hero: 700 68px/1.1 var(--font-primary);
-    --text-section: 700 38px/1.2 var(--font-primary);
-    --text-card-title: 500 19px/1.4 var(--font-primary);
-    --text-body: 400 15px/1.6 var(--font-primary);
-    --text-label: 500 12px/1 var(--font-primary);
+    --text-hero: 700 64px/1.08 var(--font-primary);
+    --text-section: 600 36px/1.15 var(--font-primary);
+    --text-card-title: 500 18px/1.4 var(--font-primary);
+    --text-body: 400 15px/1.65 var(--font-primary);
+    --text-label: 500 11px/1 var(--font-primary);
     --text-button: 500 14px/1 var(--font-primary);
-    --text-nav: 400 15px/1 var(--font-primary);
+    --text-nav: 500 14px/1 var(--font-primary);
 
     --letter-spacing-hero: -0.03em;
     --letter-spacing-heading: -0.02em;
@@ -146,8 +146,9 @@
 
   @media (max-width: 768px) {
     :root {
-      --text-section: 700 28px/1.25 var(--font-primary);
-      --text-card-title: 500 17px/1.4 var(--font-primary);
+      --text-hero: 700 40px/1.1 var(--font-primary);
+      --text-section: 600 26px/1.2 var(--font-primary);
+      --text-card-title: 500 16px/1.4 var(--font-primary);
     }
   }
 }
