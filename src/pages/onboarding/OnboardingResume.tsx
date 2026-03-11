@@ -90,7 +90,15 @@ const OnboardingResume = () => {
         </CardContent>
       </Card>
 
-      <div className="mt-8 flex justify-center">
+      <div className="mt-8 flex justify-center gap-3">
+        <Button
+          variant="outline"
+          onClick={() => navigate("/onboarding/culture")}
+          size="lg"
+          className="rounded-full h-14 px-12 text-lg"
+        >
+          Back
+        </Button>
         <Button
           variant="outline"
           onClick={handleSkip}

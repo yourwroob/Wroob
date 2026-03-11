@@ -255,14 +255,24 @@ const OnboardingCulture = () => {
           <span className="text-green-600 font-medium">✔ You're almost done!</span>{" "}
           <span className="text-primary">Complete profile and start searching for your dream job.</span>
         </p>
-        <Button
-          onClick={handleSubmit}
-          disabled={loading}
-          size="lg"
-          className="rounded-full h-12 px-10 brand-gradient border-0 text-white shadow-lg shadow-primary/20"
-        >
-          {loading ? "Saving..." : "Save and continue"}
-        </Button>
+        <div className="flex items-center gap-3">
+          <Button
+            variant="outline"
+            onClick={() => navigate("/onboarding/profile")}
+            size="lg"
+            className="rounded-full h-12 px-8"
+          >
+            Back
+          </Button>
+          <Button
+            onClick={handleSubmit}
+            disabled={loading}
+            size="lg"
+            className="rounded-full h-12 px-10 brand-gradient border-0 text-white shadow-lg shadow-primary/20"
+          >
+            {loading ? "Saving..." : "Save and continue"}
+          </Button>
+        </div>
       </div>
     </OnboardingLayout>
   );
