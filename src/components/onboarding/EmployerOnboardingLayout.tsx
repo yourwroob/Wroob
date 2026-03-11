@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
+import wroobeLogo from "@/assets/wroobe-logo.png";
 
 const STEPS = [
   { key: "account", label: "Set up your account" },
@@ -20,9 +20,9 @@ const EmployerOnboardingLayout = ({ currentStep, children }: EmployerOnboardingL
       <aside className="hidden md:flex w-72 flex-col bg-foreground text-background p-8">
         <Link to="/" className="flex items-center gap-2 mb-12">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg brand-gradient">
-            <Briefcase className="h-4 w-4 text-white" />
+            <img src={wroobeLogo} alt="Wroobe" className="h-8 w-8 rounded-lg" />
           </div>
-          <span className="font-display text-lg font-bold text-background">InternHub</span>
+          <span className="font-display text-lg font-bold text-background">Wroobe</span>
         </Link>
 
         <nav className="space-y-6">
@@ -67,9 +67,9 @@ const EmployerOnboardingLayout = ({ currentStep, children }: EmployerOnboardingL
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-foreground text-background px-4 py-3 flex items-center gap-3">
         <Link to="/" className="flex items-center gap-2">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg brand-gradient">
-            <Briefcase className="h-3.5 w-3.5 text-white" />
+            <img src={wroobeLogo} alt="Wroobe" className="h-7 w-7 rounded-lg" />
           </div>
-          <span className="font-display text-base font-bold">InternHub</span>
+          <span className="font-display text-base font-bold">Wroobe</span>
         </Link>
         <div className="ml-auto flex gap-2">
           {STEPS.map((step, i) => (

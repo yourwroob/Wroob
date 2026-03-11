@@ -9,8 +9,8 @@ const POSTS = [
   { title: "Why Skills-Based Hiring Is the Future", excerpt: "Traditional resumes are losing relevance. Learn how skills-based matching is transforming the way companies find talent.", date: "Feb 20, 2026", category: "Industry" },
   { title: "How to Build a Portfolio That Gets Interviews", excerpt: "Your portfolio is your most powerful tool. We break down what hiring managers actually look for.", date: "Feb 12, 2026", category: "Career Tips" },
   { title: "Remote Internships: What to Expect in 2026", excerpt: "Remote work is here to stay. Here's how to thrive in a virtual internship and make a lasting impression.", date: "Feb 5, 2026", category: "Trends" },
-  { title: "InternHub Platform Update: Match Scores 2.0", excerpt: "We've upgraded our matching algorithm to better surface opportunities tailored to your unique skill set.", date: "Jan 28, 2026", category: "Product" },
-  { title: "From Intern to Full-Time: Success Stories", excerpt: "Real stories from students who turned their InternHub internships into full-time offers.", date: "Jan 15, 2026", category: "Stories" },
+  { title: "Wroobe Platform Update: Match Scores 2.0", excerpt: "We've upgraded our matching algorithm to better surface opportunities tailored to your unique skill set.", date: "Jan 28, 2026", category: "Product" },
+  { title: "From Intern to Full-Time: Success Stories", excerpt: "Real stories from students who turned their Wroobe internships into full-time offers.", date: "Jan 15, 2026", category: "Stories" },
 ];
 
 const Blog = () => (

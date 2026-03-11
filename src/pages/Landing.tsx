@@ -314,7 +314,7 @@ const Landing = () => {
         <div className="container">
           <div className="mx-auto max-w-2xl text-center">
             <h2 style={{ font: "var(--text-section)", letterSpacing: "var(--letter-spacing-heading)" }}>Ready to get started?</h2>
-            <p className="mt-4 text-muted-foreground" style={{ font: "var(--text-body)" }}>Join thousands already on InternHub.</p>
+            <p className="mt-4 text-muted-foreground" style={{ font: "var(--text-body)" }}>Join thousands already on Wroobe.</p>
             <div className="mt-8">
               <MagnetizeButton className="animated-border rounded-full">
                 <Button size="lg" className="gap-2 rounded-full h-14 px-10 text-base brand-gradient border-0 text-white shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97]" asChild>

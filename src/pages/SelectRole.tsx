@@ -45,7 +45,7 @@ const SelectRole = () => {
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <Briefcase className="mx-auto h-10 w-10 text-primary" />
-          <h1 className="mt-2 font-display text-2xl font-bold">InternHub</h1>
+          <h1 className="mt-2 font-display text-2xl font-bold">Wroobe</h1>
         </div>
         <Card>
           <CardHeader className="text-center">

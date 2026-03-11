@@ -14,23 +14,23 @@ const Terms = () => (
           <div className="mt-12 space-y-8 text-sm text-muted-foreground leading-relaxed">
             <section>
               <h2 className="font-display text-lg font-semibold text-foreground">1. Acceptance of Terms</h2>
-              <p className="mt-2">By accessing or using InternHub, you agree to be bound by these Terms of Service. If you do not agree, you may not use our platform.</p>
+              <p className="mt-2">By accessing or using Wroobe, you agree to be bound by these Terms of Service. If you do not agree, you may not use our platform.</p>
             </section>
             <section>
               <h2 className="font-display text-lg font-semibold text-foreground">2. Account Registration</h2>
-              <p className="mt-2">You must provide accurate information when creating an account. You are responsible for maintaining the security of your account credentials. You must be at least 16 years old to use InternHub.</p>
+              <p className="mt-2">You must provide accurate information when creating an account. You are responsible for maintaining the security of your account credentials. You must be at least 16 years old to use Wroobe.</p>
             </section>
             <section>
               <h2 className="font-display text-lg font-semibold text-foreground">3. Use of the Platform</h2>
-              <p className="mt-2">InternHub provides a platform for students to discover internship opportunities and for employers to post openings. Users agree not to misuse the platform, submit false information, or engage in any activity that violates applicable laws.</p>
+              <p className="mt-2">Wroobe provides a platform for students to discover internship opportunities and for employers to post openings. Users agree not to misuse the platform, submit false information, or engage in any activity that violates applicable laws.</p>
             </section>
             <section>
               <h2 className="font-display text-lg font-semibold text-foreground">4. Content & Intellectual Property</h2>
-              <p className="mt-2">All content on InternHub, including text, graphics, and software, is owned by InternHub or its licensors. Users retain ownership of content they submit (resumes, cover letters) but grant InternHub a license to display it within the platform.</p>
+              <p className="mt-2">All content on Wroobe, including text, graphics, and software, is owned by Wroobe or its licensors. Users retain ownership of content they submit (resumes, cover letters) but grant Wroobe a license to display it within the platform.</p>
             </section>
             <section>
               <h2 className="font-display text-lg font-semibold text-foreground">5. Limitation of Liability</h2>
-              <p className="mt-2">InternHub is provided "as is" without warranties. We do not guarantee employment outcomes. InternHub is not liable for any indirect, incidental, or consequential damages arising from use of the platform.</p>
+              <p className="mt-2">Wroobe is provided "as is" without warranties. We do not guarantee employment outcomes. Wroobe is not liable for any indirect, incidental, or consequential damages arising from use of the platform.</p>
             </section>
             <section>
               <h2 className="font-display text-lg font-semibold text-foreground">6. Termination</h2>
@@ -38,11 +38,11 @@ const Terms = () => (
             </section>
             <section>
               <h2 className="font-display text-lg font-semibold text-foreground">7. Changes to Terms</h2>
-              <p className="mt-2">We may update these terms from time to time. Continued use of InternHub after changes constitutes acceptance of the updated terms.</p>
+              <p className="mt-2">We may update these terms from time to time. Continued use of Wroobe after changes constitutes acceptance of the updated terms.</p>
             </section>
             <section>
               <h2 className="font-display text-lg font-semibold text-foreground">8. Contact</h2>
-              <p className="mt-2">For questions about these terms, contact us at legal@internhub.com.</p>
+              <p className="mt-2">For questions about these terms, contact us at legal@wroobe.com.</p>
             </section>
           </div>
         </motion.div>

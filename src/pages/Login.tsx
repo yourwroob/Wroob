@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Briefcase } from "lucide-react";
+import wroobeLogo from "@/assets/wroobe-logo.png";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -34,8 +34,8 @@ const Login = () => {
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <Link to="/" className="inline-flex items-center gap-2">
-            <Briefcase className="h-8 w-8 text-primary" />
-            <span className="font-display text-2xl font-bold">InternHub</span>
+            <img src={wroobeLogo} alt="Wroobe" className="h-8 w-8 rounded-lg" />
+            <span className="font-display text-2xl font-bold">Wroobe</span>
           </Link>
         </div>
         <Card>

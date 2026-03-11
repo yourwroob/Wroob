@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Briefcase, Twitter, Instagram, Linkedin, Github } from "lucide-react";
+import { Twitter, Instagram, Linkedin, Github } from "lucide-react";
+import wroobeLogo from "@/assets/wroobe-logo.png";
 
 const Footer = () => {
   return (
@@ -9,11 +10,9 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg brand-gradient text-white">
-                <Briefcase className="h-4 w-4" />
-              </div>
+              <img src={wroobeLogo} alt="Wroobe" className="h-8 w-8 rounded-lg" />
               <span className="font-display font-bold" style={{ fontSize: "17px", letterSpacing: "-0.01em" }}>
-                Intern<span className="brand-gradient-text">Hub</span>
+                Wroobe
               </span>
             </div>
             <p className="mt-3 text-sm leading-relaxed text-background/50">
@@ -79,7 +78,7 @@ const Footer = () => {
 
       <div className="border-t border-background/8">
         <div className="container flex items-center justify-between py-5">
-          <p className="text-xs text-background/30">© 2026 InternHub. All rights reserved.</p>
+          <p className="text-xs text-background/30">© 2026 Wroobe. All rights reserved.</p>
         </div>
       </div>
     </footer>

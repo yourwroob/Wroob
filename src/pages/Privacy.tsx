@@ -42,7 +42,7 @@ const Privacy = () => (
             </section>
             <section>
               <h2 className="font-display text-lg font-semibold text-foreground">8. Contact</h2>
-              <p className="mt-2">For privacy-related inquiries, contact us at privacy@internhub.com.</p>
+              <p className="mt-2">For privacy-related inquiries, contact us at privacy@wroobe.com.</p>
             </section>
           </div>
         </motion.div>

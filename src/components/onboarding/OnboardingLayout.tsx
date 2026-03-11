@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { Briefcase } from "lucide-react";
 import OnboardingStepIndicator from "./OnboardingStepIndicator";
+import wroobeLogo from "@/assets/wroobe-logo.png";
 
 interface OnboardingLayoutProps {
   currentStep: number;
@@ -16,10 +16,8 @@ const OnboardingLayout = ({ currentStep, title, subtitle, children }: Onboarding
       <header className="border-b bg-card/80 backdrop-blur-sm">
         <div className="container flex h-14 items-center">
           <Link to="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg brand-gradient">
-              <Briefcase className="h-4 w-4 text-white" />
-            </div>
-            <span className="font-display text-lg font-bold">InternHub</span>
+            <img src={wroobeLogo} alt="Wroobe" className="h-8 w-8 rounded-lg" />
+            <span className="font-display text-lg font-bold">Wroobe</span>
           </Link>
         </div>
       </header>
