@@ -11,12 +11,13 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { X } from "lucide-react";
 import LocationCapture from "@/components/groups/LocationCapture";
+import AvatarUpload from "@/components/AvatarUpload";
 
 const Profile = () => {
   const { user, role } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [profile, setProfile] = useState({ full_name: "", bio: "" });
+  const [profile, setProfile] = useState({ full_name: "", bio: "", avatar_url: "" });
   const [studentProfile, setStudentProfile] = useState({ university: "", major: "", graduation_year: "", skills: [] as string[], resume_url: "" });
   const [employerProfile, setEmployerProfile] = useState({ company_name: "", industry: "", company_size: "", website: "" });
   const [allSkills, setAllSkills] = useState<{ name: string; category: string }[]>([]);
@@ -27,7 +28,7 @@ const Profile = () => {
     if (!user) return;
     const fetchData = async () => {
       const { data: p } = await supabase.from("profiles").select("*").eq("user_id", user.id).single();
-      if (p) setProfile({ full_name: p.full_name || "", bio: p.bio || "" });
+      if (p) setProfile({ full_name: p.full_name || "", bio: p.bio || "", avatar_url: p.avatar_url || "" });
 
       if (role === "student") {
         const { data: sp } = await supabase.from("student_profiles").select("*").eq("user_id", user.id).single();
@@ -40,7 +41,6 @@ const Profile = () => {
       const { data: skills } = await supabase.from("skills").select("name, category").order("category").order("name");
       if (skills) setAllSkills(skills);
 
-      // Check if location already captured
       if (role === "student") {
         const { data: sp2 } = await supabase.from("student_profiles").select("lat, lng").eq("user_id", user.id).single();
         if (sp2 && (sp2 as any).lat && (sp2 as any).lng) setLocationCaptured(true);
@@ -108,6 +108,21 @@ const Profile = () => {
           <Card>
             <CardHeader><CardTitle>Basic Information</CardTitle></CardHeader>
             <CardContent className="space-y-4">
+              {/* Avatar */}
+              {user && (
+                <div className="flex items-center gap-4">
+                  <AvatarUpload
+                    userId={user.id}
+                    currentUrl={profile.avatar_url || null}
+                    fullName={profile.full_name}
+                    onUpload={(url) => setProfile((p) => ({ ...p, avatar_url: url }))}
+                  />
+                  <div>
+                    <p className="text-sm font-medium">Profile Photo</p>
+                    <p className="text-xs text-muted-foreground">Click to upload or change</p>
+                  </div>
+                </div>
+              )}
               <div className="space-y-2">
                 <Label>Full Name</Label>
                 <Input value={profile.full_name} onChange={(e) => setProfile((p) => ({ ...p, full_name: e.target.value }))} />
@@ -169,7 +184,6 @@ const Profile = () => {
                     onCapture={async (lat, lng) => {
                       if (!user) return;
                       setLocationCaptured(true);
-                      // Call edge function to assign geo group
                       await supabase.functions.invoke("geo-group-assign", {
                         body: { user_id: user.id, lat, lng },
                       });
