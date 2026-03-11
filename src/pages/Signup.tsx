@@ -42,8 +42,8 @@ const Signup = () => {
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <Link to="/" className="inline-flex items-center gap-2">
-            <img src={wroobeLogo} alt="Wroobe" className="h-8 w-8 rounded-lg" />
-            <span className="font-display text-2xl font-bold">Wroobe</span>
+            <img src={wroobeLogo} alt="Wroobe" className="h-10 w-10 rounded-lg" />
+            <span className="font-display text-2xl font-bold" style={{ letterSpacing: "-0.02em" }}>Wroobe</span>
           </Link>
         </div>
         <Card>

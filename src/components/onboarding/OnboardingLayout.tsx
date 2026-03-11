@@ -16,8 +16,8 @@ const OnboardingLayout = ({ currentStep, title, subtitle, children }: Onboarding
       <header className="border-b bg-card/80 backdrop-blur-sm">
         <div className="container flex h-14 items-center">
           <Link to="/" className="flex items-center gap-2.5">
-            <img src={wroobeLogo} alt="Wroobe" className="h-10 w-10 rounded-lg" />
-            <span className="font-display text-xl font-bold" style={{ letterSpacing: "-0.02em" }}>Wroobe</span>
+            <img src={wroobeLogo} alt="Wroobe" className="h-11 w-11 rounded-lg" />
+            <span className="font-display text-xl font-bold" style={{ letterSpacing: "-0.02em", fontSize: "21px" }}>Wroobe</span>
           </Link>
         </div>
       </header>

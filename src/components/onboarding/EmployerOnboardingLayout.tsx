@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import wroobeLogoLight from "@/assets/wroobe-logo-light.png";
+import wroobeLogo from "@/assets/wroobe-logo.png";
 
 const STEPS = [
   { key: "account", label: "Set up your account" },
@@ -19,8 +19,8 @@ const EmployerOnboardingLayout = ({ currentStep, children }: EmployerOnboardingL
       {/* Dark sidebar */}
       <aside className="hidden md:flex w-72 flex-col bg-foreground text-background p-8">
         <Link to="/" className="flex items-center gap-2.5 mb-12">
-          <img src={wroobeLogoLight} alt="Wroobe" className="h-10 w-10 rounded-lg" />
-          <span className="font-display text-xl font-bold text-background" style={{ letterSpacing: "-0.02em" }}>Wroobe</span>
+          <img src={wroobeLogo} alt="Wroobe" className="h-11 w-11 rounded-lg invert" />
+          <span className="font-display text-xl font-bold text-background" style={{ letterSpacing: "-0.02em", fontSize: "21px" }}>Wroobe</span>
         </Link>
 
         <nav className="space-y-6">
@@ -64,8 +64,8 @@ const EmployerOnboardingLayout = ({ currentStep, children }: EmployerOnboardingL
       {/* Mobile header */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-foreground text-background px-4 py-3 flex items-center gap-3">
         <Link to="/" className="flex items-center gap-2">
-          <img src={wroobeLogoLight} alt="Wroobe" className="h-8 w-8 rounded-lg" />
-          <span className="font-display text-base font-bold">Wroobe</span>
+          <img src={wroobeLogo} alt="Wroobe" className="h-9 w-9 rounded-lg invert" />
+          <span className="font-display text-lg font-bold" style={{ letterSpacing: "-0.02em" }}>Wroobe</span>
         </Link>
         <div className="ml-auto flex gap-2">
           {STEPS.map((step, i) => (
