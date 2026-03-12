@@ -12,7 +12,7 @@ import { toast } from "sonner";
 const FAQS = [
   { q: "How do I create an account?", a: "Click 'Sign Up' in the top navigation, choose whether you're a student or employer, and fill in your details. You'll receive a verification email to confirm your account." },
   { q: "How does skills-based matching work?", a: "When you add skills to your profile, our algorithm compares them against the requirements of posted internships. You'll see a match percentage on each listing showing how well your skills align." },
-  { q: "Is Wroobe free for students?", a: "Yes! Wroobe is completely free for students. You can browse internships, apply, and track your applications at no cost." },
+  { q: "Is Wroob free for students?", a: "Yes! Wroob is completely free for students. You can browse internships, apply, and track your applications at no cost." },
   { q: "How do I apply for an internship?", a: "Navigate to any internship listing and click 'Apply'. You can include a cover letter and your resume. The employer will be notified and can review your application." },
   { q: "Can I edit my application after submitting?", a: "Once submitted, applications cannot be edited. Make sure to review your cover letter and resume before applying." },
   { q: "How do employers post internships?", a: "Employers can sign up, complete their company profile, and post internships through the dashboard. Each posting includes details like skills required, location, and type." },
