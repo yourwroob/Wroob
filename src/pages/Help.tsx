@@ -16,7 +16,7 @@ const FAQS = [
   { q: "How do I apply for an internship?", a: "Navigate to any internship listing and click 'Apply'. You can include a cover letter and your resume. The employer will be notified and can review your application." },
   { q: "Can I edit my application after submitting?", a: "Once submitted, applications cannot be edited. Make sure to review your cover letter and resume before applying." },
   { q: "How do employers post internships?", a: "Employers can sign up, complete their company profile, and post internships through the dashboard. Each posting includes details like skills required, location, and type." },
-  { q: "How do I contact support?", a: "Use the contact form below or email us at support@wroob.com. We typically respond within 24 hours." },
+  { q: "How do I contact support?", a: "Use the contact form below or email us at yourwroob@gmail.com. We typically respond within 24 hours." },
 ];
 
 const Help = () => {
