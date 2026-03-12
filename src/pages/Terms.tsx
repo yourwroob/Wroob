@@ -42,7 +42,7 @@ const Terms = () => (
             </section>
             <section>
               <h2 className="font-display text-lg font-semibold text-foreground">8. Contact</h2>
-              <p className="mt-2">For questions about these terms, contact us at legal@wroob.com.</p>
+              <p className="mt-2">For questions about these terms, contact us at yourwroob@gmail.com.</p>
             </section>
           </div>
         </motion.div>
