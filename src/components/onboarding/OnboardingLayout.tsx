@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import OnboardingStepIndicator from "./OnboardingStepIndicator";
-import wroobeLogo from "@/assets/wroobe-logo.png";
+import wroobeLogo from "@/assets/wroob-logo.png";
 
 interface OnboardingLayoutProps {
   currentStep: number;

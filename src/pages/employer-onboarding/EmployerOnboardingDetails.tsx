@@ -90,7 +90,7 @@ const EmployerOnboardingDetails = () => {
         Let's find your Company
       </h1>
       <p className="mt-4 text-muted-foreground leading-relaxed max-w-xl">
-        Many companies already have a Wroobe profile. We'll look for yours, and if you use an applicant tracking system, we'll help find the jobs you've already posted.
+        Many companies already have a Wroob profile. We'll look for yours, and if you use an applicant tracking system, we'll help find the jobs you've already posted.
       </p>
 
       {/* Company card */}

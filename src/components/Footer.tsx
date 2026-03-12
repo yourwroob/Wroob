@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Twitter, Instagram, Linkedin, Github } from "lucide-react";
-import wroobeLogo from "@/assets/wroobe-logo.png";
+import wroobeLogo from "@/assets/wroob-logo.png";
 
 const Footer = () => {
   return (

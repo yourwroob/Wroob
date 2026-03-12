@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import wroobeLogo from "@/assets/wroobe-logo.png";
+import wroobeLogo from "@/assets/wroob-logo.png";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
