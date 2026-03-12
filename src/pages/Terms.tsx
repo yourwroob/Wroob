@@ -26,7 +26,7 @@ const Terms = () => (
             </section>
             <section>
               <h2 className="font-display text-lg font-semibold text-foreground">4. Content & Intellectual Property</h2>
-              <p className="mt-2">All content on Wroobe, including text, graphics, and software, is owned by Wroobe or its licensors. Users retain ownership of content they submit (resumes, cover letters) but grant Wroobe a license to display it within the platform.</p>
+              <p className="mt-2">All content on Wroob, including text, graphics, and software, is owned by Wroob or its licensors. Users retain ownership of content they submit (resumes, cover letters) but grant Wroob a license to display it within the platform.</p>
             </section>
             <section>
               <h2 className="font-display text-lg font-semibold text-foreground">5. Limitation of Liability</h2>
