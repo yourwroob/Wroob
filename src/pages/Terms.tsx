@@ -18,7 +18,7 @@ const Terms = () => (
             </section>
             <section>
               <h2 className="font-display text-lg font-semibold text-foreground">2. Account Registration</h2>
-              <p className="mt-2">You must provide accurate information when creating an account. You are responsible for maintaining the security of your account credentials. You must be at least 16 years old to use Wroobe.</p>
+              <p className="mt-2">You must provide accurate information when creating an account. You are responsible for maintaining the security of your account credentials. You must be at least 16 years old to use Wroob.</p>
             </section>
             <section>
               <h2 className="font-display text-lg font-semibold text-foreground">3. Use of the Platform</h2>
