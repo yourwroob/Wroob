@@ -23,6 +23,7 @@ import Notifications from "./pages/Notifications";
 import Admin from "./pages/Admin";
 import About from "./pages/About";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import Help from "./pages/Help";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
