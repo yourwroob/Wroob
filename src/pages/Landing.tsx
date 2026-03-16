@@ -184,7 +184,7 @@ const Landing = () => {
                 ))}
               </div>
               <p className="text-muted-foreground/60" style={{ font: "var(--text-label)", letterSpacing: "var(--letter-spacing-label)" }}>
-                Early users from top universities
+                Joined by ambitious students everywhere
               </p>
             </motion.div>
           </motion.div>
