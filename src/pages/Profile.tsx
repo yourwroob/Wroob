@@ -15,6 +15,8 @@ import LocationCapture from "@/components/groups/LocationCapture";
 import AvatarUpload from "@/components/AvatarUpload";
 import FollowListDialog from "@/components/FollowListDialog";
 import { useFollows } from "@/hooks/useFollows";
+import { ReputationScoreCard } from "@/components/reputation/ReputationScoreCard";
+import { useReputation } from "@/hooks/useReputation";
 
 const FollowStats = ({ userId }: { userId: string }) => {
   const { followerCount, followingCount } = useFollows(userId);
