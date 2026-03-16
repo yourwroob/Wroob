@@ -299,6 +299,44 @@ export type Database = {
         }
         Relationships: []
       }
+      internship_feedback: {
+        Row: {
+          company_id: string
+          created_at: string
+          id: string
+          internship_id: string
+          rating: number
+          review: string | null
+          student_id: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          id?: string
+          internship_id: string
+          rating: number
+          review?: string | null
+          student_id: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          id?: string
+          internship_id?: string
+          rating?: number
+          review?: string | null
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "internship_feedback_internship_id_fkey"
+            columns: ["internship_id"]
+            isOneToOne: false
+            referencedRelation: "internships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       internships: {
         Row: {
           app_cap: number
@@ -521,6 +559,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      skill_test_results: {
+        Row: {
+          created_at: string
+          id: string
+          passed: boolean
+          score: number
+          skill_name: string
+          student_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          passed?: boolean
+          score: number
+          skill_name: string
+          student_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          passed?: boolean
+          score?: number
+          skill_name?: string
+          student_id?: string
+        }
+        Relationships: []
       }
       skills: {
         Row: {
