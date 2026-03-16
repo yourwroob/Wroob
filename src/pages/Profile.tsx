@@ -79,6 +79,7 @@ const Profile = () => {
 
     setLoading(false);
     toast({ title: "Profile updated!" });
+    if (role === "student") recalcReputation();
   };
 
   const addSkill = (skill: string) => {
