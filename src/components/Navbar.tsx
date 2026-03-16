@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import wroobeLogo from "@/assets/wroob-logo-transparent.png";
+import wroobeLogo from "@/assets/wroob-logo-clean.png";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

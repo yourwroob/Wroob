@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { GraduationCap, Building2 } from "lucide-react";
-import wroobeLogo from "@/assets/wroob-logo-transparent.png";
+import wroobeLogo from "@/assets/wroob-logo-clean.png";
 import { cn } from "@/lib/utils";
 import { GoogleSignInButton } from "@/components/GoogleSignInButton";
 

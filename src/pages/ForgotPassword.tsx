@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft } from "lucide-react";
-import wroobeLogo from "@/assets/wroob-logo-transparent.png";
+import wroobeLogo from "@/assets/wroob-logo-clean.png";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");

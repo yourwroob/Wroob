@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { GraduationCap, Building2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import wroobeLogo from "@/assets/wroob-logo-transparent.png";
+import wroobeLogo from "@/assets/wroob-logo-clean.png";
 
 const SelectRole = () => {
   const { user } = useAuth();

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import wroobeLogo from "@/assets/wroob-logo-transparent.png";
+import wroobeLogo from "@/assets/wroob-logo-clean.png";
 
 const STEPS = [
   { key: "account", label: "Set up your account" },
