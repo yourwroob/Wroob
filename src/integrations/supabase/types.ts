@@ -443,6 +443,85 @@ export type Database = {
         }
         Relationships: []
       }
+      recommendation_cache: {
+        Row: {
+          created_at: string
+          expires_at: string
+          explanation: string | null
+          id: string
+          interest_alignment_score: number | null
+          internship_id: string
+          location_match_score: number | null
+          match_score: number
+          skill_match_score: number | null
+          student_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string
+          explanation?: string | null
+          id?: string
+          interest_alignment_score?: number | null
+          internship_id: string
+          location_match_score?: number | null
+          match_score?: number
+          skill_match_score?: number | null
+          student_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          explanation?: string | null
+          id?: string
+          interest_alignment_score?: number | null
+          internship_id?: string
+          location_match_score?: number | null
+          match_score?: number
+          skill_match_score?: number | null
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recommendation_cache_internship_id_fkey"
+            columns: ["internship_id"]
+            isOneToOne: false
+            referencedRelation: "internships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recommendation_feedback: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          internship_id: string
+          student_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          internship_id: string
+          student_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          internship_id?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recommendation_feedback_internship_id_fkey"
+            columns: ["internship_id"]
+            isOneToOne: false
+            referencedRelation: "internships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       skills: {
         Row: {
           category: string | null

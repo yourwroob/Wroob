@@ -5,3 +5,9 @@ verify_jwt = false
 
 [functions.apply-to-internship]
 verify_jwt = false
+
+[functions.ai-recommendations]
+verify_jwt = false
+
+[functions.recommendation-feedback]
+verify_jwt = false
