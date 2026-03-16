@@ -4,9 +4,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Briefcase, GraduationCap, Building2 } from "lucide-react";
+import { GraduationCap, Building2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import wroobeLogo from "@/assets/wroob-logo.png";
 
 const SelectRole = () => {
   const { user } = useAuth();
