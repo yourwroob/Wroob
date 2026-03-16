@@ -45,8 +45,7 @@ const SelectRole = () => {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <Briefcase className="mx-auto h-10 w-10 text-primary" />
-          <h1 className="mt-2 font-display text-2xl font-bold">Wroob</h1>
+          <img src={wroobeLogo} alt="Wroob" className="mx-auto h-10 rounded-lg" />
         </div>
         <Card>
           <CardHeader className="text-center">
