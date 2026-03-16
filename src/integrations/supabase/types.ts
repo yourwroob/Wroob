@@ -822,6 +822,10 @@ export type Database = {
         Args: { _role: Database["public"]["Enums"]["app_role"] }
         Returns: undefined
       }
+      update_student_reputation: {
+        Args: { _student_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "student" | "employer" | "admin"
