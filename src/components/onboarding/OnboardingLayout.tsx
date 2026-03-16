@@ -15,9 +15,8 @@ const OnboardingLayout = ({ currentStep, title, subtitle, children }: Onboarding
       {/* Minimal navbar */}
       <header className="border-b bg-card/80 backdrop-blur-sm">
         <div className="container flex h-14 items-center">
-          <Link to="/" className="flex items-center gap-1.5">
-            <img src={wroobeLogo} alt="Wroob" className="h-11 w-11 rounded-lg" />
-            <span className="font-display text-xl font-bold" style={{ letterSpacing: "-0.02em", fontSize: "21px" }}>Wroob</span>
+          <Link to="/">
+            <img src={wroobeLogo} alt="Wroob" className="h-11 rounded-lg" />
           </Link>
         </div>
       </header>

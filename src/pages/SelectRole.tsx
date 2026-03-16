@@ -4,9 +4,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Briefcase, GraduationCap, Building2 } from "lucide-react";
+import { GraduationCap, Building2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import wroobeLogo from "@/assets/wroob-logo.png";
 
 const SelectRole = () => {
   const { user } = useAuth();
@@ -44,8 +45,7 @@ const SelectRole = () => {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <Briefcase className="mx-auto h-10 w-10 text-primary" />
-          <h1 className="mt-2 font-display text-2xl font-bold">Wroob</h1>
+          <img src={wroobeLogo} alt="Wroob" className="mx-auto h-10 rounded-lg" />
         </div>
         <Card>
           <CardHeader className="text-center">

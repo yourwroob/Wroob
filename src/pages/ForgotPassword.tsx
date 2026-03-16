@@ -32,9 +32,8 @@ const ForgotPassword = () => {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <Link to="/" className="inline-flex items-center gap-2">
-            <img src={wroobeLogo} alt="Wroob" className="h-10 w-10 rounded-lg" />
-            <span className="font-display text-2xl font-bold" style={{ letterSpacing: "-0.02em" }}>Wroob</span>
+          <Link to="/">
+            <img src={wroobeLogo} alt="Wroob" className="h-10 rounded-lg" />
           </Link>
         </div>
         <Card>
