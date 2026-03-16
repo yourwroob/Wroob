@@ -10,7 +10,7 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div>
-              <img src={wroobeLogo} alt="Wroob" className="h-14 brightness-0 invert" />
+              <img src={wroobeLogo} alt="Wroob" className="h-14 drop-shadow-[0_0_1px_rgba(255,255,255,0.3)]" style={{ imageRendering: "auto" }} />
             </div>
             <p className="mt-3 text-sm leading-relaxed text-background/80">
               Skills-based internship matching for students and companies.
