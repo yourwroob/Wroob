@@ -20,7 +20,10 @@ import PostInternship from "./pages/PostInternship";
 import MyInternships from "./pages/MyInternships";
 import ApplicantReview from "./pages/ApplicantReview";
 import Notifications from "./pages/Notifications";
-import Admin from "./pages/Admin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminInternships from "./pages/admin/AdminInternships";
+import AdminSettings from "./pages/admin/AdminSettings";
 import About from "./pages/About";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
@@ -71,7 +74,10 @@ const App = () => (
             <Route path="/students" element={<ProtectedRoute allowedRoles={["student"]}><StudentDiscovery /></ProtectedRoute>} />
             <Route path="/skill-tests" element={<ProtectedRoute allowedRoles={["student"]}><SkillTests /></ProtectedRoute>} />
             <Route path="/campus" element={<ProtectedRoute allowedRoles={["student"]}><CampusCommunity /></ProtectedRoute>} />
-            <Route path="/admin" element={<ProtectedRoute allowedRoles={["admin"]}><Admin /></ProtectedRoute>} />
+            <Route path="/admin" element={<ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/users" element={<ProtectedRoute allowedRoles={["admin"]}><AdminUsers /></ProtectedRoute>} />
+            <Route path="/admin/internships" element={<ProtectedRoute allowedRoles={["admin"]}><AdminInternships /></ProtectedRoute>} />
+            <Route path="/admin/settings" element={<ProtectedRoute allowedRoles={["admin"]}><AdminSettings /></ProtectedRoute>} />
             {/* Student onboarding */}
             <Route path="/onboarding/profile" element={<ProtectedRoute allowedRoles={["student"]}><OnboardingProfile /></ProtectedRoute>} />
             <Route path="/onboarding/culture" element={<ProtectedRoute allowedRoles={["student"]}><OnboardingCulture /></ProtectedRoute>} />
