@@ -81,7 +81,6 @@ const App = () => (
             {/* Student onboarding */}
             <Route path="/onboarding/profile" element={<ProtectedRoute allowedRoles={["student"]}><OnboardingProfile /></ProtectedRoute>} />
             <Route path="/onboarding/culture" element={<ProtectedRoute allowedRoles={["student"]}><OnboardingCulture /></ProtectedRoute>} />
-            <Route path="/onboarding/culture" element={<ProtectedRoute allowedRoles={["student"]}><OnboardingCulture /></ProtectedRoute>} />
             <Route path="/onboarding/resume" element={<ProtectedRoute allowedRoles={["student"]}><OnboardingResume /></ProtectedRoute>} />
             <Route path="/onboarding/done" element={<ProtectedRoute allowedRoles={["student"]}><OnboardingDone /></ProtectedRoute>} />
             {/* Employer onboarding */}
