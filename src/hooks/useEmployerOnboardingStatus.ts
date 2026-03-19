@@ -18,7 +18,7 @@ export function useEmployerOnboardingStatus() {
       .from("employer_profiles")
       .select("onboarding_status, onboarding_step")
       .eq("user_id", user.id)
-      .single()
+      .maybeSingle()
       .then(({ data }) => {
         const d = data as any;
         if (d) {

@@ -33,7 +33,7 @@ const InternshipDetail = () => {
         .from("internships")
         .select("*, employer_profiles!internships_employer_id_fkey(company_name, logo_url, industry, website)")
         .eq("id", id!)
-        .single();
+        .maybeSingle();
       setInternship(data);
 
       if (user) {
@@ -41,7 +41,7 @@ const InternshipDetail = () => {
         setHasApplied(!!app);
 
         if (role === "student") {
-          const { data: sp } = await supabase.from("student_profiles").select("skills").eq("user_id", user.id).single();
+          const { data: sp } = await supabase.from("student_profiles").select("skills").eq("user_id", user.id).maybeSingle();
           if (sp?.skills) setStudentSkills(sp.skills);
         }
       }

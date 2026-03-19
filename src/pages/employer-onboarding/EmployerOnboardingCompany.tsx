@@ -31,7 +31,7 @@ const EmployerOnboardingCompany = () => {
       .from("employer_profiles")
       .select("company_name, company_domain, logo_url")
       .eq("user_id", user.id)
-      .single()
+      .maybeSingle()
       .then(({ data }: any) => {
         if (data?.company_name) {
           setSelectedCompany({

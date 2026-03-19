@@ -34,7 +34,7 @@ export function useReputation(studentId?: string) {
           .from("student_profiles")
           .select("*")
           .eq("user_id", studentId)
-          .single();
+          .maybeSingle();
 
         if (sp) {
           const raw = sp as any;

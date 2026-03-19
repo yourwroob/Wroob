@@ -43,7 +43,7 @@ const Internships = () => {
       setInternships((data as any) || []);
 
       if (user && role === "student") {
-        const { data: sp } = await supabase.from("student_profiles").select("skills").eq("user_id", user.id).single();
+        const { data: sp } = await supabase.from("student_profiles").select("skills").eq("user_id", user.id).maybeSingle();
         if (sp?.skills) setStudentSkills(sp.skills);
       }
       setLoading(false);

@@ -19,7 +19,7 @@ export function useOnboardingStatus() {
         .from("student_profiles")
         .select("onboarding_status, onboarding_step")
         .eq("user_id", user.id)
-        .single();
+        .maybeSingle();
 
       if (data) {
         setStatus((data as any).onboarding_status);

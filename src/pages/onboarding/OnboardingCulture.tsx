@@ -56,7 +56,7 @@ const OnboardingCulture = () => {
       .from("student_culture" as any)
       .select("*")
       .eq("user_id", user.id)
-      .single()
+      .maybeSingle()
       .then(({ data }: any) => {
         if (data) {
           setForm((f) => ({

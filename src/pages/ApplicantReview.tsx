@@ -31,7 +31,7 @@ const ApplicantReview = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data: intern } = await supabase.from("internships").select("*").eq("id", id!).single();
+      const { data: intern } = await supabase.from("internships").select("*").eq("id", id!).maybeSingle();
       setInternship(intern);
 
       const { data: apps } = await supabase

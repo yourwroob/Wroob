@@ -62,7 +62,7 @@ export function useGroupChat(groupId: string | null) {
         .from("profiles")
         .select("full_name")
         .eq("user_id", user.id)
-        .single();
+        .maybeSingle();
 
       await supabase.from("group_messages").insert({
         group_id: groupId,

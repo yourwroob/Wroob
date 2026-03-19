@@ -68,7 +68,7 @@ export function useFollows(targetUserId: string) {
         .from("profiles")
         .select("full_name")
         .eq("user_id", user.id)
-        .single();
+        .maybeSingle();
 
       const followerName = profile?.full_name || "Someone";
 

@@ -38,14 +38,14 @@ const Profile = () => {
   useEffect(() => {
     if (!user) return;
     const fetchData = async () => {
-      const { data: p } = await supabase.from("profiles").select("*").eq("user_id", user.id).single();
+      const { data: p } = await supabase.from("profiles").select("*").eq("user_id", user.id).maybeSingle();
       if (p) setProfile({ full_name: p.full_name || "", bio: p.bio || "", avatar_url: p.avatar_url || "" });
 
       if (role === "student") {
-        const { data: sp } = await supabase.from("student_profiles").select("*").eq("user_id", user.id).single();
+        const { data: sp } = await supabase.from("student_profiles").select("*").eq("user_id", user.id).maybeSingle();
         if (sp) setStudentProfile({ university: sp.university || "", major: sp.major || "", graduation_year: sp.graduation_year?.toString() || "", skills: sp.skills || [], resume_url: sp.resume_url || "" });
       } else if (role === "employer") {
-        const { data: ep } = await supabase.from("employer_profiles").select("*").eq("user_id", user.id).single();
+        const { data: ep } = await supabase.from("employer_profiles").select("*").eq("user_id", user.id).maybeSingle();
         if (ep) setEmployerProfile({ company_name: ep.company_name || "", industry: ep.industry || "", company_size: ep.company_size || "", website: ep.website || "" });
       }
 
@@ -53,7 +53,7 @@ const Profile = () => {
       if (skills) setAllSkills(skills);
 
       if (role === "student") {
-        const { data: sp2 } = await supabase.from("student_profiles").select("lat, lng").eq("user_id", user.id).single();
+        const { data: sp2 } = await supabase.from("student_profiles").select("lat, lng").eq("user_id", user.id).maybeSingle();
         if (sp2 && (sp2 as any).lat && (sp2 as any).lng) setLocationCaptured(true);
       }
     };
