@@ -210,7 +210,7 @@ const OnboardingProfile = () => {
             <Label className="font-semibold">
               <span className="text-primary mr-1">*</span>How many months of experience do you have?
             </Label>
-            <Select value={form.experience_years} onValueChange={(v) => setForm((f) => ({ ...f, experience_years: v }))}>
+            <Select value={form.experience_years} onValueChange={(v) => { setForm((f) => ({ ...f, experience_years: v })); setErrors((e) => ({ ...e, experience_years: "" })); }}>
               <SelectTrigger className="w-full sm:w-72">
                 <SelectValue placeholder="Select months of experience" />
               </SelectTrigger>
