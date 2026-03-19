@@ -184,6 +184,7 @@ const OnboardingProfile = () => {
                 {geoLoading ? "Detecting..." : "Detect"}
               </Button>
             </div>
+            {errors.location && <p className="text-sm text-destructive">{errors.location}</p>}
           </div>
 
           {/* Course Specialisation */}
