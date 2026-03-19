@@ -1,7 +1,6 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
-import type { Database } from "@/integrations/supabase/types";
 
 type AppRole = "student" | "employer" | "admin";
 
@@ -26,44 +25,69 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [role, setRole] = useState<AppRole | null>(null);
   const [profile, setProfile] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
+  const fetchingRef = useRef<string | null>(null);
 
-  const fetchUserData = async (userId: string) => {
+  const fetchUserData = useCallback(async (userId: string) => {
+    // Deduplicate concurrent fetches for the same user
+    if (fetchingRef.current === userId) return;
+    fetchingRef.current = userId;
     try {
       const [{ data: roleData }, { data: profileData }] = await Promise.all([
         supabase.from("user_roles").select("role").eq("user_id", userId).single(),
         supabase.from("profiles").select("*").eq("user_id", userId).single(),
       ]);
       if (roleData) setRole(roleData.role as AppRole);
+      else setRole(null);
       if (profileData) setProfile(profileData);
+      else setProfile(null);
     } catch (e) {
       console.error("Error fetching user data:", e);
+    } finally {
+      fetchingRef.current = null;
     }
-  };
+  }, []);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        await fetchUserData(session.user.id);
-      } else {
-        setRole(null);
-        setProfile(null);
-      }
-      setLoading(false);
-    });
+    let mounted = true;
 
+    // 1. Restore session from storage first
     supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!mounted) return;
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
         await fetchUserData(session.user.id);
       }
-      setLoading(false);
+      if (mounted) setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
-  }, []);
+    // 2. Listen for subsequent auth changes — DO NOT await inside callback
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (!mounted) return;
+        setSession(session);
+        setUser(session?.user ?? null);
+
+        if (session?.user) {
+          // Fire-and-forget — never block the auth event queue
+          fetchUserData(session.user.id);
+        } else {
+          setRole(null);
+          setProfile(null);
+        }
+
+        // For sign-out, ensure loading is false immediately
+        if (event === "SIGNED_OUT") {
+          setLoading(false);
+        }
+      }
+    );
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, [fetchUserData]);
 
   const signUp = async (email: string, password: string, fullName: string, role: AppRole) => {
     const { error } = await supabase.auth.signUp({
@@ -83,11 +107,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    // Clear local state immediately for instant UI feedback
     setUser(null);
     setSession(null);
     setRole(null);
     setProfile(null);
+    // Then tell the server (fire-and-forget is fine)
+    await supabase.auth.signOut();
   };
 
   const resetPassword = async (email: string) => {
