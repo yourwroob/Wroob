@@ -39,6 +39,7 @@ const OnboardingProfile = () => {
   const { updateStep } = useOnboardingStatus();
   const [loading, setLoading] = useState(false);
   const [geoLoading, setGeoLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const [form, setForm] = useState({
     location: "",
