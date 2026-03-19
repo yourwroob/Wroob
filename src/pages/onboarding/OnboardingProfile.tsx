@@ -202,6 +202,7 @@ const OnboardingProfile = () => {
                 ))}
               </SelectContent>
             </Select>
+            {errors.profile_role && <p className="text-sm text-destructive">{errors.profile_role}</p>}
           </div>
 
           {/* Experience in 3-month increments */}
