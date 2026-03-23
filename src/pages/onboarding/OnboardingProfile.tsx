@@ -14,11 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { MapPin, Loader2 } from "lucide-react";
 
-const SPECIALISATIONS = [
-  "Computer Science", "Information Technology", "Electronics", "Mechanical Engineering",
-  "Civil Engineering", "Electrical Engineering", "Data Science", "Business Administration",
-  "Commerce", "Arts & Humanities", "Law", "Medicine", "Design", "Other",
-];
+import { COURSE_CATEGORIES, SCHOOL_NAMES } from "@/data/courseData";
 
 const EXPERIENCE_OPTIONS = [
   { value: "0", label: "0 months" },
