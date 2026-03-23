@@ -17,11 +17,11 @@ const FLOATING_TAGS = [
   { label: "Fintech", top: "8%", left: "32%", delay: 1.5, scale: 0.96 },
   { label: "Web3", bottom: "18%", right: "8%", delay: 0.3, scale: 1.01 },
   { label: "Data Science", top: "42%", right: "6%", delay: 1.8, scale: 0.98 },
-  { label: "San Francisco", bottom: "35%", right: "15%", delay: 0.7, scale: 1.03 },
-  { label: "Product Design", bottom: "12%", left: "25%", delay: 1.1, scale: 0.99 },
+  { label: "Python", bottom: "35%", right: "15%", delay: 0.7, scale: 1.03 },
+  { label: "UI/UX", bottom: "12%", left: "25%", delay: 1.1, scale: 0.99 },
   { label: "Backend", top: "6%", right: "30%", delay: 1.4, scale: 1.0 },
   { label: "Marketing", bottom: "22%", left: "3%", delay: 2.0, scale: 1.02 },
-  { label: "New York", top: "25%", left: "18%", delay: 0.6, scale: 0.97 },
+  { label: "Machine Learning", top: "25%", left: "18%", delay: 0.6, scale: 0.97 },
 ];
 
 const HOW_STEPS = [
