@@ -31,7 +31,7 @@ const Profile = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState({ full_name: "", bio: "", avatar_url: "" });
-  const [studentProfile, setStudentProfile] = useState({ university: "", major: "", graduation_year: "", skills: [] as string[], resume_url: "" });
+  const [studentProfile, setStudentProfile] = useState({ university: "", major: "", graduation_year: "", skills: [] as string[], resume_url: "", school_category: "", profile_role: "" });
   const [employerProfile, setEmployerProfile] = useState({ company_name: "", industry: "", company_size: "", website: "" });
   const { data: reputation, recalculate: recalcReputation } = useReputation(role === "student" ? user?.id : undefined);
   const [allSkills, setAllSkills] = useState<{ name: string; category: string }[]>([]);
