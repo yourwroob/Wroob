@@ -39,6 +39,7 @@ const OnboardingProfile = () => {
 
   const [form, setForm] = useState({
     location: "",
+    school_category: "",
     profile_role: "",
     experience_years: "",
     is_student: true,
