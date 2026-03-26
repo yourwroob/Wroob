@@ -12,7 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { InternshipCapBar } from "@/components/InternshipCapBar";
 import {
   MapPin, Clock, Building2, Calendar, ArrowLeft, CheckCircle, ExternalLink,
-  IndianRupee, Briefcase, GraduationCap, FileText, FlaskConical, Users,
+  IndianRupee, Briefcase, GraduationCap, FileText, FlaskConical, Users, BadgeCheck,
 } from "lucide-react";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
@@ -41,7 +41,7 @@ const InternshipDetail = () => {
     const fetchData = async () => {
       const { data } = await supabase
         .from("internships")
-        .select("*, employer_profiles!internships_employer_id_fkey(company_name, logo_url, industry, website)")
+        .select("*, employer_profiles!internships_employer_id_fkey(company_name, logo_url, industry, website, is_verified)")
         .eq("id", id!)
         .maybeSingle();
       setInternship(data);
@@ -163,6 +163,11 @@ const InternshipDetail = () => {
                 <div className="mt-3 flex items-center gap-2 text-muted-foreground">
                   <Building2 className="h-4 w-4" />
                   <span className="font-medium">{internship.employer_profiles?.company_name || "Company"}</span>
+                  {internship.employer_profiles?.is_verified && (
+                    <Badge className="bg-green-100 text-green-800 border-green-200 gap-1">
+                      <BadgeCheck className="h-3 w-3" /> Verified
+                    </Badge>
+                  )}
                   {internship.employer_profiles?.website && (
                     <a href={internship.employer_profiles.website} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
                       <ExternalLink className="h-3.5 w-3.5" />
