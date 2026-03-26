@@ -1,5 +1,39 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+// Rate limit: 30 requests per hour per user
+const RATE_LIMIT_MAX = 30;
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
+const RATE_LIMIT_FN_NAME = "geo_group_assign";
+
+async function checkRateLimit(
+  supabaseAdmin: ReturnType<typeof createClient>,
+  userId: string
+): Promise<{ allowed: boolean; retryAfterSeconds?: number }> {
+  const now = Date.now();
+  const windowStart = now - RATE_LIMIT_WINDOW_MS;
+  const { data } = await supabaseAdmin
+    .from("rate_limits")
+    .select("timestamps")
+    .eq("user_id", userId)
+    .eq("function_name", RATE_LIMIT_FN_NAME)
+    .maybeSingle();
+  const existing: number[] = data?.timestamps ?? [];
+  const recent = existing.filter((ts: number) => ts > windowStart);
+  if (recent.length >= RATE_LIMIT_MAX) {
+    const oldest = Math.min(...recent);
+    const retryAfterSeconds = Math.ceil((oldest + RATE_LIMIT_WINDOW_MS - now) / 1000);
+    return { allowed: false, retryAfterSeconds };
+  }
+  const updated = [...recent, now].slice(-200);
+  await supabaseAdmin
+    .from("rate_limits")
+    .upsert(
+      { user_id: userId, function_name: RATE_LIMIT_FN_NAME, timestamps: updated, updated_at: new Date().toISOString() },
+      { onConflict: "user_id,function_name" }
+    );
+  return { allowed: true };
+}
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -74,6 +108,20 @@ Deno.serve(async (req) => {
     const user_id = claimsData.claims.sub;
     // --- End auth check ---
 
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+    );
+
+    // ── Rate Limit Check ──────────────────────────────────────────────────
+    const rateLimitResult = await checkRateLimit(supabase, user_id as string);
+    if (!rateLimitResult.allowed) {
+      return new Response(
+        JSON.stringify({ error: "Rate limit exceeded", retryAfter: 3600 }),
+        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const { lat, lng } = await req.json();
     if (lat == null || lng == null) {
       return new Response(JSON.stringify({ error: "Missing lat, lng" }), {
@@ -81,11 +129,6 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-
-    const supabase = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-    );
 
     const geohash = encodeGeohash(lat, lng, 5);
 

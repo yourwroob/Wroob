@@ -1,6 +1,40 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+// Rate limit: 20 requests per hour per user
+const RATE_LIMIT_MAX = 20;
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
+const RATE_LIMIT_FN_NAME = "student_reputation";
+
+async function checkRateLimit(
+  supabaseAdmin: ReturnType<typeof createClient>,
+  userId: string
+): Promise<{ allowed: boolean; retryAfterSeconds?: number }> {
+  const now = Date.now();
+  const windowStart = now - RATE_LIMIT_WINDOW_MS;
+  const { data } = await supabaseAdmin
+    .from("rate_limits")
+    .select("timestamps")
+    .eq("user_id", userId)
+    .eq("function_name", RATE_LIMIT_FN_NAME)
+    .maybeSingle();
+  const existing: number[] = data?.timestamps ?? [];
+  const recent = existing.filter((ts: number) => ts > windowStart);
+  if (recent.length >= RATE_LIMIT_MAX) {
+    const oldest = Math.min(...recent);
+    const retryAfterSeconds = Math.ceil((oldest + RATE_LIMIT_WINDOW_MS - now) / 1000);
+    return { allowed: false, retryAfterSeconds };
+  }
+  const updated = [...recent, now].slice(-200);
+  await supabaseAdmin
+    .from("rate_limits")
+    .upsert(
+      { user_id: userId, function_name: RATE_LIMIT_FN_NAME, timestamps: updated, updated_at: new Date().toISOString() },
+      { onConflict: "user_id,function_name" }
+    );
+  return { allowed: true };
+}
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -35,9 +69,19 @@ serve(async (req) => {
       });
     }
 
+    const serviceClient = createClient(supabaseUrl, serviceKey);
+
+    // ── Rate Limit Check ──────────────────────────────────────────────────
+    const rateLimitResult = await checkRateLimit(serviceClient, user.id);
+    if (!rateLimitResult.allowed) {
+      return new Response(
+        JSON.stringify({ error: "Rate limit exceeded", retryAfter: 3600 }),
+        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const url = new URL(req.url);
     const path = url.pathname.split("/").filter(Boolean);
-    const serviceClient = createClient(supabaseUrl, serviceKey);
 
     // POST /student-reputation - submit feedback (employer only)
     if (req.method === "POST") {
