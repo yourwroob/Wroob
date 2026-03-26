@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import AvatarUpload from "@/components/AvatarUpload";
+
 
 const INDUSTRY_TYPES = [
   "Manufacturing", "IT / Software", "Finance / Banking", "Healthcare",
@@ -108,11 +108,23 @@ const EmployerOnboardingCompany = () => {
       <div className="mt-8 space-y-6">
         <div className="space-y-2">
           <Label>Company Logo</Label>
-          <AvatarUpload
-            currentUrl={form.logo_url}
-            onUpload={(url) => update("logo_url", url)}
-            bucket="company-logos"
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            className="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:opacity-90 cursor-pointer"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file || !user) return;
+              const ext = file.name.split(".").pop();
+              const path = `${user.id}/logo.${ext}`;
+              const { error } = await supabase.storage.from("company-logos").upload(path, file, { upsert: true });
+              if (error) { toast({ title: "Upload failed", description: error.message, variant: "destructive" }); return; }
+              const { data: urlData } = supabase.storage.from("company-logos").getPublicUrl(path);
+              update("logo_url", urlData.publicUrl);
+              toast({ title: "Logo uploaded!" });
+            }}
           />
+          {form.logo_url && <img src={form.logo_url} alt="Logo" className="h-16 w-16 rounded-lg object-contain border mt-2" />}
         </div>
 
         <div className="space-y-2">
