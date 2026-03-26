@@ -34,8 +34,10 @@ async function checkRateLimit(
   return { allowed: true };
 }
 
+const allowedOrigin = Deno.env.get("ALLOWED_ORIGIN") ?? "https://wroob.in";
+
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "https://wroob.in",
+  "Access-Control-Allow-Origin": allowedOrigin,
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type",
 };
