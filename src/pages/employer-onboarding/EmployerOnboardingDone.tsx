@@ -14,7 +14,7 @@ const EmployerOnboardingDone = () => {
   }, [navigate]);
 
   return (
-    <EmployerOnboardingLayout currentStep={3}>
+    <EmployerOnboardingLayout currentStep={6}>
       <div className="flex flex-col items-start">
         <motion.div
           initial={{ scale: 0 }}
