@@ -35,7 +35,7 @@ async function checkRateLimit(
 }
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "https://yourdomain.com",
+  "Access-Control-Allow-Origin": "https://wroob.in",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type",
 };
