@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MapPin, Clock, Building2, Search, Briefcase, IndianRupee, CalendarDays } from "lucide-react";
+import { MapPin, Clock, Building2, Search, Briefcase, IndianRupee, CalendarDays, BadgeCheck } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -27,7 +27,7 @@ interface Internship {
   stipend_type: string | null;
   stipend_amount: number | null;
   duration_months: number | null;
-  employer_profiles?: { company_name: string; logo_url: string } | null;
+  employer_profiles?: { company_name: string; logo_url: string; is_verified: boolean | null } | null;
 }
 
 const Internships = () => {
@@ -44,7 +44,7 @@ const Internships = () => {
     const fetchData = async () => {
       const { data } = await supabase
         .from("internships")
-        .select("*, employer_profiles!internships_employer_id_fkey(company_name, logo_url)")
+        .select("*, employer_profiles!internships_employer_id_fkey(company_name, logo_url, is_verified)")
         .eq("status", "published")
         .order("created_at", { ascending: false });
       setInternships((data as any) || []);
@@ -185,6 +185,11 @@ const Internships = () => {
                               <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
                                 <Building2 className="h-3.5 w-3.5 shrink-0" />
                                 {(intern as any).employer_profiles?.company_name || "Company"}
+                                {(intern as any).employer_profiles?.is_verified && (
+                                  <span className="inline-flex items-center gap-0.5 text-green-600" title="Verified Company">
+                                    <BadgeCheck className="h-3.5 w-3.5" />
+                                  </span>
+                                )}
                               </p>
                             </div>
                             {studentSkills.length > 0 && score > 0 && (
