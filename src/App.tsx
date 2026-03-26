@@ -46,7 +46,9 @@ const OnboardingCulture = lazy(() => import("./pages/onboarding/OnboardingCultur
 const OnboardingResume = lazy(() => import("./pages/onboarding/OnboardingResume"));
 const OnboardingDone = lazy(() => import("./pages/onboarding/OnboardingDone"));
 const EmployerOnboardingCompany = lazy(() => import("./pages/employer-onboarding/EmployerOnboardingCompany"));
-const EmployerOnboardingDetails = lazy(() => import("./pages/employer-onboarding/EmployerOnboardingDetails"));
+const EmployerOnboardingLocation = lazy(() => import("./pages/employer-onboarding/EmployerOnboardingLocation"));
+const EmployerOnboardingManager = lazy(() => import("./pages/employer-onboarding/EmployerOnboardingManager"));
+const EmployerOnboardingLegal = lazy(() => import("./pages/employer-onboarding/EmployerOnboardingLegal"));
 const EmployerOnboardingVerify = lazy(() => import("./pages/employer-onboarding/EmployerOnboardingVerify"));
 const EmployerOnboardingTeam = lazy(() => import("./pages/employer-onboarding/EmployerOnboardingTeam"));
 const EmployerOnboardingDone = lazy(() => import("./pages/employer-onboarding/EmployerOnboardingDone"));
@@ -99,10 +101,14 @@ const App = () => (
               <Route path="/onboarding/done" element={<ProtectedRoute allowedRoles={["student"]}><OnboardingDone /></ProtectedRoute>} />
               {/* Employer onboarding */}
               <Route path="/employer/onboarding/company" element={<ProtectedRoute allowedRoles={["employer"]}><EmployerOnboardingCompany /></ProtectedRoute>} />
-              <Route path="/employer/onboarding/details" element={<ProtectedRoute allowedRoles={["employer"]}><EmployerOnboardingDetails /></ProtectedRoute>} />
+              <Route path="/employer/onboarding/location" element={<ProtectedRoute allowedRoles={["employer"]}><EmployerOnboardingLocation /></ProtectedRoute>} />
+              <Route path="/employer/onboarding/manager" element={<ProtectedRoute allowedRoles={["employer"]}><EmployerOnboardingManager /></ProtectedRoute>} />
+              <Route path="/employer/onboarding/legal" element={<ProtectedRoute allowedRoles={["employer"]}><EmployerOnboardingLegal /></ProtectedRoute>} />
               <Route path="/employer/onboarding/verify" element={<ProtectedRoute allowedRoles={["employer"]}><EmployerOnboardingVerify /></ProtectedRoute>} />
               <Route path="/employer/onboarding/team" element={<ProtectedRoute allowedRoles={["employer"]}><EmployerOnboardingTeam /></ProtectedRoute>} />
               <Route path="/employer/onboarding/done" element={<ProtectedRoute allowedRoles={["employer"]}><EmployerOnboardingDone /></ProtectedRoute>} />
+              {/* Legacy route redirect */}
+              <Route path="/employer/onboarding/details" element={<ProtectedRoute allowedRoles={["employer"]}><EmployerOnboardingLocation /></ProtectedRoute>} />
               <Route path="/about" element={<About />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />

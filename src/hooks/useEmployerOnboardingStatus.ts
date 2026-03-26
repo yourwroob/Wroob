@@ -45,7 +45,7 @@ export function useEmployerOnboardingStatus() {
       .from("employer_profiles")
       .update({
         onboarding_status: "completed",
-        onboarding_step: 3,
+        onboarding_step: 6,
         onboarding_completed_at: new Date().toISOString(),
       } as any)
       .eq("user_id", user.id);

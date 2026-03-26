@@ -1,0 +1,22 @@
+
+ALTER TABLE public.employer_profiles
+  ADD COLUMN IF NOT EXISTS company_description text,
+  ADD COLUMN IF NOT EXISTS year_established integer,
+  ADD COLUMN IF NOT EXISTS head_office_address text,
+  ADD COLUMN IF NOT EXISTS city text,
+  ADD COLUMN IF NOT EXISTS state text,
+  ADD COLUMN IF NOT EXISTS pincode text,
+  ADD COLUMN IF NOT EXISTS hr_contact_name text,
+  ADD COLUMN IF NOT EXISTS hr_designation text,
+  ADD COLUMN IF NOT EXISTS hr_email text,
+  ADD COLUMN IF NOT EXISTS hr_phone text,
+  ADD COLUMN IF NOT EXISTS manager_contact_name text,
+  ADD COLUMN IF NOT EXISTS manager_designation text,
+  ADD COLUMN IF NOT EXISTS manager_email text,
+  ADD COLUMN IF NOT EXISTS manager_phone text,
+  ADD COLUMN IF NOT EXISTS gst_number text,
+  ADD COLUMN IF NOT EXISTS gstin text,
+  ADD COLUMN IF NOT EXISTS pan_number text,
+  ADD COLUMN IF NOT EXISTS cin text,
+  ADD COLUMN IF NOT EXISTS linkedin_profile text,
+  ADD COLUMN IF NOT EXISTS is_verified boolean DEFAULT false;

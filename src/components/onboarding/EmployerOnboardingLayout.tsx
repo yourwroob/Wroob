@@ -3,13 +3,16 @@ import { cn } from "@/lib/utils";
 import wroobeLogo from "@/assets/wroob-logo.png";
 
 const STEPS = [
-  { key: "account", label: "Set up your account" },
+  { key: "company", label: "Company info" },
+  { key: "location", label: "Location & contacts" },
+  { key: "legal", label: "Legal & verification" },
+  { key: "verify", label: "Email verification" },
   { key: "team", label: "Invite your team" },
-  { key: "recruit", label: "Start recruiting" },
+  { key: "done", label: "Start recruiting" },
 ];
 
 interface EmployerOnboardingLayoutProps {
-  currentStep: number; // 1 = account (company+details+verify), 2 = team, 3 = recruit/done
+  currentStep: number; // 1-7 maps to steps above
   children: React.ReactNode;
 }
 
@@ -22,7 +25,7 @@ const EmployerOnboardingLayout = ({ currentStep, children }: EmployerOnboardingL
           <img src={wroobeLogo} alt="Wroob" className="h-14 brightness-0 invert" />
         </Link>
 
-        <nav className="space-y-6">
+        <nav className="space-y-5">
           {STEPS.map((step, i) => {
             const stepNum = i + 1;
             const isActive = stepNum === currentStep;
@@ -32,7 +35,7 @@ const EmployerOnboardingLayout = ({ currentStep, children }: EmployerOnboardingL
               <div key={step.key} className="flex items-center gap-3">
                 <div
                   className={cn(
-                    "h-5 w-5 rounded-full border-2 flex items-center justify-center transition-all",
+                    "h-5 w-5 rounded-full border-2 flex items-center justify-center transition-all shrink-0",
                     isActive && "border-primary bg-primary",
                     isCompleted && "border-primary bg-primary",
                     !isActive && !isCompleted && "border-muted-foreground/50"
@@ -65,12 +68,12 @@ const EmployerOnboardingLayout = ({ currentStep, children }: EmployerOnboardingL
         <Link to="/">
           <img src={wroobeLogo} alt="Wroob" className="h-11 brightness-0 invert" />
         </Link>
-        <div className="ml-auto flex gap-2">
+        <div className="ml-auto flex gap-1.5">
           {STEPS.map((step, i) => (
             <div
               key={step.key}
               className={cn(
-                "h-2 w-8 rounded-full",
+                "h-2 w-5 rounded-full",
                 i + 1 <= currentStep ? "bg-primary" : "bg-muted-foreground/30"
               )}
             />

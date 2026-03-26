@@ -61,7 +61,7 @@ const EmployerOnboardingVerify = () => {
         verified_domain: emailDomain,
         verification_method: "email_match",
         verified_at: new Date().toISOString(),
-        onboarding_step: 4,
+        onboarding_step: 6,
       } as any)
       .eq("user_id", user.id);
 
@@ -71,20 +71,20 @@ const EmployerOnboardingVerify = () => {
     } else {
       setVerified(true);
       toast({ title: "Email verified!" });
-      await updateStep(4);
+      await updateStep(5);
       navigate("/employer/onboarding/team");
     }
   };
 
   const handleContinue = async () => {
     if (verified) {
-      await updateStep(4);
+      await updateStep(5);
       navigate("/employer/onboarding/team");
     }
   };
 
   return (
-    <EmployerOnboardingLayout currentStep={1}>
+    <EmployerOnboardingLayout currentStep={4}>
       <h1 className="font-display text-3xl font-bold sm:text-4xl">
         Next, let's verify you work at {company.name || "your company"}
       </h1>
@@ -126,7 +126,7 @@ const EmployerOnboardingVerify = () => {
       <div className="mt-16 flex gap-4">
         <Button
           variant="outline"
-          onClick={() => navigate("/employer/onboarding/details")}
+          onClick={() => navigate("/employer/onboarding/legal")}
           className="h-12 px-8 rounded-lg"
         >
           Back

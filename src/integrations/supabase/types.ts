@@ -144,18 +144,37 @@ export type Database = {
       }
       employer_profiles: {
         Row: {
+          cin: string | null
+          city: string | null
+          company_description: string | null
           company_domain: string | null
           company_name: string | null
           company_size: string | null
           created_at: string
           funding_stage: string | null
+          gst_number: string | null
+          gstin: string | null
+          head_office_address: string | null
           hiring_roles: string[] | null
+          hr_contact_name: string | null
+          hr_designation: string | null
+          hr_email: string | null
+          hr_phone: string | null
           id: string
           industry: string | null
+          is_verified: boolean | null
+          linkedin_profile: string | null
           logo_url: string | null
+          manager_contact_name: string | null
+          manager_designation: string | null
+          manager_email: string | null
+          manager_phone: string | null
           onboarding_completed_at: string | null
           onboarding_status: string
           onboarding_step: number
+          pan_number: string | null
+          pincode: string | null
+          state: string | null
           updated_at: string
           user_id: string
           verification_method: string | null
@@ -163,20 +182,40 @@ export type Database = {
           verified_domain: string | null
           website: string | null
           work_email_verified: boolean | null
+          year_established: number | null
         }
         Insert: {
+          cin?: string | null
+          city?: string | null
+          company_description?: string | null
           company_domain?: string | null
           company_name?: string | null
           company_size?: string | null
           created_at?: string
           funding_stage?: string | null
+          gst_number?: string | null
+          gstin?: string | null
+          head_office_address?: string | null
           hiring_roles?: string[] | null
+          hr_contact_name?: string | null
+          hr_designation?: string | null
+          hr_email?: string | null
+          hr_phone?: string | null
           id?: string
           industry?: string | null
+          is_verified?: boolean | null
+          linkedin_profile?: string | null
           logo_url?: string | null
+          manager_contact_name?: string | null
+          manager_designation?: string | null
+          manager_email?: string | null
+          manager_phone?: string | null
           onboarding_completed_at?: string | null
           onboarding_status?: string
           onboarding_step?: number
+          pan_number?: string | null
+          pincode?: string | null
+          state?: string | null
           updated_at?: string
           user_id: string
           verification_method?: string | null
@@ -184,20 +223,40 @@ export type Database = {
           verified_domain?: string | null
           website?: string | null
           work_email_verified?: boolean | null
+          year_established?: number | null
         }
         Update: {
+          cin?: string | null
+          city?: string | null
+          company_description?: string | null
           company_domain?: string | null
           company_name?: string | null
           company_size?: string | null
           created_at?: string
           funding_stage?: string | null
+          gst_number?: string | null
+          gstin?: string | null
+          head_office_address?: string | null
           hiring_roles?: string[] | null
+          hr_contact_name?: string | null
+          hr_designation?: string | null
+          hr_email?: string | null
+          hr_phone?: string | null
           id?: string
           industry?: string | null
+          is_verified?: boolean | null
+          linkedin_profile?: string | null
           logo_url?: string | null
+          manager_contact_name?: string | null
+          manager_designation?: string | null
+          manager_email?: string | null
+          manager_phone?: string | null
           onboarding_completed_at?: string | null
           onboarding_status?: string
           onboarding_step?: number
+          pan_number?: string | null
+          pincode?: string | null
+          state?: string | null
           updated_at?: string
           user_id?: string
           verification_method?: string | null
@@ -205,6 +264,7 @@ export type Database = {
           verified_domain?: string | null
           website?: string | null
           work_email_verified?: boolean | null
+          year_established?: number | null
         }
         Relationships: []
       }
