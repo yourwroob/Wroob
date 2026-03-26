@@ -7,6 +7,19 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+const securityHeaders = {
+  "X-Frame-Options": "DENY",
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+};
+
+const responseHeaders = {
+  ...corsHeaders,
+  ...securityHeaders,
+  "Content-Type": "application/json",
+};
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -19,7 +32,7 @@ Deno.serve(async (req) => {
     if (!expectedToken || !seedToken || seedToken !== expectedToken) {
       return new Response(
         JSON.stringify({ error: "Unauthorized" }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        { status: 401, headers: { ...responseHeaders } }
       );
     }
 
@@ -77,12 +90,12 @@ Deno.serve(async (req) => {
 
     return new Response(
       JSON.stringify({ success: true, message: "Admin account ready", email, password }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      { headers: { ...responseHeaders } }
     );
   } catch (error: any) {
     return new Response(
       JSON.stringify({ error: error.message }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      { status: 500, headers: { ...responseHeaders } }
     );
   }
 });

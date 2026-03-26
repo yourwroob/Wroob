@@ -42,6 +42,19 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+const securityHeaders = {
+  "X-Frame-Options": "DENY",
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+};
+
+const responseHeaders = {
+  ...corsHeaders,
+  ...securityHeaders,
+  "Content-Type": "application/json",
+};
+
 function haversineDistance(
   lat1: number, lon1: number,
   lat2: number, lon2: number
@@ -79,7 +92,7 @@ Deno.serve(async (req) => {
   if (!user) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...responseHeaders },
     });
   }
 
@@ -88,7 +101,7 @@ Deno.serve(async (req) => {
   if (!rateLimitResult.allowed) {
     return new Response(
       JSON.stringify({ error: "Rate limit exceeded", retryAfter: 3600 }),
-      { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      { status: 429, headers: { ...responseHeaders } }
     );
   }
 
@@ -106,7 +119,7 @@ Deno.serve(async (req) => {
         if (!status_id || !message || message.length > 500) {
           return new Response(
             JSON.stringify({ error: "Invalid reply. Max 500 chars." }),
-            { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            { status: 400, headers: { ...responseHeaders } }
           );
         }
 
@@ -118,7 +131,7 @@ Deno.serve(async (req) => {
 
         if (error) throw error;
         return new Response(JSON.stringify(data), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          headers: { ...responseHeaders },
         });
       }
 
@@ -127,7 +140,7 @@ Deno.serve(async (req) => {
       if (!content || content.length > 200 || latitude == null || longitude == null) {
         return new Response(
           JSON.stringify({ error: "Content required (max 200 chars) with location." }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          { status: 400, headers: { ...responseHeaders } }
         );
       }
 
@@ -144,7 +157,7 @@ Deno.serve(async (req) => {
 
       if (error) throw error;
       return new Response(JSON.stringify(data), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...responseHeaders },
       });
     }
 
@@ -155,7 +168,7 @@ Deno.serve(async (req) => {
         if (!statusId) {
           return new Response(JSON.stringify({ error: "status_id required" }), {
             status: 400,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            headers: { ...responseHeaders },
           });
         }
 
@@ -185,7 +198,7 @@ Deno.serve(async (req) => {
         }));
 
         return new Response(JSON.stringify(enriched), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          headers: { ...responseHeaders },
         });
       }
 
@@ -197,7 +210,7 @@ Deno.serve(async (req) => {
       if (!lat && !lng) {
         return new Response(
           JSON.stringify({ error: "Location required (latitude, longitude params)" }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          { status: 400, headers: { ...responseHeaders } }
         );
       }
 
@@ -249,7 +262,7 @@ Deno.serve(async (req) => {
       }));
 
       return new Response(JSON.stringify(enriched), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...responseHeaders },
       });
     }
 
@@ -259,7 +272,7 @@ Deno.serve(async (req) => {
       if (!statusId) {
         return new Response(JSON.stringify({ error: "id required" }), {
           status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          headers: { ...responseHeaders },
         });
       }
 
@@ -271,18 +284,18 @@ Deno.serve(async (req) => {
 
       if (error) throw error;
       return new Response(JSON.stringify({ success: true }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...responseHeaders },
       });
     }
 
     return new Response(JSON.stringify({ error: "Method not allowed" }), {
       status: 405,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...responseHeaders },
     });
   } catch (err: any) {
     return new Response(JSON.stringify({ error: err.message }), {
       status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...responseHeaders },
     });
   }
 });

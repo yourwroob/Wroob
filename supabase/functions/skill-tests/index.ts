@@ -43,6 +43,19 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+const securityHeaders = {
+  "X-Frame-Options": "DENY",
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+};
+
+const responseHeaders = {
+  ...corsHeaders,
+  ...securityHeaders,
+  "Content-Type": "application/json",
+};
+
 // Simple skill test questions
 const SKILL_TESTS: Record<string, { questions: { q: string; options: string[]; answer: number }[] }> = {
   JavaScript: {
@@ -91,7 +104,7 @@ serve(async (req) => {
     if (!authHeader) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...responseHeaders },
       });
     }
 
@@ -106,7 +119,7 @@ serve(async (req) => {
     if (authError || !user) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...responseHeaders },
       });
     }
 
@@ -116,7 +129,7 @@ serve(async (req) => {
     if (!rateLimitResult.allowed) {
       return new Response(
         JSON.stringify({ error: "Rate limit exceeded", retryAfter: 3600 }),
-        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        { status: 429, headers: { ...responseHeaders } }
       );
     }
 
@@ -144,7 +157,7 @@ serve(async (req) => {
       }));
 
       return new Response(JSON.stringify({ tests }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...responseHeaders },
       });
     }
 
@@ -155,7 +168,7 @@ serve(async (req) => {
       if (!test) {
         return new Response(JSON.stringify({ error: "Test not found" }), {
           status: 404,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          headers: { ...responseHeaders },
         });
       }
 
@@ -171,7 +184,7 @@ serve(async (req) => {
       if (existing?.passed) {
         return new Response(JSON.stringify({ error: "You already passed this test" }), {
           status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          headers: { ...responseHeaders },
         });
       }
 
@@ -182,7 +195,7 @@ serve(async (req) => {
       }));
 
       return new Response(JSON.stringify({ skill_name, questions }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...responseHeaders },
       });
     }
 
@@ -193,14 +206,14 @@ serve(async (req) => {
       if (!test) {
         return new Response(JSON.stringify({ error: "Test not found" }), {
           status: 404,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          headers: { ...responseHeaders },
         });
       }
 
       if (!answers || answers.length !== test.questions.length) {
         return new Response(JSON.stringify({ error: "Must answer all questions" }), {
           status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          headers: { ...responseHeaders },
         });
       }
 
@@ -225,7 +238,7 @@ serve(async (req) => {
       if (existing?.passed) {
         return new Response(JSON.stringify({ error: "Already passed" }), {
           status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          headers: { ...responseHeaders },
         });
       }
 
@@ -241,19 +254,19 @@ serve(async (req) => {
       await serviceClient.rpc("update_student_reputation", { _student_id: user.id });
 
       return new Response(JSON.stringify({ score, passed, correct, total: test.questions.length }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...responseHeaders },
       });
     }
 
     return new Response(JSON.stringify({ error: "Unknown action" }), {
       status: 400,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...responseHeaders },
     });
   } catch (err) {
     console.error("Skill test error:", err);
     return new Response(JSON.stringify({ error: err instanceof Error ? err.message : "Internal error" }), {
       status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...responseHeaders },
     });
   }
 });

@@ -42,6 +42,19 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+const securityHeaders = {
+  "X-Frame-Options": "DENY",
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+};
+
+const responseHeaders = {
+  ...corsHeaders,
+  ...securityHeaders,
+  "Content-Type": "application/json",
+};
+
 // Simple geohash encoder (precision 5 ≈ ~5km cells)
 function encodeGeohash(lat: number, lng: number, precision = 5): string {
   const BASE32 = "0123456789bcdefghjkmnpqrstuvwxyz";
@@ -88,7 +101,7 @@ Deno.serve(async (req) => {
     if (!authHeader?.startsWith("Bearer ")) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...responseHeaders },
       });
     }
 
@@ -103,7 +116,7 @@ Deno.serve(async (req) => {
     if (claimsError || !claimsData?.claims) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...responseHeaders },
       });
     }
 
@@ -120,7 +133,7 @@ Deno.serve(async (req) => {
     if (!rateLimitResult.allowed) {
       return new Response(
         JSON.stringify({ error: "Rate limit exceeded", retryAfter: 3600 }),
-        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        { status: 429, headers: { ...responseHeaders } }
       );
     }
 
@@ -128,7 +141,7 @@ Deno.serve(async (req) => {
     if (lat == null || lng == null) {
       return new Response(JSON.stringify({ error: "Missing lat, lng" }), {
         status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...responseHeaders },
       });
     }
 
@@ -192,12 +205,12 @@ Deno.serve(async (req) => {
 
     return new Response(
       JSON.stringify({ success: true, group_id: matchedGroupId, geohash }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      { headers: { ...responseHeaders } }
     );
   } catch (err) {
     return new Response(JSON.stringify({ error: (err as Error).message }), {
       status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...responseHeaders },
     });
   }
 });

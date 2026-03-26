@@ -43,6 +43,19 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+const securityHeaders = {
+  "X-Frame-Options": "DENY",
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+};
+
+const responseHeaders = {
+  ...corsHeaders,
+  ...securityHeaders,
+  "Content-Type": "application/json",
+};
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -51,7 +64,7 @@ serve(async (req) => {
     if (!authHeader) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...responseHeaders },
       });
     }
 
@@ -67,7 +80,7 @@ serve(async (req) => {
     if (authError || !user) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...responseHeaders },
       });
     }
 
@@ -78,7 +91,7 @@ serve(async (req) => {
     if (!rateLimitResult.allowed) {
       return new Response(
         JSON.stringify({ error: "Rate limit exceeded", retryAfter: 3600 }),
-        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        { status: 429, headers: { ...responseHeaders } }
       );
     }
 
@@ -96,7 +109,7 @@ serve(async (req) => {
         if (!student_id || !internship_id || !rating || rating < 1 || rating > 5) {
           return new Response(JSON.stringify({ error: "Invalid feedback data. Rating must be 1-5." }), {
             status: 400,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            headers: { ...responseHeaders },
           });
         }
 
@@ -110,7 +123,7 @@ serve(async (req) => {
         if (!internship || internship.employer_id !== user.id) {
           return new Response(JSON.stringify({ error: "Not authorized to give feedback for this internship" }), {
             status: 403,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            headers: { ...responseHeaders },
           });
         }
 
@@ -126,7 +139,7 @@ serve(async (req) => {
         if (!application) {
           return new Response(JSON.stringify({ error: "Can only give feedback for accepted interns" }), {
             status: 400,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            headers: { ...responseHeaders },
           });
         }
 
@@ -144,7 +157,7 @@ serve(async (req) => {
         if (insertError) {
           return new Response(JSON.stringify({ error: insertError.message }), {
             status: 500,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            headers: { ...responseHeaders },
           });
         }
 
@@ -152,7 +165,7 @@ serve(async (req) => {
         await serviceClient.rpc("update_student_reputation", { _student_id: student_id });
 
         return new Response(JSON.stringify({ success: true }), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          headers: { ...responseHeaders },
         });
       }
 
@@ -167,13 +180,13 @@ serve(async (req) => {
           .single();
 
         return new Response(JSON.stringify(sp), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          headers: { ...responseHeaders },
         });
       }
 
       return new Response(JSON.stringify({ error: "Unknown action" }), {
         status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...responseHeaders },
       });
     }
 
@@ -190,7 +203,7 @@ serve(async (req) => {
       if (error || !sp) {
         return new Response(JSON.stringify({ error: "Student not found" }), {
           status: 404,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          headers: { ...responseHeaders },
         });
       }
 
@@ -206,19 +219,19 @@ serve(async (req) => {
           profile_score: Number(sp.profile_strength_score),
         },
       }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...responseHeaders },
       });
     }
 
     return new Response(JSON.stringify({ error: "Method not allowed" }), {
       status: 405,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...responseHeaders },
     });
   } catch (err) {
     console.error("Reputation error:", err);
     return new Response(JSON.stringify({ error: err instanceof Error ? err.message : "Internal error" }), {
       status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...responseHeaders },
     });
   }
 });
