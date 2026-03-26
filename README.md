@@ -1,73 +1,110 @@
-# Welcome to your Lovable project
+# Wroob 🚀
+### *Where students get their first real shot — and companies find talent worth betting on.*
 
-## Project info
+Wroob is an AI-native internship platform built for the next generation of professionals. We cut through the noise of generic job boards and replace the "spray-and-pray" application cycle with something smarter: **skills-based matching** that connects the right student with the right opportunity, every time.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+---
 
-## How can I edit this code?
+## What is Wroob?
 
-There are several ways of editing your application.
+Think of Wroob as the matchmaker between ambition and opportunity. Students build rich profiles — skills, coursework, culture fit — and our platform surfaces internships that actually make sense for them. Employers stop drowning in irrelevant applications and start seeing candidates who genuinely fit.
 
-**Use Lovable**
+It's not a job board. It's a **bright match engine**.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## ✨ Features
 
-**Use your preferred IDE**
+**For Students**
+- 🎯 Skills-based internship discovery with match scoring
+- 📋 One-click applications with cover letter + resume
+- 🧪 Skill tests to prove what you know (not just what you claim)
+- 🏕️ Campus community, groups, and peer discovery
+- 📬 Real-time notifications on every application update
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+**For Employers**
+- 📝 Post internships with required skills and smart candidate filtering
+- 📊 Applicant review dashboard with per-candidate match scores
+- 🏢 Company onboarding that builds trust with verified profiles
+- ✅ Shortlist, interview, accept — all in one place
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+**Platform-Wide**
+- 🔐 Role-based auth (Student / Employer / Admin)
+- 🛡️ Admin panel for moderation, analytics, and oversight
+- 🌙 Dark mode support
+- 📱 Fully responsive
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React + TypeScript + Vite |
+| Styling | Tailwind CSS + shadcn/ui |
+| Backend & Auth | Lovable Cloud (Supabase) |
+| Forms | React Hook Form + Zod |
+| Routing | React Router v6 |
+
+---
+
+## 🚀 Getting Started
+
+```bash
+# Clone the repo
 git clone <YOUR_GIT_URL>
+cd wroob
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Install dependencies
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Set up your environment
+cp .env.example .env
+# → Fill in your Lovable Cloud credentials
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Run it locally
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Open [http://localhost:5173](http://localhost:5173) and sign up as a Student or Employer to explore the full flow.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+---
 
-**Use GitHub Codespaces**
+## 🗂️ Project Structure
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```
+src/
+├── components/       # Reusable UI components
+│   ├── onboarding/   # Multi-step onboarding flows
+│   ├── internship/   # Internship forms & cards
+│   ├── reputation/   # Reputation score system
+│   └── admin/        # Admin dashboard components
+├── pages/            # Route-level page components
+└── App.tsx           # Root router & layout
+```
 
-## What technologies are used for this project?
+---
 
-This project is built with:
+## 🌱 Roadmap
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- [ ] AI-powered cover letter suggestions
+- [ ] Recruiter direct messaging
+- [ ] Resume parsing and auto-fill
+- [ ] Internship outcome tracking (did they get hired full-time?)
+- [ ] University partnerships & verified student IDs
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## 🤝 Contributing
 
-## Can I connect a custom domain to my Lovable project?
+We're early and moving fast. If you spot a bug, have a wild idea, or want to help build the future of early-career hiring — open an issue or shoot us a PR. All skill levels welcome.
 
-Yes, you can!
+---
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 📄 License
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+MIT — go build something great.
+
+---
+
+*Made with ☕ and the belief that your first internship shouldn't be the hardest thing you ever do.*
