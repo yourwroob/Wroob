@@ -89,10 +89,10 @@ const EmployerOnboardingManager = () => {
     <EmployerOnboardingLayout currentStep={3}>
       <h1 className="font-display text-3xl font-bold sm:text-4xl">Upper-Level Manager Contact</h1>
 
-      <div className="mt-4 flex items-start gap-3 rounded-lg border border-amber-500/30 bg-amber-500/5 p-4">
-        <ShieldAlert className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+      <div className="mt-4 flex items-start gap-3 rounded-lg border border-destructive/30 bg-destructive/5 p-4">
+        <ShieldAlert className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
         <div>
-          <p className="text-sm font-medium text-amber-700">🔒 Private Information</p>
+          <p className="text-sm font-medium text-destructive">🔒 Private Information</p>
           <p className="text-sm text-muted-foreground mt-1">
             This information is strictly confidential and will <strong>never</strong> be shown to students or any external users. Only platform admins can access these details for verification purposes.
           </p>
