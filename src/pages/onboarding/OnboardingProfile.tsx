@@ -136,6 +136,13 @@ const OnboardingProfile = () => {
     >
       <Card>
         <CardContent className="space-y-6 p-6 sm:p-8">
+          {/* Email (read-only) */}
+          <div className="space-y-2">
+            <Label className="font-semibold">Email</Label>
+            <Input value={user?.email || ""} disabled className="bg-muted cursor-not-allowed" />
+            <p className="text-xs text-muted-foreground">Email cannot be changed</p>
+          </div>
+
           {/* Location */}
           <div className="space-y-2">
             <Label className="font-semibold">
@@ -302,6 +309,27 @@ const OnboardingProfile = () => {
                 <Label htmlFor="not-employed" className="text-sm whitespace-nowrap">I'm not currently employed</Label>
               </div>
             </div>
+          </div>
+
+          {/* Phone Number */}
+          <div className="space-y-2">
+            <Label className="font-semibold">Phone Number</Label>
+            <div className="flex gap-2">
+              <div className="flex items-center justify-center rounded-md border border-input bg-muted px-3 text-sm font-medium text-muted-foreground">+91</div>
+              <Input
+                type="tel"
+                inputMode="numeric"
+                maxLength={10}
+                placeholder="Enter 10-digit phone number"
+                value={form.phone_number}
+                onChange={(e) => {
+                  const v = e.target.value.replace(/\D/g, "").slice(0, 10);
+                  setForm((f) => ({ ...f, phone_number: v }));
+                }}
+                className="flex-1 sm:w-72"
+              />
+            </div>
+            {errors.phone_number && <p className="text-sm text-destructive">{errors.phone_number}</p>}
           </div>
 
           {/* LinkedIn & Website */}
