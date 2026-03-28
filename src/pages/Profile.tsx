@@ -152,7 +152,10 @@ const Profile = () => {
                     userId={user.id}
                     currentUrl={profile.avatar_url || null}
                     fullName={profile.full_name}
-                    onUpload={(url) => setProfile((p) => ({ ...p, avatar_url: url }))}
+                    onUpload={(url) => {
+                      setProfile((p) => ({ ...p, avatar_url: url }));
+                      refreshAuthProfile();
+                    }}
                   />
                   <div className="space-y-2">
                     <div>
