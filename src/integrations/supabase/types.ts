@@ -900,6 +900,7 @@ export type Database = {
           onboarding_status: string
           onboarding_step: number
           phone_number: string | null
+          preferred_course: string | null
           profile_role: string | null
           resume_url: string | null
           skills: string[] | null
@@ -927,6 +928,7 @@ export type Database = {
           onboarding_status?: string
           onboarding_step?: number
           phone_number?: string | null
+          preferred_course?: string | null
           profile_role?: string | null
           resume_url?: string | null
           skills?: string[] | null
@@ -954,6 +956,7 @@ export type Database = {
           onboarding_status?: string
           onboarding_step?: number
           phone_number?: string | null
+          preferred_course?: string | null
           profile_role?: string | null
           resume_url?: string | null
           skills?: string[] | null

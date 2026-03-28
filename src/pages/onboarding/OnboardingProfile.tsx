@@ -42,6 +42,7 @@ const OnboardingProfile = () => {
     location: "",
     school_category: "",
     profile_role: "",
+    preferred_course: "",
     experience_years: "",
     is_student: true,
     current_job_title: "",
@@ -71,6 +72,7 @@ const OnboardingProfile = () => {
             location: d.location || "",
             school_category: derivedCategory,
             profile_role: savedRole,
+            preferred_course: d.preferred_course || "",
             experience_years: d.experience_years || "",
             is_student: d.is_student ?? true,
             current_job_title: d.current_job_title || "",
@@ -107,6 +109,7 @@ const OnboardingProfile = () => {
       .update({
         location: form.location,
         profile_role: form.profile_role,
+        preferred_course: form.preferred_course || null,
         experience_years: form.experience_years,
         is_student: form.is_student,
         current_job_title: form.current_job_title,
@@ -231,6 +234,19 @@ const OnboardingProfile = () => {
               className="sm:w-96"
             />
             {errors.profile_role && <p className="text-sm text-destructive">{errors.profile_role}</p>}
+          </div>
+
+          {/* Preferred Course / Program */}
+          <div className="space-y-2">
+            <Label className="font-semibold">Preferred Course / Program</Label>
+            <p className="text-xs text-muted-foreground">Choose the course you'd ideally like to pursue or are most interested in</p>
+            <CourseSearchSelect
+              schoolCategory={form.school_category}
+              value={form.preferred_course}
+              onValueChange={(v) => setForm((f) => ({ ...f, preferred_course: v }))}
+              disabled={!form.school_category}
+              className="sm:w-96"
+            />
           </div>
 
           {/* Experience in 3-month increments */}
