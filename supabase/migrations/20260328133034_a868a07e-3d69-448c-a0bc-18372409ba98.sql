@@ -1,0 +1,1 @@
+ALTER TABLE public.student_profiles ADD COLUMN phone_number text DEFAULT NULL;
