@@ -76,6 +76,10 @@ const Profile = () => {
 
   const handleSave = async () => {
     if (!user) return;
+    if (role === "student" && studentProfile.phone_number && studentProfile.phone_number.length !== 10) {
+      toast({ title: "Invalid phone number", description: "Phone number must be exactly 10 digits.", variant: "destructive" });
+      return;
+    }
     setLoading(true);
     await supabase.from("profiles").update({ full_name: profile.full_name, bio: profile.bio }).eq("user_id", user.id);
 
