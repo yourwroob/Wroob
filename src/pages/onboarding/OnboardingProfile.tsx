@@ -236,6 +236,19 @@ const OnboardingProfile = () => {
             {errors.profile_role && <p className="text-sm text-destructive">{errors.profile_role}</p>}
           </div>
 
+          {/* Preferred Course / Program */}
+          <div className="space-y-2">
+            <Label className="font-semibold">Preferred Course / Program</Label>
+            <p className="text-xs text-muted-foreground">Choose the course you'd ideally like to pursue or are most interested in</p>
+            <CourseSearchSelect
+              schoolCategory={form.school_category}
+              value={form.preferred_course}
+              onValueChange={(v) => setForm((f) => ({ ...f, preferred_course: v }))}
+              disabled={!form.school_category}
+              className="sm:w-96"
+            />
+          </div>
+
           {/* Experience in 3-month increments */}
           <div className="space-y-2">
             <Label className="font-semibold">
