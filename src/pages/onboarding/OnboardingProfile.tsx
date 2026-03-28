@@ -42,6 +42,7 @@ const OnboardingProfile = () => {
     location: "",
     school_category: "",
     profile_role: "",
+    preferred_course: "",
     experience_years: "",
     is_student: true,
     current_job_title: "",
@@ -71,6 +72,7 @@ const OnboardingProfile = () => {
             location: d.location || "",
             school_category: derivedCategory,
             profile_role: savedRole,
+            preferred_course: d.preferred_course || "",
             experience_years: d.experience_years || "",
             is_student: d.is_student ?? true,
             current_job_title: d.current_job_title || "",
@@ -107,6 +109,7 @@ const OnboardingProfile = () => {
       .update({
         location: form.location,
         profile_role: form.profile_role,
+        preferred_course: form.preferred_course || null,
         experience_years: form.experience_years,
         is_student: form.is_student,
         current_job_title: form.current_job_title,
