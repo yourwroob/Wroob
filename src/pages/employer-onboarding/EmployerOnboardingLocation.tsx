@@ -184,7 +184,6 @@ const EmployerOnboardingLocation = () => {
                 />
               </div>
             </div>
-            </div>
           </div>
         </div>
       </div>

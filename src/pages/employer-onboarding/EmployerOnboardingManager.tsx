@@ -130,7 +130,6 @@ const EmployerOnboardingManager = () => {
               />
             </div>
           </div>
-          </div>
         </div>
       </div>
 
