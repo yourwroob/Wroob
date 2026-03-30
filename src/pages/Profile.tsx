@@ -449,7 +449,7 @@ const Profile = () => {
                       ))}
                     </div>
                   </div>
-
+      }
 
                   {/* Skills */}
                   <div className="space-y-2">
