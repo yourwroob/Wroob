@@ -13,9 +13,25 @@ import { useToast } from "@/hooks/use-toast";
 
 
 const INDUSTRY_TYPES = [
-  "Manufacturing", "IT / Software", "Finance / Banking", "Healthcare",
-  "Education", "Retail", "Consulting", "Media / Entertainment",
-  "Real Estate", "Logistics / Supply Chain", "FMCG", "Legal", "Other",
+  "Manufacturing & Production",
+  "Technology & IT Services",
+  "BPO & Outsourcing",
+  "Infrastructure & Construction",
+  "Banking, Finance & Insurance",
+  "Retail & E-Commerce",
+  "Healthcare & Life Sciences",
+  "Education & Ed-Tech",
+  "Logistics & Supply Chain",
+  "Hospitality & Tourism",
+  "Media & Marketing",
+  "Energy & Environment",
+  "Agriculture & Allied",
+  "Startup & Venture",
+  "Government & PSU",
+  "Professional Services",
+  "Non-Profit & NGOs",
+  "Self Employed / Freelance",
+  "Other",
 ];
 
 const COMPANY_SIZES = [
