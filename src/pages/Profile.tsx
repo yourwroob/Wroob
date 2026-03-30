@@ -417,10 +417,41 @@ const Profile = () => {
                   </div>
 
                   {/* Resume */}
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <Label>Resume</Label>
-                    <Input type="file" accept=".pdf,.doc,.docx" onChange={handleResumeUpload} />
-                    {studentProfile.resume_url && <p className="text-sm text-muted-foreground">Resume uploaded ✓</p>}
+                    {studentProfile.resume_url ? (
+                      <div className="flex items-center gap-3 rounded-lg border border-border bg-muted/50 p-3">
+                        <FileText className="h-5 w-5 text-primary shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium truncate">{resumeFileName}</p>
+                          <p className="text-xs text-muted-foreground">Uploaded ✓</p>
+                        </div>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="ghost" size="icon" className="shrink-0 text-destructive hover:text-destructive hover:bg-destructive/10">
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Resume?</AlertDialogTitle>
+                              <AlertDialogDescription>This will permanently remove your uploaded resume. You can upload a new one afterwards.</AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction onClick={handleResumeDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">Delete</AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    ) : (
+                      <label className="flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border p-6 cursor-pointer hover:border-primary/50 hover:bg-muted/30 transition-colors">
+                        <Upload className="h-8 w-8 text-muted-foreground" />
+                        <span className="text-sm font-medium">Click to upload resume</span>
+                        <span className="text-xs text-muted-foreground">.pdf, .doc, .docx — Max 5 MB</span>
+                        <input type="file" accept=".pdf,.doc,.docx" onChange={handleResumeUpload} className="hidden" />
+                      </label>
+                    )}
                   </div>
                 </CardContent>
               </Card>
