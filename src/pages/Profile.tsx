@@ -72,6 +72,23 @@ const ShareProfileCard = ({ userId }: { userId?: string }) => {
   );
 };
 
+const DRAFT_KEY = "wroob_profile_draft";
+
+const saveDraft = (userId: string, data: Record<string, any>) => {
+  try { localStorage.setItem(`${DRAFT_KEY}_${userId}`, JSON.stringify(data)); } catch {}
+};
+
+const loadDraft = (userId: string): Record<string, any> | null => {
+  try {
+    const raw = localStorage.getItem(`${DRAFT_KEY}_${userId}`);
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+};
+
+const clearDraft = (userId: string) => {
+  try { localStorage.removeItem(`${DRAFT_KEY}_${userId}`); } catch {}
+};
+
 const Profile = () => {
   const { user, role, refreshProfile: refreshAuthProfile } = useAuth();
   const { toast } = useToast();
@@ -98,6 +115,13 @@ const Profile = () => {
   const [locationCaptured, setLocationCaptured] = useState(false);
   const initialFetchDone = useRef(false);
   const currentUserId = useRef<string | null>(null);
+  const dbFetchDone = useRef(false);
+
+  // Persist draft to localStorage on every form change
+  useEffect(() => {
+    if (!user || !dbFetchDone.current) return;
+    saveDraft(user.id, { profile, studentProfile, employerProfile });
+  }, [profile, studentProfile, employerProfile, user]);
 
   useEffect(() => {
     if (!user || !role) return;
@@ -106,8 +130,13 @@ const Profile = () => {
     initialFetchDone.current = true;
 
     const fetchData = async () => {
+      const draft = loadDraft(user.id);
+
       const { data: p } = await supabase.from("profiles").select("*").eq("user_id", user.id).maybeSingle();
-      if (p) setProfile({ full_name: p.full_name || "", bio: p.bio || "", avatar_url: p.avatar_url || "" });
+      if (p) {
+        const dbProfile = { full_name: p.full_name || "", bio: p.bio || "", avatar_url: p.avatar_url || "" };
+        setProfile(draft?.profile ? { ...dbProfile, ...draft.profile } : dbProfile);
+      }
 
       if (role === "student") {
         const { data: sp } = await supabase.from("student_profiles").select("*").eq("user_id", user.id).maybeSingle();
@@ -115,7 +144,7 @@ const Profile = () => {
           const d = sp as any;
           const savedRole = d.profile_role || "";
           const derivedCategory = savedRole ? SCHOOL_NAMES.find((s) => COURSE_CATEGORIES[s].includes(savedRole)) || "" : "";
-          setStudentProfile({
+          const dbStudent = {
             university: d.university || "", skills: d.skills || [], resume_url: d.resume_url || "",
             school_category: derivedCategory, profile_role: savedRole, phone_number: d.phone_number || "",
             location: d.location || "", experience_years: d.experience_years || "",
@@ -124,13 +153,14 @@ const Profile = () => {
             not_employed: d.not_employed ?? false,
             linkedin_url: d.linkedin_url || "", website_url: d.website_url || "",
             preferred_course: d.preferred_course || "",
-          });
+          };
+          setStudentProfile(draft?.studentProfile ? { ...dbStudent, ...draft.studentProfile } : dbStudent);
         }
       } else if (role === "employer") {
         const { data: ep } = await supabase.from("employer_profiles").select("*").eq("user_id", user.id).maybeSingle();
         if (ep) {
           const d = ep as any;
-          setEmployerProfile({
+          const dbEmployer = {
             company_name: d.company_name || "", industry: d.industry || "",
             company_size: d.company_size || "", website: d.website || "",
             company_description: d.company_description || "",
@@ -144,9 +174,12 @@ const Profile = () => {
             hr_email: d.hr_email || "", hr_phone: d.hr_phone || "",
             gstin: d.gstin || "", pan_number: d.pan_number || "",
             cin: d.cin || "", linkedin_profile: d.linkedin_profile || "",
-          });
+          };
+          setEmployerProfile(draft?.employerProfile ? { ...dbEmployer, ...draft.employerProfile } : dbEmployer);
         }
       }
+
+      dbFetchDone.current = true;
 
       const { data: skills } = await supabase.from("skills").select("name, category").order("category").order("name");
       if (skills) setAllSkills(skills);
@@ -197,6 +230,7 @@ const Profile = () => {
     }
 
     setLoading(false);
+    clearDraft(user.id);
     toast({ title: "Profile updated!" });
     if (role === "student") recalcReputation();
   };
