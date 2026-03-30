@@ -119,11 +119,11 @@ const EmployerOnboardingLegal = () => {
             <p className="text-xs text-muted-foreground">10-character format: XXXXX0000X</p>
           </div>
         </div>
-          <div className="space-y-2">
-            <Label>CIN (if registered)</Label>
-            <Input value={form.cin} onChange={(e) => update("cin", e.target.value)} placeholder="Company Identification Number" />
-            <p className="text-xs text-muted-foreground">Optional</p>
-          </div>
+
+        <div className="space-y-2">
+          <Label>CIN (if registered)</Label>
+          <Input value={form.cin} onChange={(e) => update("cin", e.target.value)} placeholder="Company Identification Number" />
+          <p className="text-xs text-muted-foreground">Optional</p>
         </div>
 
         <div className="space-y-2">
