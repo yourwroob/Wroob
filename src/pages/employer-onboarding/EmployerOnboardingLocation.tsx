@@ -159,6 +159,39 @@ const EmployerOnboardingLocation = () => {
               <Input value={form.pincode} onChange={(e) => update("pincode", e.target.value)} placeholder="e.g. 110001" maxLength={6} />
             </div>
           </div>
+
+          {/* Head Office Contact */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Landline Number</Label>
+              <Input
+                type="tel"
+                inputMode="numeric"
+                value={form.head_office_landline}
+                onChange={(e) => update("head_office_landline", e.target.value.replace(/\D/g, ""))}
+                placeholder="e.g. 01112345678"
+              />
+              <p className="text-xs text-muted-foreground">Optional</p>
+            </div>
+            <div className="space-y-2">
+              <Label>Mobile Number *</Label>
+              <div className="flex gap-2">
+                <div className="flex items-center justify-center rounded-md border border-input bg-muted px-3 text-sm font-medium text-muted-foreground">+91</div>
+                <Input
+                  type="tel"
+                  inputMode="numeric"
+                  maxLength={10}
+                  placeholder="Enter 10-digit mobile number"
+                  value={form.head_office_mobile}
+                  onChange={(e) => update("head_office_mobile", e.target.value.replace(/\D/g, "").slice(0, 10))}
+                  className="flex-1"
+                />
+              </div>
+              {form.head_office_mobile && form.head_office_mobile.length > 0 && form.head_office_mobile.length !== 10 && (
+                <p className="text-xs text-destructive">Must be exactly 10 digits</p>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* HR Contact section */}
