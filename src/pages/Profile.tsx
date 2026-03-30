@@ -84,7 +84,14 @@ const Profile = () => {
     current_job_title: "", current_company: "", not_employed: false,
     linkedin_url: "", website_url: "", preferred_course: "",
   });
-  const [employerProfile, setEmployerProfile] = useState({ company_name: "", industry: "", company_size: "", website: "" });
+  const [employerProfile, setEmployerProfile] = useState({
+    company_name: "", industry: "", company_size: "", website: "",
+    company_description: "", year_established: "", logo_url: "",
+    head_office_address: "", city: "", state: "", pincode: "",
+    head_office_landline: "", head_office_mobile: "",
+    hr_contact_name: "", hr_designation: "", hr_email: "", hr_phone: "",
+    gstin: "", pan_number: "", cin: "", linkedin_profile: "",
+  });
   const { data: reputation, recalculate: recalcReputation } = useReputation(role === "student" ? user?.id : undefined);
   const [allSkills, setAllSkills] = useState<{ name: string; category: string }[]>([]);
   const [skillSearch, setSkillSearch] = useState("");
@@ -121,7 +128,24 @@ const Profile = () => {
         }
       } else if (role === "employer") {
         const { data: ep } = await supabase.from("employer_profiles").select("*").eq("user_id", user.id).maybeSingle();
-        if (ep) setEmployerProfile({ company_name: ep.company_name || "", industry: ep.industry || "", company_size: ep.company_size || "", website: ep.website || "" });
+        if (ep) {
+          const d = ep as any;
+          setEmployerProfile({
+            company_name: d.company_name || "", industry: d.industry || "",
+            company_size: d.company_size || "", website: d.website || "",
+            company_description: d.company_description || "",
+            year_established: d.year_established ? String(d.year_established) : "",
+            logo_url: d.logo_url || "",
+            head_office_address: d.head_office_address || "",
+            city: d.city || "", state: d.state || "", pincode: d.pincode || "",
+            head_office_landline: d.head_office_landline || "",
+            head_office_mobile: d.head_office_mobile || "",
+            hr_contact_name: d.hr_contact_name || "", hr_designation: d.hr_designation || "",
+            hr_email: d.hr_email || "", hr_phone: d.hr_phone || "",
+            gstin: d.gstin || "", pan_number: d.pan_number || "",
+            cin: d.cin || "", linkedin_profile: d.linkedin_profile || "",
+          });
+        }
       }
 
       const { data: skills } = await supabase.from("skills").select("name, category").order("category").order("name");
@@ -166,7 +190,10 @@ const Profile = () => {
         preferred_course: studentProfile.preferred_course || null,
       } as any).eq("user_id", user.id);
     } else if (role === "employer") {
-      await supabase.from("employer_profiles").update(employerProfile).eq("user_id", user.id);
+      await supabase.from("employer_profiles").update({
+        ...employerProfile,
+        year_established: employerProfile.year_established ? parseInt(employerProfile.year_established) : null,
+      } as any).eq("user_id", user.id);
     }
 
     setLoading(false);
@@ -424,7 +451,6 @@ const Profile = () => {
                     </div>
                   </div>
 
-
                   {/* Skills */}
                   <div className="space-y-2">
                     <Label>What skills do you currently have?</Label>
@@ -566,29 +592,131 @@ const Profile = () => {
           )}
 
           {role === "employer" && (
-            <Card>
-              <CardHeader><CardTitle>Company Details</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Company Name</Label>
-                  <Input value={employerProfile.company_name} onChange={(e) => setEmployerProfile((p) => ({ ...p, company_name: e.target.value }))} />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
+            <>
+              <Card>
+                <CardHeader><CardTitle>Company Details</CardTitle></CardHeader>
+                <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label>Industry</Label>
-                    <Input value={employerProfile.industry} onChange={(e) => setEmployerProfile((p) => ({ ...p, industry: e.target.value }))} />
+                    <Label>Company Name</Label>
+                    <Input value={employerProfile.company_name} onChange={(e) => setEmployerProfile((p) => ({ ...p, company_name: e.target.value }))} />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Industry</Label>
+                      <Input value={employerProfile.industry} onChange={(e) => setEmployerProfile((p) => ({ ...p, industry: e.target.value }))} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Company Size</Label>
+                      <Input value={employerProfile.company_size} onChange={(e) => setEmployerProfile((p) => ({ ...p, company_size: e.target.value }))} placeholder="e.g. 50-100" />
+                    </div>
                   </div>
                   <div className="space-y-2">
-                    <Label>Company Size</Label>
-                    <Input value={employerProfile.company_size} onChange={(e) => setEmployerProfile((p) => ({ ...p, company_size: e.target.value }))} placeholder="e.g. 50-100" />
+                    <Label>Company Description</Label>
+                    <Textarea value={employerProfile.company_description} onChange={(e) => setEmployerProfile((p) => ({ ...p, company_description: e.target.value }))} placeholder="About your company..." rows={3} />
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <Label>Website</Label>
-                  <Input value={employerProfile.website} onChange={(e) => setEmployerProfile((p) => ({ ...p, website: e.target.value }))} placeholder="https://..." />
-                </div>
-              </CardContent>
-            </Card>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Website</Label>
+                      <Input value={employerProfile.website} onChange={(e) => setEmployerProfile((p) => ({ ...p, website: e.target.value }))} placeholder="https://..." />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Year of Establishment</Label>
+                      <Input type="number" value={employerProfile.year_established} onChange={(e) => setEmployerProfile((p) => ({ ...p, year_established: e.target.value }))} placeholder="e.g. 2015" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>LinkedIn Company Profile</Label>
+                    <Input value={employerProfile.linkedin_profile} onChange={(e) => setEmployerProfile((p) => ({ ...p, linkedin_profile: e.target.value }))} placeholder="https://www.linkedin.com/company/..." />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader><CardTitle>Head Office Address</CardTitle></CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Address</Label>
+                    <Textarea value={employerProfile.head_office_address} onChange={(e) => setEmployerProfile((p) => ({ ...p, head_office_address: e.target.value }))} placeholder="Full address" rows={2} />
+                  </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label>City</Label>
+                      <Input value={employerProfile.city} onChange={(e) => setEmployerProfile((p) => ({ ...p, city: e.target.value }))} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>State</Label>
+                      <Input value={employerProfile.state} onChange={(e) => setEmployerProfile((p) => ({ ...p, state: e.target.value }))} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Pincode</Label>
+                      <Input value={employerProfile.pincode} onChange={(e) => setEmployerProfile((p) => ({ ...p, pincode: e.target.value }))} />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Landline</Label>
+                      <Input value={employerProfile.head_office_landline} onChange={(e) => setEmployerProfile((p) => ({ ...p, head_office_landline: e.target.value.replace(/\D/g, "") }))} placeholder="e.g. 01112345678" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Mobile Number</Label>
+                      <div className="flex gap-2">
+                        <div className="flex items-center justify-center rounded-md border border-input bg-muted px-3 text-sm font-medium text-muted-foreground">+91</div>
+                        <Input type="tel" maxLength={10} value={employerProfile.head_office_mobile} onChange={(e) => setEmployerProfile((p) => ({ ...p, head_office_mobile: e.target.value.replace(/\D/g, "").slice(0, 10) }))} className="flex-1" />
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader><CardTitle>HR Contact</CardTitle></CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Contact Name</Label>
+                      <Input value={employerProfile.hr_contact_name} onChange={(e) => setEmployerProfile((p) => ({ ...p, hr_contact_name: e.target.value }))} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Designation</Label>
+                      <Input value={employerProfile.hr_designation} onChange={(e) => setEmployerProfile((p) => ({ ...p, hr_designation: e.target.value }))} />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Email</Label>
+                      <Input type="email" value={employerProfile.hr_email} onChange={(e) => setEmployerProfile((p) => ({ ...p, hr_email: e.target.value }))} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Phone</Label>
+                      <div className="flex gap-2">
+                        <div className="flex items-center justify-center rounded-md border border-input bg-muted px-3 text-sm font-medium text-muted-foreground">+91</div>
+                        <Input type="tel" maxLength={10} value={employerProfile.hr_phone} onChange={(e) => setEmployerProfile((p) => ({ ...p, hr_phone: e.target.value.replace(/\D/g, "").slice(0, 10) }))} className="flex-1" />
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader><CardTitle>Legal Information</CardTitle></CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>GSTIN</Label>
+                      <Input maxLength={15} value={employerProfile.gstin} onChange={(e) => setEmployerProfile((p) => ({ ...p, gstin: e.target.value.toUpperCase() }))} placeholder="15-character GSTIN" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>PAN</Label>
+                      <Input maxLength={10} value={employerProfile.pan_number} onChange={(e) => setEmployerProfile((p) => ({ ...p, pan_number: e.target.value.toUpperCase() }))} placeholder="10-character PAN" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>CIN (Company Identification Number)</Label>
+                    <Input value={employerProfile.cin} onChange={(e) => setEmployerProfile((p) => ({ ...p, cin: e.target.value.toUpperCase() }))} />
+                  </div>
+                </CardContent>
+              </Card>
+            </>
           )}
 
           <Button onClick={handleSave} disabled={loading} className="w-full">
