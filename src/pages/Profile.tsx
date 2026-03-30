@@ -137,6 +137,11 @@ const Profile = () => {
 
   const handleSave = async () => {
     if (!user) return;
+    const bioWordCount = profile.bio?.trim().split(/\s+/).filter(Boolean).length || 0;
+    if (bioWordCount > 100) {
+      toast({ title: "Bio too long", description: "Bio must be 100 words or fewer.", variant: "destructive" });
+      return;
+    }
     if (role === "student" && studentProfile.phone_number && studentProfile.phone_number.length !== 10) {
       toast({ title: "Invalid phone number", description: "Phone number must be exactly 10 digits.", variant: "destructive" });
       return;
@@ -291,7 +296,33 @@ const Profile = () => {
               )}
               <div className="space-y-2">
                 <Label>Bio</Label>
-                <Textarea value={profile.bio} onChange={(e) => setProfile((p) => ({ ...p, bio: e.target.value }))} placeholder="Tell us about yourself..." />
+                <Textarea
+                  value={profile.bio}
+                  onChange={(e) => {
+                    const words = e.target.value.trim().split(/\s+/).filter(Boolean);
+                    if (words.length <= 100 || e.target.value.length < (profile.bio?.length || 0)) {
+                      setProfile((p) => ({ ...p, bio: e.target.value }));
+                    }
+                  }}
+                  onPaste={(e) => {
+                    e.preventDefault();
+                    const pasted = e.clipboardData.getData("text");
+                    const current = profile.bio || "";
+                    const combined = current + pasted;
+                    const words = combined.trim().split(/\s+/).filter(Boolean);
+                    const trimmed = words.slice(0, 100).join(" ");
+                    setProfile((p) => ({ ...p, bio: trimmed }));
+                  }}
+                  placeholder="Tell us about yourself..."
+                />
+                {(() => {
+                  const count = profile.bio?.trim().split(/\s+/).filter(Boolean).length || 0;
+                  return (
+                    <p className={`text-xs ${count >= 100 ? "text-destructive" : "text-muted-foreground"}`}>
+                      {count} / 100 words
+                    </p>
+                  );
+                })()}
               </div>
             </CardContent>
           </Card>
