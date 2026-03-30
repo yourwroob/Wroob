@@ -76,6 +76,10 @@ const EmployerOnboardingLocation = () => {
       toast({ title: "City is required", variant: "destructive" });
       return;
     }
+    if (!form.head_office_mobile.trim() || form.head_office_mobile.length !== 10) {
+      toast({ title: "Head office mobile number is required (10 digits)", variant: "destructive" });
+      return;
+    }
     if (!form.hr_contact_name.trim()) {
       toast({ title: "HR contact name is required", variant: "destructive" });
       return;
