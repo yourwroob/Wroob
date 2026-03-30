@@ -84,7 +84,14 @@ const Profile = () => {
     current_job_title: "", current_company: "", not_employed: false,
     linkedin_url: "", website_url: "", preferred_course: "",
   });
-  const [employerProfile, setEmployerProfile] = useState({ company_name: "", industry: "", company_size: "", website: "" });
+  const [employerProfile, setEmployerProfile] = useState({
+    company_name: "", industry: "", company_size: "", website: "",
+    company_description: "", year_established: "", logo_url: "",
+    head_office_address: "", city: "", state: "", pincode: "",
+    head_office_landline: "", head_office_mobile: "",
+    hr_contact_name: "", hr_designation: "", hr_email: "", hr_phone: "",
+    gstin: "", pan_number: "", cin: "", linkedin_profile: "",
+  });
   const { data: reputation, recalculate: recalcReputation } = useReputation(role === "student" ? user?.id : undefined);
   const [allSkills, setAllSkills] = useState<{ name: string; category: string }[]>([]);
   const [skillSearch, setSkillSearch] = useState("");
