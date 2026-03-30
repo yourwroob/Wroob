@@ -198,7 +198,13 @@ const Navbar = () => {
         <div className="border-t bg-background p-4 md:hidden animate-fade-in">
           <nav className="flex flex-col gap-3">
             {centerLinks()}
-            {!user && (
+            {user ? (
+              <div className="pt-3 border-t">
+                <Button variant="outline" size="sm" className="w-full gap-1.5" onClick={() => { handleSignOut(); setMobileOpen(false); }}>
+                  <LogOut className="h-3.5 w-3.5" /> Logout
+                </Button>
+              </div>
+            ) : (
               <div className="flex flex-col gap-2 pt-3 border-t">
                 <Button variant="ghost" size="sm" onClick={() => { navigate("/login"); setMobileOpen(false); }}>Log In</Button>
                 <Button size="sm" className="brand-gradient border-0 text-white" onClick={() => { navigate("/signup"); setMobileOpen(false); }}>Sign Up</Button>
