@@ -19,7 +19,6 @@ const EmployerOnboardingLegal = () => {
 
   const [form, setForm] = useState({
     gstin: "",
-    gst_number: "",
     pan_number: "",
     cin: "",
     linkedin_profile: "",
