@@ -402,6 +402,9 @@ const Profile = () => {
                 </CardContent>
               </Card>
 
+              {/* Share Profile Link */}
+              <ShareProfileCard userId={user?.id} />
+
               {/* Links & Community */}
               <Card>
                 <CardHeader><CardTitle>Links & Community</CardTitle></CardHeader>
