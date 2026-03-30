@@ -230,6 +230,7 @@ const Profile = () => {
     }
 
     setLoading(false);
+    clearDraft(user.id);
     toast({ title: "Profile updated!" });
     if (role === "student") recalcReputation();
   };
