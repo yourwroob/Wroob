@@ -7,9 +7,21 @@ import EmployerOnboardingLayout from "@/components/onboarding/EmployerOnboarding
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import LocationAutocomplete from "@/components/LocationAutocomplete";
 import { useToast } from "@/hooks/use-toast";
 import { Shield } from "lucide-react";
+
+const INDIAN_STATES_UTS = [
+  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+  "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand",
+  "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
+  "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
+  "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
+  "Uttar Pradesh", "Uttarakhand", "West Bengal",
+  "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu",
+  "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry",
+].sort();
 
 const EmployerOnboardingLocation = () => {
   const { user } = useAuth();
@@ -119,10 +131,19 @@ const EmployerOnboardingLocation = () => {
               <Label>City *</Label>
               <LocationAutocomplete value={form.city} onChange={(v) => update("city", v)} placeholder="City" />
             </div>
-            <div className="space-y-2">
-              <Label>State</Label>
-              <Input value={form.state} onChange={(e) => update("state", e.target.value)} placeholder="State" />
-            </div>
+             <div className="space-y-2">
+               <Label>State</Label>
+               <Select value={form.state} onValueChange={(v) => update("state", v)}>
+                 <SelectTrigger className="w-full">
+                   <SelectValue placeholder="Select State" />
+                 </SelectTrigger>
+                 <SelectContent>
+                   {INDIAN_STATES_UTS.map((s) => (
+                     <SelectItem key={s} value={s}>{s}</SelectItem>
+                   ))}
+                 </SelectContent>
+               </Select>
+             </div>
             <div className="space-y-2">
               <Label>Pincode</Label>
               <Input value={form.pincode} onChange={(e) => update("pincode", e.target.value)} placeholder="e.g. 110001" maxLength={6} />
