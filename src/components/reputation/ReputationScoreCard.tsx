@@ -16,38 +16,34 @@ interface ReputationScoreCardProps {
   compact?: boolean;
 }
 
-function getScoreColor(score: number) {
-  if (score >= 80) return "text-emerald-500";
-  if (score >= 60) return "text-amber-500";
-  if (score >= 40) return "text-orange-500";
-  return "text-red-500";
-}
-
-function getScoreLabel(score: number) {
-  if (score >= 90) return "Outstanding";
-  if (score >= 80) return "Excellent";
-  if (score >= 70) return "Very Good";
-  if (score >= 60) return "Good";
-  if (score >= 40) return "Average";
-  return "Building";
+function getBadgeTier(score: number): { bg: string; text: string; border: string; label: string } {
+  if (score >= 71) return { bg: "bg-emerald-500/15", text: "text-emerald-600", border: "border-emerald-500/30", label: "Excellent" };
+  if (score >= 41) return { bg: "bg-amber-500/15", text: "text-amber-600", border: "border-amber-500/30", label: "Good" };
+  return { bg: "bg-red-500/15", text: "text-red-600", border: "border-red-500/30", label: "Building" };
 }
 
 function getProgressColor(score: number) {
-  if (score >= 80) return "[&>div]:bg-emerald-500";
-  if (score >= 60) return "[&>div]:bg-amber-500";
-  if (score >= 40) return "[&>div]:bg-orange-500";
+  if (score >= 71) return "[&>div]:bg-emerald-500";
+  if (score >= 41) return "[&>div]:bg-amber-500";
   return "[&>div]:bg-red-500";
 }
 
+export const WroobScoreBadge = ({ score, className }: { score: number; className?: string }) => {
+  const tier = getBadgeTier(score);
+  return (
+    <div className={cn("inline-flex items-center gap-2 rounded-full border px-3 py-1.5", tier.bg, tier.border, className)}>
+      <Trophy className={cn("h-4 w-4", tier.text)} />
+      <span className={cn("text-sm font-bold", tier.text)}>{Math.round(score)}</span>
+      <span className="text-[10px] font-medium text-muted-foreground">/ 100</span>
+    </div>
+  );
+};
+
 export const ReputationScoreCard = ({ score, breakdown, compact = false }: ReputationScoreCardProps) => {
+  const tier = getBadgeTier(score);
+
   if (compact) {
-    return (
-      <div className="flex items-center gap-2">
-        <Trophy className={cn("h-4 w-4", getScoreColor(score))} />
-        <span className={cn("text-sm font-bold", getScoreColor(score))}>{Math.round(score)}</span>
-        <span className="text-xs text-muted-foreground">/ 100</span>
-      </div>
-    );
+    return <WroobScoreBadge score={score} />;
   }
 
   return (
@@ -55,19 +51,14 @@ export const ReputationScoreCard = ({ score, breakdown, compact = false }: Reput
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-base">
           <Trophy className="h-5 w-5 text-primary" />
-          Reputation Score
+          Wroob Score
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex items-end gap-2 mb-2">
-          <span className={cn("text-4xl font-bold font-display", getScoreColor(score))}>
-            {Math.round(score)}
-          </span>
-          <span className="text-lg text-muted-foreground mb-1">/ 100</span>
+        <div className="flex items-center gap-3 mb-3">
+          <WroobScoreBadge score={score} />
+          <span className={cn("text-sm font-semibold", tier.text)}>{tier.label}</span>
         </div>
-        <p className={cn("text-sm font-medium mb-4", getScoreColor(score))}>
-          {getScoreLabel(score)}
-        </p>
         <Progress value={score} className={cn("h-2 mb-6", getProgressColor(score))} />
 
         {breakdown && <ScoreBreakdown breakdown={breakdown} />}
@@ -104,20 +95,12 @@ export const ScoreBreakdown = ({ breakdown }: { breakdown: ReputationBreakdown }
 };
 
 export const CandidateScoreBadge = ({ score, className }: { score: number; className?: string }) => {
+  const tier = getBadgeTier(score);
   const percentile = score >= 90 ? "Top 5%" : score >= 80 ? "Top 10%" : score >= 70 ? "Top 25%" : score >= 60 ? "Top 40%" : null;
 
   return (
     <div className={cn("flex items-center gap-2", className)}>
-      <div className={cn(
-        "flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold",
-        score >= 80 ? "bg-emerald-500/10 text-emerald-600" :
-        score >= 60 ? "bg-amber-500/10 text-amber-600" :
-        score >= 40 ? "bg-orange-500/10 text-orange-600" :
-        "bg-muted text-muted-foreground"
-      )}>
-        <Trophy className="h-3 w-3" />
-        {Math.round(score)}
-      </div>
+      <WroobScoreBadge score={score} />
       {percentile && (
         <span className="text-[10px] font-medium text-muted-foreground">{percentile}</span>
       )}
