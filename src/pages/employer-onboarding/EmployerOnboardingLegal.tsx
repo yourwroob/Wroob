@@ -35,7 +35,6 @@ const EmployerOnboardingLegal = () => {
         if (data) {
           setForm({
             gstin: data.gstin || "",
-            gst_number: data.gst_number || "",
             pan_number: data.pan_number || "",
             cin: data.cin || "",
             linkedin_profile: data.linkedin_profile || "",
