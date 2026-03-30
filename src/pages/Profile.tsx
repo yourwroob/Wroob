@@ -128,8 +128,24 @@ const Profile = () => {
         }
       } else if (role === "employer") {
         const { data: ep } = await supabase.from("employer_profiles").select("*").eq("user_id", user.id).maybeSingle();
-        if (ep) setEmployerProfile({ company_name: ep.company_name || "", industry: ep.industry || "", company_size: ep.company_size || "", website: ep.website || "" });
-      }
+        if (ep) {
+          const d = ep as any;
+          setEmployerProfile({
+            company_name: d.company_name || "", industry: d.industry || "",
+            company_size: d.company_size || "", website: d.website || "",
+            company_description: d.company_description || "",
+            year_established: d.year_established ? String(d.year_established) : "",
+            logo_url: d.logo_url || "",
+            head_office_address: d.head_office_address || "",
+            city: d.city || "", state: d.state || "", pincode: d.pincode || "",
+            head_office_landline: d.head_office_landline || "",
+            head_office_mobile: d.head_office_mobile || "",
+            hr_contact_name: d.hr_contact_name || "", hr_designation: d.hr_designation || "",
+            hr_email: d.hr_email || "", hr_phone: d.hr_phone || "",
+            gstin: d.gstin || "", pan_number: d.pan_number || "",
+            cin: d.cin || "", linkedin_profile: d.linkedin_profile || "",
+          });
+        }
 
       const { data: skills } = await supabase.from("skills").select("name, category").order("category").order("name");
       if (skills) setAllSkills(skills);
