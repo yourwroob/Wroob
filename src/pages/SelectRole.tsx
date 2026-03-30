@@ -92,10 +92,10 @@ const SelectRole = () => {
             </div>
             <Button
               className="w-full"
-              disabled={!selected || loading}
+              disabled={!selected || submitting}
               onClick={handleContinue}
             >
-              {loading ? "Setting up..." : "Continue"}
+              {submitting ? "Setting up..." : "Continue"}
             </Button>
           </CardContent>
         </Card>
