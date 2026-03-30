@@ -144,7 +144,6 @@ const EmployerOnboardingLocation = () => {
                  </SelectContent>
                </Select>
              </div>
-            </div>
             <div className="space-y-2">
               <Label>Pincode</Label>
               <Input value={form.pincode} onChange={(e) => update("pincode", e.target.value)} placeholder="e.g. 110001" maxLength={6} />
