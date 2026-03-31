@@ -10,10 +10,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Bell, Briefcase, LogOut, Menu, MessageCircle, User, X } from "lucide-react";
+import { Bell, Briefcase, LogOut, Menu, MessageCircle, Share2, User, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { useUnreadGroupMessages } from "@/hooks/useUnreadGroupMessages";
 
@@ -24,6 +25,7 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [scrolled, setScrolled] = useState(false);
+  const { toast } = useToast();
   const { count: unreadGroupCount, markRead: markGroupsRead } = useUnreadGroupMessages();
 
   useEffect(() => {
@@ -176,6 +178,15 @@ const Navbar = () => {
                   <DropdownMenuItem onClick={() => navigate("/profile")}>
                     <User className="mr-2 h-4 w-4" /> Profile
                   </DropdownMenuItem>
+                  {role === "student" && (
+                    <DropdownMenuItem onClick={async () => {
+                      const url = `${window.location.origin}/student/${user.id}`;
+                      await navigator.clipboard.writeText(url);
+                      toast({ title: "Link copied!", description: "Your profile link has been copied to clipboard." });
+                    }}>
+                      <Share2 className="mr-2 h-4 w-4" /> Share your profile
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut}>
                     <LogOut className="mr-2 h-4 w-4" /> Sign Out
