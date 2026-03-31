@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { ReputationScoreCard } from "@/components/reputation/ReputationScoreCard";
 import { useReputation } from "@/hooks/useReputation";
 import { CheckCircle2, XCircle, ArrowRight, RotateCcw, Trophy } from "lucide-react";
-import LocalCommunityGroups from "@/components/LocalCommunityGroups";
+
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 
@@ -235,10 +235,6 @@ const SkillTests = () => {
           </div>
         )}
 
-        {/* Local Community Groups */}
-        <div className="mt-12 pt-8 border-t">
-          <LocalCommunityGroups />
-        </div>
       </div>
     </div>
   );
