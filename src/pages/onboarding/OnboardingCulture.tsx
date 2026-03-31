@@ -44,7 +44,6 @@ const OnboardingCulture = () => {
 
   const [form, setForm] = useState({
     tech_interests: [] as string[],
-    tech_avoid: [] as string[],
     motivation_type: "",
     job_priorities: [] as string[],
     remote_importance: "",
