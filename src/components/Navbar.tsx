@@ -24,6 +24,7 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [scrolled, setScrolled] = useState(false);
+  const { toast } = useToast();
   const { count: unreadGroupCount, markRead: markGroupsRead } = useUnreadGroupMessages();
 
   useEffect(() => {
