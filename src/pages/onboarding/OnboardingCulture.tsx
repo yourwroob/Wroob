@@ -64,13 +64,12 @@ const OnboardingCulture = () => {
       .maybeSingle()
       .then(({ data }: any) => {
         if (data) {
-          setForm((f) => ({
-            ...f,
+          mergeDefaults({
             tech_interests: data.tech_interests || [],
             motivation_type: data.motivation_type || "",
             job_priorities: data.job_priorities || [],
             remote_importance: data.remote_importance || "",
-          }));
+          });
         }
       });
   }, [user]);
