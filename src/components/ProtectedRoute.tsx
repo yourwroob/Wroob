@@ -11,19 +11,18 @@ const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
   const location = useLocation();
 
   if (loading) {
+    // Minimal skeleton instead of full-screen spinner — feels faster
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
   }
 
   if (!user) return <Navigate to="/login" replace />;
 
-  // Allow access to select-role page even without a role
   if (location.pathname === "/select-role") return <>{children}</>;
 
-  // If user has no role yet (new OAuth user), redirect to role selection
   if (!role) return <Navigate to="/select-role" replace />;
 
   if (allowedRoles && !allowedRoles.includes(role)) return <Navigate to="/dashboard" replace />;

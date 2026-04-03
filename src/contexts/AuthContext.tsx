@@ -18,18 +18,41 @@ interface AuthContextType {
   updatePassword: (password: string) => Promise<{ error: any }>;
 }
 
+const AUTH_CACHE_KEY = "wroob_auth_cache";
+
+function getCachedAuth(): { role: AppRole | null; profile: any | null; userId: string | null } {
+  try {
+    const raw = sessionStorage.getItem(AUTH_CACHE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return { role: null, profile: null, userId: null };
+}
+
+function setCachedAuth(userId: string | null, role: AppRole | null, profile: any | null) {
+  try {
+    if (userId) {
+      sessionStorage.setItem(AUTH_CACHE_KEY, JSON.stringify({ role, profile, userId }));
+    } else {
+      sessionStorage.removeItem(AUTH_CACHE_KEY);
+    }
+  } catch {}
+}
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const cached = getCachedAuth();
+
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
-  const [role, setRole] = useState<AppRole | null>(null);
-  const [profile, setProfile] = useState<any | null>(null);
+  const [role, setRole] = useState<AppRole | null>(cached.role);
+  const [profile, setProfile] = useState<any | null>(cached.profile);
   const [loading, setLoading] = useState(true);
   const mountedRef = useRef(true);
   const requestIdRef = useRef(0);
+  const initializedRef = useRef(false);
 
-  const syncAuthState = useCallback(async (nextSession: Session | null) => {
+  const syncAuthState = useCallback(async (nextSession: Session | null, isInitial = false) => {
     const requestId = ++requestIdRef.current;
 
     setSession(nextSession);
@@ -38,11 +61,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!nextSession?.user) {
       setRole(null);
       setProfile(null);
+      setCachedAuth(null, null, null);
       setLoading(false);
       return;
     }
 
-    setLoading(true);
+    // If we have cached data for this user and it's the initial load, use cache instantly
+    const cache = getCachedAuth();
+    if (isInitial && cache.userId === nextSession.user.id && cache.role) {
+      setRole(cache.role);
+      setProfile(cache.profile);
+      setLoading(false);
+      // Still refresh in background
+    } else if (!isInitial) {
+      // Don't set loading=true on subsequent auth changes to avoid flicker
+    }
 
     try {
       const [{ data: roleData }, { data: profileData }] = await Promise.all([
@@ -52,8 +85,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (!mountedRef.current || requestId !== requestIdRef.current) return;
 
-      setRole((roleData?.role as AppRole | null) ?? null);
-      setProfile(profileData ?? null);
+      const newRole = (roleData?.role as AppRole | null) ?? null;
+      const newProfile = profileData ?? null;
+
+      setRole(newRole);
+      setProfile(newProfile);
+      setCachedAuth(nextSession.user.id, newRole, newProfile);
     } catch (error) {
       if (!mountedRef.current || requestId !== requestIdRef.current) return;
       console.error("Error fetching user data:", error);
@@ -73,12 +110,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, nextSession) => {
       if (!mountedRef.current || event === "INITIAL_SESSION") return;
-      void syncAuthState(nextSession);
+      void syncAuthState(nextSession, false);
     });
 
     void supabase.auth.getSession().then(({ data: { session } }) => {
       if (!mountedRef.current) return;
-      void syncAuthState(session);
+      initializedRef.current = true;
+      void syncAuthState(session, true);
     });
 
     return () => {
@@ -101,9 +139,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signIn = async (email: string, password: string) => {
-    setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) setLoading(false);
     return { error };
   };
 
@@ -114,6 +150,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setRole(null);
     setProfile(null);
     setLoading(false);
+    setCachedAuth(null, null, null);
 
     supabase.auth.signOut().catch((error) => {
       console.error("Sign out error:", error);
@@ -132,8 +169,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const { data: profileData } = await supabase.from("profiles").select("*").eq("user_id", user.id).maybeSingle();
     if (mountedRef.current) {
       setProfile(profileData ?? null);
+      setCachedAuth(user.id, role, profileData ?? null);
     }
-  }, [user]);
+  }, [user, role]);
 
   const updatePassword = async (password: string) => {
     const { error } = await supabase.auth.updateUser({ password });
