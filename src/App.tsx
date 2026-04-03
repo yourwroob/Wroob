@@ -44,7 +44,7 @@ const Groups = lazy(() => import("./pages/Groups"));
 const StudentDiscovery = lazy(() => import("./pages/StudentDiscovery"));
 const SkillTests = lazy(() => import("./pages/SkillTests"));
 const CampusCommunity = lazy(() => import("./pages/CampusCommunity"));
-const Feed = lazy(() => import("./pages/Feed"));
+
 const StudentProfile = lazy(() => import("./pages/StudentProfile"));
 const OnboardingProfile = lazy(() => import("./pages/onboarding/OnboardingProfile"));
 const OnboardingCulture = lazy(() => import("./pages/onboarding/OnboardingCulture"));
