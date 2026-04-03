@@ -114,6 +114,7 @@ const OnboardingCulture = () => {
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
+      clearDraft();
       await updateStep(3);
       navigate("/onboarding/resume");
     }
