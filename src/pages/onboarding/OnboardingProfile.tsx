@@ -73,8 +73,7 @@ const OnboardingProfile = () => {
           const derivedCategory = savedRole
             ? SCHOOL_NAMES.find((s) => COURSE_CATEGORIES[s].includes(savedRole)) || ""
             : "";
-          setForm((f) => ({
-            ...f,
+          mergeDefaults({
             location: d.location || "",
             school_category: derivedCategory,
             profile_role: savedRole,
@@ -87,7 +86,7 @@ const OnboardingProfile = () => {
             linkedin_url: d.linkedin_url || "",
             website_url: d.website_url || "",
             phone_number: d.phone_number || "",
-          }));
+          });
         }
       });
   }, [user]);
