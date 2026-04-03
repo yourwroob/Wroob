@@ -39,7 +39,7 @@ const OnboardingProfile = () => {
   const [geoLoading, setGeoLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const [form, setForm] = useState({
+  const INITIAL_PROFILE = {
     location: "",
     school_category: "",
     profile_role: "",
@@ -52,7 +52,12 @@ const OnboardingProfile = () => {
     linkedin_url: "",
     website_url: "",
     phone_number: "",
-  });
+  };
+
+  const { form, setForm, clearDraft, mergeDefaults } = usePersistentForm(
+    `wroob_onboarding_profile_${user?.id || "anon"}`,
+    INITIAL_PROFILE
+  );
 
   useEffect(() => {
     if (!user) return;
