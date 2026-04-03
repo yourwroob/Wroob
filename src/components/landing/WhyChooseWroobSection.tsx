@@ -41,7 +41,7 @@ const TAG_COLORS = [
 const CARDS_PER_VIEW_DESKTOP = 4;
 const CARDS_PER_VIEW_TABLET = 2;
 const CARDS_PER_VIEW_MOBILE = 1;
-const AUTO_SLIDE_INTERVAL = 1500;
+const AUTO_SLIDE_INTERVAL = 2500;
 
 function useCardsPerView() {
   const [count, setCount] = useState(CARDS_PER_VIEW_DESKTOP);
