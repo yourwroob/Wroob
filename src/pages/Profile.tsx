@@ -576,20 +576,6 @@ const Profile = () => {
                       onChange={(e) => setStudentProfile((p) => ({ ...p, website_url: e.target.value }))}
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label>Local Community Group</Label>
-                    <LocationCapture
-                      captured={locationCaptured}
-                      onCapture={async (lat, lng) => {
-                        if (!user) return;
-                        setLocationCaptured(true);
-                        await supabase.functions.invoke("geo-group-assign", {
-                          body: { user_id: user.id, lat, lng },
-                        });
-                        toast({ title: "Location saved! You've been added to a local group." });
-                      }}
-                    />
-                  </div>
                 </CardContent>
               </Card>
             </>
