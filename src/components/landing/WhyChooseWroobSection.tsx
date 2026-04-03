@@ -1,5 +1,5 @@
-import { useRef, memo } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState, memo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Factory, Cpu, ShieldCheck, Users, LayoutDashboard,
   FileText, Trophy, GraduationCap, Map, HardHat,
@@ -11,108 +11,22 @@ interface WhyCard {
   title: string;
   tag: string;
   description: string;
-  wroobLabel: string;
-  othersLabel: string;
   icon: LucideIcon;
 }
 
 const WHY_CARDS: WhyCard[] = [
-  {
-    title: "Factory Floor Internships Only",
-    tag: "Wroob's #1 USP",
-    description: "Hands-on factory internships, not office roles",
-    wroobLabel: "Factory-first",
-    othersLabel: "Office-heavy",
-    icon: Factory,
-  },
-  {
-    title: "Real-Time Machine & Equipment Tracker",
-    tag: "Never done before",
-    description: 'Logs machines/tools worked on → verified "Machine Resume"',
-    wroobLabel: "Machine Resume",
-    othersLabel: "Just certificates",
-    icon: Cpu,
-  },
-  {
-    title: "Industry-Verified Skill Badges",
-    tag: "Trust & credibility",
-    description: "Supervisor-verified skills (CNC, Welding, QA)",
-    wroobLabel: "Company-verified",
-    othersLabel: "Self-declared",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Mentor from the Shop Floor",
-    tag: "Guidance built-in",
-    description: "Assigned mentor + weekly check-ins",
-    wroobLabel: "Assigned mentor",
-    othersLabel: "No mentorship",
-    icon: Users,
-  },
-  {
-    title: "Live Industry Project Dashboard",
-    tag: "Transparency first",
-    description: "Track tasks, attendance, milestones, feedback",
-    wroobLabel: "Live tracking",
-    othersLabel: "No visibility",
-    icon: LayoutDashboard,
-  },
-  {
-    title: "Smart Internship Report Generator",
-    tag: "Student time-saver",
-    description: "Auto-generate reports from logs",
-    wroobLabel: "Auto-report",
-    othersLabel: "Do it yourself",
-    icon: FileText,
-  },
-  {
-    title: "Wroob Score (Industrial Rating)",
-    tag: "Gamified growth",
-    description: "Score based on machines, internships, ratings",
-    wroobLabel: "Industry score",
-    othersLabel: "No such metric",
-    icon: Trophy,
-  },
-  {
-    title: "College Partnership Portal",
-    tag: "B2B growth engine",
-    description: "College dashboard for tracking & compliance",
-    wroobLabel: "College portal",
-    othersLabel: "Student only",
-    icon: GraduationCap,
-  },
-  {
-    title: "Pan-India Manufacturing Map",
-    tag: "Discovery feature",
-    description: "Visual map of internships by location/sector",
-    wroobLabel: "Visual map",
-    othersLabel: "Text list only",
-    icon: Map,
-  },
-  {
-    title: "Safety Induction & Compliance",
-    tag: "Industry-grade trust",
-    description: "Mandatory safety training before internship",
-    wroobLabel: "Safety-first",
-    othersLabel: "No safety prep",
-    icon: HardHat,
-  },
-  {
-    title: "Stipend Guarantee & Escrow",
-    tag: "Student protection",
-    description: "Guaranteed stipend via escrow",
-    wroobLabel: "Guaranteed pay",
-    othersLabel: "No protection",
-    icon: Wallet,
-  },
-  {
-    title: "Alumni & Senior Network",
-    tag: "Community moat",
-    description: "Alumni help, referrals, job sharing",
-    wroobLabel: "Alumni network",
-    othersLabel: "No community",
-    icon: Network,
-  },
+  { title: "Factory Floor Internships Only", tag: "Wroob's #1 USP", description: "Hands-on factory internships, not office roles", icon: Factory },
+  { title: "Real-Time Machine & Equipment Tracker", tag: "Never done before", description: 'Logs machines/tools worked on → verified "Machine Resume"', icon: Cpu },
+  { title: "Industry-Verified Skill Badges", tag: "Trust & credibility", description: "Supervisor-verified skills (CNC, Welding, QA)", icon: ShieldCheck },
+  { title: "Mentor from the Shop Floor", tag: "Guidance built-in", description: "Assigned mentor + weekly check-ins", icon: Users },
+  { title: "Live Industry Project Dashboard", tag: "Transparency first", description: "Track tasks, attendance, milestones, feedback", icon: LayoutDashboard },
+  { title: "Smart Internship Report Generator", tag: "Student time-saver", description: "Auto-generate reports from logs", icon: FileText },
+  { title: "Wroob Score (Industrial Rating)", tag: "Gamified growth", description: "Score based on machines, internships, ratings", icon: Trophy },
+  { title: "College Partnership Portal", tag: "B2B growth engine", description: "College dashboard for tracking & compliance", icon: GraduationCap },
+  { title: "Pan-India Manufacturing Map", tag: "Discovery feature", description: "Visual map of internships by location/sector", icon: Map },
+  { title: "Safety Induction & Compliance", tag: "Industry-grade trust", description: "Mandatory safety training before internship", icon: HardHat },
+  { title: "Stipend Guarantee & Escrow", tag: "Student protection", description: "Guaranteed stipend via escrow", icon: Wallet },
+  { title: "Alumni & Senior Network", tag: "Community moat", description: "Alumni help, referrals, job sharing", icon: Network },
 ];
 
 const TAG_COLORS = [
@@ -124,20 +38,33 @@ const TAG_COLORS = [
   "bg-indigo-500/15 text-indigo-400",
 ];
 
-const WhyCardComponent = memo(({ card, index }: { card: WhyCard; index: number }) => {
+const CARDS_PER_VIEW_DESKTOP = 4;
+const CARDS_PER_VIEW_TABLET = 2;
+const CARDS_PER_VIEW_MOBILE = 1;
+const AUTO_SLIDE_INTERVAL = 1500;
+
+function useCardsPerView() {
+  const [count, setCount] = useState(CARDS_PER_VIEW_DESKTOP);
+
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+      setCount(w < 640 ? CARDS_PER_VIEW_MOBILE : w < 1024 ? CARDS_PER_VIEW_TABLET : CARDS_PER_VIEW_DESKTOP);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  return count;
+}
+
+const CardItem = memo(({ card, index }: { card: WhyCard; index: number }) => {
   const Icon = card.icon;
   const tagColor = TAG_COLORS[index % TAG_COLORS.length];
 
   return (
-    <motion.div
-      className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start rounded-2xl border border-border/40 bg-card/60 backdrop-blur-sm p-5 sm:p-6 flex flex-col gap-4 group hover:border-primary/20 transition-colors duration-300"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: Math.min(index * 0.05, 0.3), duration: 0.4 }}
-      whileHover={{ y: -4 }}
-    >
-      {/* Icon + Tag row */}
+    <div className="rounded-2xl border border-border/40 bg-card/60 backdrop-blur-sm p-5 sm:p-6 flex flex-col gap-4 h-full">
       <div className="flex items-start justify-between gap-2">
         <div className="flex h-10 w-10 items-center justify-center rounded-xl brand-gradient text-white shadow-md shadow-primary/15">
           <Icon className="h-5 w-5" />
@@ -146,36 +73,34 @@ const WhyCardComponent = memo(({ card, index }: { card: WhyCard; index: number }
           {card.tag}
         </span>
       </div>
-
-      {/* Title */}
-      <h3 className="font-medium text-foreground leading-snug" style={{ font: "var(--text-card-title)" }}>
+      <h3 className="font-medium text-foreground leading-snug text-sm sm:text-base">
         {card.title}
       </h3>
-
-      {/* Description */}
       <p className="text-sm text-muted-foreground leading-relaxed flex-1">
         {card.description}
       </p>
-
-      {/* Comparison pills */}
-      <div className="flex items-center gap-2 pt-1">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-400">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-          {card.wroobLabel}
-        </span>
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-red-500/10 px-3 py-1.5 text-xs font-medium text-red-400">
-          <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
-          {card.othersLabel}
-        </span>
-      </div>
-    </motion.div>
+    </div>
   );
 });
-
-WhyCardComponent.displayName = "WhyCardComponent";
+CardItem.displayName = "CardItem";
 
 const WhyChooseWroobSection = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const cardsPerView = useCardsPerView();
+  const [index, setIndex] = useState(0);
+  const total = WHY_CARDS.length;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + cardsPerView) % total);
+    }, AUTO_SLIDE_INTERVAL);
+    return () => clearInterval(interval);
+  }, [total, cardsPerView]);
+
+  const visibleCards: { card: WhyCard; originalIndex: number }[] = [];
+  for (let i = 0; i < cardsPerView; i++) {
+    const idx = (index + i) % total;
+    visibleCards.push({ card: WHY_CARDS[idx], originalIndex: idx });
+  }
 
   return (
     <motion.section
@@ -197,23 +122,23 @@ const WhyChooseWroobSection = () => {
         </div>
       </div>
 
-      {/* Horizontal scroller */}
-      <div className="relative">
-        {/* Fade edges */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-16 bg-gradient-to-r from-background to-transparent z-10" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-16 bg-gradient-to-l from-background to-transparent z-10" />
-
-        <div
-          ref={scrollRef}
-          className="flex gap-4 sm:gap-6 overflow-x-auto px-6 sm:px-12 pb-4 snap-x snap-mandatory scrollbar-hide"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
-          role="list"
-          aria-label="Why Choose Wroob features"
-        >
-          {WHY_CARDS.map((card, i) => (
-            <WhyCardComponent key={card.title} card={card} index={i} />
-          ))}
-        </div>
+      <div className="container">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            className={`grid gap-4 sm:gap-6 ${
+              cardsPerView === 1 ? "grid-cols-1" : cardsPerView === 2 ? "grid-cols-2" : "grid-cols-4"
+            }`}
+            initial={{ opacity: 0, x: 60 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -60 }}
+            transition={{ duration: 0.45, ease: "easeInOut" }}
+          >
+            {visibleCards.map(({ card, originalIndex }) => (
+              <CardItem key={originalIndex} card={card} index={originalIndex} />
+            ))}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </motion.section>
   );
