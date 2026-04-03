@@ -67,7 +67,6 @@ const PageLoader = () => (
 );
 
 const App = () => (
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
