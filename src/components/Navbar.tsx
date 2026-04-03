@@ -106,7 +106,6 @@ const Navbar = () => {
       return (
         <>
           <Link to="/my-internships" className={navLinkClass("/my-internships")} style={{ font: "var(--text-nav)" }}>My Internships</Link>
-          <Link to="/feed" className={navLinkClass("/feed")} style={{ font: "var(--text-nav)" }}>Feed</Link>
           <Link to="/post-internship" className={navLinkClass("/post-internship")} style={{ font: "var(--text-nav)" }}>Post Internship</Link>
           <Link to="/groups" onClick={markGroupsRead} className={cn("relative", navLinkClass("/groups"))} style={{ font: "var(--text-nav)" }}>
             Groups
