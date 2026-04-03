@@ -61,8 +61,8 @@ const EmployerOnboardingDone = lazy(() => import("./pages/employer-onboarding/Em
 const queryClient = new QueryClient();
 
 const PageLoader = () => (
-  <div className="flex min-h-screen items-center justify-center">
-    <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+  <div className="flex min-h-[50vh] items-center justify-center">
+    <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
   </div>
 );
 
