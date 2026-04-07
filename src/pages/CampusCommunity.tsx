@@ -31,7 +31,7 @@ const CampusCommunity = () => {
         <div>
           <h1 className="font-display text-3xl font-bold tracking-tight">PeerUp</h1>
           <p className="text-muted-foreground mt-1">
-            Posts, communities & groups vanish after 24 hours. No traces, just vibes.
+            Communities & groups vanish after 24 hours. No traces, just vibes.
           </p>
         </div>
 
