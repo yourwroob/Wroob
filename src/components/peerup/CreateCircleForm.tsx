@@ -19,7 +19,6 @@ interface CreateCircleFormProps {
 
 const CreateCircleForm = ({ onSubmit, onClose }: CreateCircleFormProps) => {
   const { toast } = useToast();
-  const [spotName, setSpotName] = useState("");
   const [spotLocation, setSpotLocation] = useState("");
   const [topic, setTopic] = useState("");
   const [fuelType, setFuelType] = useState("");
@@ -28,7 +27,7 @@ const CreateCircleForm = ({ onSubmit, onClose }: CreateCircleFormProps) => {
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async () => {
-    if (!spotName.trim() || !topic.trim() || !fuelType.trim() || !dropInDate || !dropInTime) {
+    if (!spotLocation.trim() || !topic.trim() || !fuelType.trim() || !dropInDate || !dropInTime) {
       toast({ title: "Missing fields", description: "All fields are required", variant: "destructive" });
       return;
     }
@@ -42,8 +41,8 @@ const CreateCircleForm = ({ onSubmit, onClose }: CreateCircleFormProps) => {
     setSubmitting(true);
     try {
       await onSubmit({
-        spot_name: spotName.trim(),
-        spot_location: spotLocation.trim() || undefined,
+        spot_name: spotLocation.trim(),
+        spot_location: spotLocation.trim(),
         topic: topic.trim(),
         fuel_type: fuelType.trim(),
         drop_in_time: dateTime.toISOString(),
@@ -70,22 +69,10 @@ const CreateCircleForm = ({ onSubmit, onClose }: CreateCircleFormProps) => {
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <Label className="flex items-center gap-1.5 text-sm">
-            <MapPin className="h-3.5 w-3.5 text-primary" /> Spot Name *
+            <MapPin className="h-3.5 w-3.5 text-primary" /> Spot Location *
           </Label>
           <Input
             placeholder="e.g. A-Block Hotspot, Bennett University"
-            value={spotName}
-            onChange={(e) => setSpotName(e.target.value)}
-            maxLength={100}
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label className="flex items-center gap-1.5 text-sm">
-            <MapPin className="h-3.5 w-3.5 text-muted-foreground" /> Spot Location
-          </Label>
-          <Input
-            placeholder="e.g. A-Block · GF"
             value={spotLocation}
             onChange={(e) => setSpotLocation(e.target.value)}
             maxLength={100}
