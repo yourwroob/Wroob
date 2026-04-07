@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
+import { InternshipDetailSkeleton } from "@/components/skeletons";
 import { InternshipCapBar } from "@/components/InternshipCapBar";
 import ProfileLink from "@/components/ProfileLink";
 import {

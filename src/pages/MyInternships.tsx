@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { MyInternshipsSkeleton } from "@/components/skeletons";
 import { Plus, Users, Briefcase, Pencil, XCircle } from "lucide-react";
 import {
   AlertDialog,
@@ -77,7 +78,7 @@ const MyInternships = () => {
         </div>
 
         {loading ? (
-          <div className="space-y-4">{[...Array(3)].map((_, i) => <Skeleton key={i} className="h-24" />)}</div>
+          <MyInternshipsSkeleton />
         ) : internships.length === 0 ? (
           <div className="py-20 text-center">
             <Briefcase className="mx-auto h-12 w-12 text-muted-foreground/50" />

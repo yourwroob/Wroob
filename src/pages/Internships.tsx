@@ -12,6 +12,7 @@ import { MapPin, Clock, Building2, Search, Briefcase, IndianRupee, CalendarDays,
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Skeleton } from "@/components/ui/skeleton";
+import { InternshipListSkeleton } from "@/components/skeletons";
 import { motion } from "framer-motion";
 
 interface Internship {
@@ -186,13 +187,7 @@ const Internships = () => {
           {/* Results */}
           <div className="flex-1 min-w-0">
             {loading ? (
-              <div className="space-y-4">
-                {[...Array(5)].map((_, i) => (
-                  <div key={i} className="card-depth p-6">
-                    <Skeleton className="h-24" />
-                  </div>
-                ))}
-              </div>
+              <InternshipListSkeleton />
             ) : filtered.length === 0 ? (
               <div className="py-20 text-center">
                 <Briefcase className="mx-auto h-12 w-12 text-muted-foreground/30" />

@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/Navbar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import { NotificationSkeleton } from "@/components/skeletons";
 import { Bell, CheckCheck } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -50,7 +50,7 @@ const Notifications = () => {
         </div>
 
         {loading ? (
-          <div className="space-y-3">{[...Array(4)].map((_, i) => <Skeleton key={i} className="h-20" />)}</div>
+          <NotificationSkeleton />
         ) : notifications.length === 0 ? (
           <div className="py-20 text-center">
             <Bell className="mx-auto h-12 w-12 text-muted-foreground/50" />
