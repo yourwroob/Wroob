@@ -674,33 +674,6 @@ export type Database = {
           },
         ]
       }
-      posts: {
-        Row: {
-          author_id: string
-          author_type: string
-          caption: string | null
-          created_at: string
-          id: string
-          image_url: string
-        }
-        Insert: {
-          author_id: string
-          author_type: string
-          caption?: string | null
-          created_at?: string
-          id?: string
-          image_url: string
-        }
-        Update: {
-          author_id?: string
-          author_type?: string
-          caption?: string | null
-          created_at?: string
-          id?: string
-          image_url?: string
-        }
-        Relationships: []
-      }
       profiles: {
         Row: {
           avatar_url: string | null
