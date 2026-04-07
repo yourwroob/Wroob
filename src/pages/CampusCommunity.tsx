@@ -42,7 +42,7 @@ const CampusCommunity = () => {
           <TabsList className="w-full grid grid-cols-3">
             <TabsTrigger value="campus">Create Community</TabsTrigger>
             <TabsTrigger value="community">Drop a Post</TabsTrigger>
-            <TabsTrigger value="groups">Local Groups</TabsTrigger>
+            <TabsTrigger value="groups">Community Groups</TabsTrigger>
           </TabsList>
 
           {/* Campus Feed Tab — Wroob Circles */}
