@@ -140,12 +140,8 @@ const CircleDetailModal = ({
   const renderDetailView = () => (
     <div className="space-y-4">
       {isParticipant && (
-        <div className="flex items-center justify-between bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3">
-          <div className="flex items-center gap-2">
-            <Check className="h-4 w-4 text-emerald-500" />
-            <span className="text-sm font-medium">Request approved — welcome!</span>
-          </div>
-          <Badge variant="outline" className="border-emerald-500/50 text-emerald-600 dark:text-emerald-400 text-[10px]">
+        <div className="flex items-center justify-end">
+          <Badge variant="outline" className="text-[10px] border-emerald-500/50 text-emerald-600 dark:text-emerald-400">
             {getTimeLeft(circle.expires_at)}
           </Badge>
         </div>
