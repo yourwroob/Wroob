@@ -25,33 +25,43 @@ const getColor = (index: number) => {
 
 const CircleBubbles = ({ circles, onSelect, onCreateNew }: CircleBubblesProps) => {
   return (
-    <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-hide">
-      {circles.slice(0, 8).map((circle, i) => (
+    <div className="flex items-center gap-5 overflow-x-auto pb-3 scrollbar-hide px-1">
+      {/* Create new button */}
+      <button
+        onClick={onCreateNew}
+        className="flex flex-col items-center gap-1.5 min-w-[72px] group"
+      >
+        <div className="h-16 w-16 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center transition-colors group-hover:border-primary/50">
+          <Plus className="h-5 w-5 text-muted-foreground/50 group-hover:text-primary/70" />
+        </div>
+        <span className="text-[11px] text-muted-foreground font-medium">New</span>
+      </button>
+
+      {circles.map((circle, i) => (
         <button
           key={circle.id}
           onClick={() => onSelect(circle)}
-          className="flex flex-col items-center gap-1.5 min-w-[64px] group"
+          className="flex flex-col items-center gap-1.5 min-w-[72px] group"
         >
-          <Avatar className={`h-14 w-14 border-2 ${getColor(i)} transition-transform group-hover:scale-105`}>
-            <AvatarImage src={circle.creator_avatar || undefined} />
-            <AvatarFallback className={`bg-transparent font-semibold text-sm ${getColor(i)}`}>
-              {getInitials(circle.spot_name)}
-            </AvatarFallback>
-          </Avatar>
-          <span className="text-[11px] text-muted-foreground truncate max-w-[64px]">
-            {circle.spot_name}
+          <div className={`relative rounded-full p-[2px] bg-gradient-to-br ${
+            circle.is_participant
+              ? "from-emerald-400 to-emerald-600"
+              : circle.my_request_status === "pending"
+              ? "from-amber-400 to-amber-600"
+              : "from-primary/60 to-primary"
+          }`}>
+            <Avatar className="h-16 w-16 border-2 border-background transition-transform group-hover:scale-105">
+              <AvatarImage src={circle.creator_avatar || undefined} />
+              <AvatarFallback className={`bg-transparent font-semibold text-sm ${getColor(i)}`}>
+                {getInitials(circle.creator_name || circle.spot_name)}
+              </AvatarFallback>
+            </Avatar>
+          </div>
+          <span className="text-[11px] text-muted-foreground truncate max-w-[72px] font-medium">
+            {circle.creator_name?.split(" ")[0] || circle.spot_name}
           </span>
         </button>
       ))}
-      <button
-        onClick={onCreateNew}
-        className="flex flex-col items-center gap-1.5 min-w-[64px] group"
-      >
-        <div className="h-14 w-14 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center transition-colors group-hover:border-primary/50">
-          <Plus className="h-5 w-5 text-muted-foreground/50 group-hover:text-primary/70" />
-        </div>
-        <span className="text-[11px] text-muted-foreground">New</span>
-      </button>
     </div>
   );
 };
