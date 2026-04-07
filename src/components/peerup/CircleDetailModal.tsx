@@ -156,7 +156,7 @@ const CircleDetailModal = ({
           </AvatarFallback>
         </Avatar>
         <div>
-          <h3 className="font-semibold">{circle.spot_name}</h3>
+          <ProfileLink userId={circle.creator_id} type="student" className="font-semibold">{circle.spot_name}</ProfileLink>
           <p className="text-sm text-muted-foreground">{circle.creator_university || "Wroob Circle"}</p>
         </div>
       </div>
