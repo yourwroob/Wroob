@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { CheckCircle2, XCircle, ExternalLink, Search, Building2, Shield } from "lucide-react";
+import { AdminVerificationSkeleton } from "@/components/skeletons";
 import {
   Dialog,
   DialogContent,

@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { MapPin, Users, Search, Loader2, RefreshCw } from "lucide-react";
+import { CommunityGroupsSkeleton } from "@/components/skeletons";
 
 interface LocalGroup {
   id: string;

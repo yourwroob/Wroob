@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ApplicantListSkeleton } from "@/components/skeletons";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Download, Users } from "lucide-react";
 import { CandidateScoreBadge } from "@/components/reputation/ReputationScoreCard";
