@@ -71,8 +71,12 @@ export function useEmployerDraft<T extends Record<string, string>>(
   // Persist to localStorage on every form change
   useEffect(() => {
     if (!dbLoaded) return;
-    localStorage.setItem(storageKey, JSON.stringify(form));
+    try { localStorage.setItem(storageKey, JSON.stringify(form)); } catch {}
     dirtyRef.current = true;
+    return () => {
+      // Flush on unmount to prevent data loss during navigation
+      try { localStorage.setItem(storageKey, JSON.stringify(formRef.current)); } catch {}
+    };
   }, [form, dbLoaded, storageKey]);
 
   // Auto-save to DB every 5 seconds

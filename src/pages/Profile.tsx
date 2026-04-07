@@ -88,12 +88,41 @@ const Profile = () => {
   const initialFetchDone = useRef(false);
   const currentUserId = useRef<string | null>(null);
   const dbFetchDone = useRef(false);
+  const profileRef = useRef(profile);
+  const studentProfileRef = useRef(studentProfile);
+  const employerProfileRef = useRef(employerProfile);
+  profileRef.current = profile;
+  studentProfileRef.current = studentProfile;
+  employerProfileRef.current = employerProfile;
 
   // Persist draft to localStorage on every form change
   useEffect(() => {
     if (!user || !dbFetchDone.current) return;
     saveDraft(user.id, { profile, studentProfile, employerProfile });
   }, [profile, studentProfile, employerProfile, user]);
+
+  // Flush draft on unmount, tab switch, and beforeunload
+  useEffect(() => {
+    if (!user) return;
+    const flush = () => {
+      if (dbFetchDone.current) {
+        saveDraft(user.id, {
+          profile: profileRef.current,
+          studentProfile: studentProfileRef.current,
+          employerProfile: employerProfileRef.current,
+        });
+      }
+    };
+    const onVisibility = () => { if (document.visibilityState === "hidden") flush(); };
+    const onBeforeUnload = () => flush();
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("beforeunload", onBeforeUnload);
+      flush();
+    };
+  }, [user]);
 
   useEffect(() => {
     if (!user || !role) return;
