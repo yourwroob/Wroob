@@ -40,7 +40,7 @@ const CampusCommunity = () => {
 
         <Tabs defaultValue="campus" className="w-full">
           <TabsList className="w-full grid grid-cols-3">
-            <TabsTrigger value="campus">Campus Feed</TabsTrigger>
+            <TabsTrigger value="campus">Create Community</TabsTrigger>
             <TabsTrigger value="community">Drop a Post</TabsTrigger>
             <TabsTrigger value="groups">Local Groups</TabsTrigger>
           </TabsList>
