@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ProfileLink from "@/components/ProfileLink";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
@@ -133,9 +134,9 @@ const StudentDiscovery = () => {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2">
                           <div className="min-w-0">
-                            <h3 className="font-semibold text-foreground truncate">
+                            <ProfileLink userId={student.user_id} type="student" className="font-semibold text-foreground truncate block">
                               {student.full_name || "Student"}
-                            </h3>
+                            </ProfileLink>
                             {student.university && (
                               <p className="text-sm text-muted-foreground flex items-center gap-1 mt-0.5">
                                 <GraduationCap className="h-3.5 w-3.5 shrink-0" />

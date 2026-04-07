@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import ProfileLink from "@/components/ProfileLink";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/Navbar";
@@ -218,7 +219,9 @@ const Internships = () => {
                               </h3>
                               <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
                                 <Building2 className="h-3.5 w-3.5 shrink-0" />
-                                {(intern as any).employer_profiles?.company_name || "Company"}
+                                <ProfileLink userId={intern.employer_id} type="employer">
+                                  {(intern as any).employer_profiles?.company_name || "Company"}
+                                </ProfileLink>
                                 {(intern as any).employer_profiles?.is_verified && (
                                   <span className="inline-flex items-center gap-0.5 text-green-600" title="Verified Company">
                                     <BadgeCheck className="h-3.5 w-3.5" />

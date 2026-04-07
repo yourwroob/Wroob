@@ -46,6 +46,7 @@ const SkillTests = lazy(() => import("./pages/SkillTests"));
 const CampusCommunity = lazy(() => import("./pages/CampusCommunity"));
 
 const StudentProfile = lazy(() => import("./pages/StudentProfile"));
+const EmployerProfile = lazy(() => import("./pages/EmployerProfile"));
 const OnboardingProfile = lazy(() => import("./pages/onboarding/OnboardingProfile"));
 const OnboardingCulture = lazy(() => import("./pages/onboarding/OnboardingCulture"));
 const OnboardingResume = lazy(() => import("./pages/onboarding/OnboardingResume"));
@@ -99,6 +100,7 @@ const App = () => (
               <Route path="/campus" element={<ProtectedRoute allowedRoles={["student"]}><CampusCommunity /></ProtectedRoute>} />
               
               <Route path="/student/:userId" element={<ProtectedRoute><StudentProfile /></ProtectedRoute>} />
+              <Route path="/employer/:userId" element={<ProtectedRoute><EmployerProfile /></ProtectedRoute>} />
               <Route path="/admin" element={<ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute>} />
               <Route path="/admin/users" element={<ProtectedRoute allowedRoles={["admin"]}><AdminUsers /></ProtectedRoute>} />
               <Route path="/admin/internships" element={<ProtectedRoute allowedRoles={["admin"]}><AdminInternships /></ProtectedRoute>} />

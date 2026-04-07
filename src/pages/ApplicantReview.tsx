@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import ProfileLink from "@/components/ProfileLink";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/Navbar";
@@ -93,7 +94,7 @@ const ApplicantReview = () => {
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1">
                             <div className="flex items-center gap-3">
-                              <h3 className="font-semibold">{app.profiles?.full_name || "Unknown"}</h3>
+                              <ProfileLink userId={app.student_id} type="student" className="font-semibold">{app.profiles?.full_name || "Unknown"}</ProfileLink>
                               {score > 0 && (
                                 <Badge variant={score >= 70 ? "default" : "secondary"}>{score}% match</Badge>
                               )}

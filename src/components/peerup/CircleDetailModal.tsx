@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { PeerUpCircle, CircleRequest, CircleParticipant } from "@/hooks/usePeerUpCircles";
+import ProfileLink from "@/components/ProfileLink";
 import { useAuth } from "@/contexts/AuthContext";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -155,7 +156,7 @@ const CircleDetailModal = ({
           </AvatarFallback>
         </Avatar>
         <div>
-          <h3 className="font-semibold">{circle.spot_name}</h3>
+          <ProfileLink userId={circle.creator_id} type="student" className="font-semibold">{circle.spot_name}</ProfileLink>
           <p className="text-sm text-muted-foreground">{circle.creator_university || "Wroob Circle"}</p>
         </div>
       </div>
@@ -285,7 +286,7 @@ const CircleDetailModal = ({
                     <AvatarFallback className="bg-muted text-xs">{getInitials(req.requester_name || "S")}</AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{req.requester_name}</p>
+                    <ProfileLink userId={req.requester_id} type="student" className="text-sm font-medium truncate">{req.requester_name}</ProfileLink>
                     <p className="text-[11px] text-muted-foreground">{req.requester_info}</p>
                   </div>
                   <Badge variant="outline" className="text-[9px] border-warning/50 text-warning shrink-0">New</Badge>
@@ -323,7 +324,7 @@ const CircleDetailModal = ({
                     <AvatarFallback className="bg-muted text-xs">{getInitials(req.requester_name || "S")}</AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{req.requester_name}</p>
+                    <ProfileLink userId={req.requester_id} type="student" className="text-sm font-medium truncate">{req.requester_name}</ProfileLink>
                     <p className="text-[11px] text-muted-foreground">{req.requester_info}</p>
                   </div>
                   <Badge variant="outline" className="text-[10px] border-emerald-500/50 text-emerald-600 dark:text-emerald-400">In circle</Badge>

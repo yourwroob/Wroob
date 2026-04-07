@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import ProfileLink from "@/components/ProfileLink";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/Navbar";
@@ -84,7 +85,9 @@ const MyApplications = () => {
                       <h3 className="font-semibold">{app.internships?.title}</h3>
                       <p className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
                         <Building2 className="h-3.5 w-3.5" />
-                        {app.internships?.employer_profiles?.company_name || "Company"}
+                        <ProfileLink userId={app.internships?.employer_id} type="employer">
+                          {app.internships?.employer_profiles?.company_name || "Company"}
+                        </ProfileLink>
                       </p>
                       <p className="mt-1 text-xs text-muted-foreground">
                         Applied {format(new Date(app.applied_at), "MMM d, yyyy")}

@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { InternshipCapBar } from "@/components/InternshipCapBar";
+import ProfileLink from "@/components/ProfileLink";
 import {
   MapPin, Clock, Building2, Calendar, ArrowLeft, CheckCircle, ExternalLink,
   IndianRupee, Briefcase, GraduationCap, FileText, FlaskConical, Users, BadgeCheck,
@@ -172,7 +173,9 @@ const InternshipDetail = () => {
                 <h1 className="font-display text-3xl font-bold md:text-4xl">{internship.title}</h1>
                 <div className="mt-3 flex items-center gap-2 text-muted-foreground">
                   <Building2 className="h-4 w-4" />
-                  <span className="font-medium">{internship.employer_profiles?.company_name || "Company"}</span>
+                  <ProfileLink userId={internship.employer_id} type="employer" className="font-medium">
+                    {internship.employer_profiles?.company_name || "Company"}
+                  </ProfileLink>
                   {internship.employer_profiles?.is_verified && (
                     <Badge className="bg-green-100 text-green-800 border-green-200 gap-1">
                       <BadgeCheck className="h-3 w-3" /> Verified
