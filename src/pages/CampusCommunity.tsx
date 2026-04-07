@@ -6,8 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Loader2, RefreshCw, Sparkles } from "lucide-react";
 import Footer from "@/components/Footer";
 import LocalCommunityGroups from "@/components/LocalCommunityGroups";
-import PostComposer from "@/components/feed/PostComposer";
-import PostFeed from "@/components/feed/PostFeed";
 import { usePeerUpCircles, PeerUpCircle } from "@/hooks/usePeerUpCircles";
 import CircleBubbles from "@/components/peerup/CircleBubbles";
 import CircleCard from "@/components/peerup/CircleCard";
@@ -25,7 +23,6 @@ const CampusCommunity = () => {
 
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [selectedCircle, setSelectedCircle] = useState<PeerUpCircle | null>(null);
-  const [feedRefreshKey, setFeedRefreshKey] = useState(0);
 
   return (
     <div className="min-h-screen bg-background">
@@ -39,9 +36,8 @@ const CampusCommunity = () => {
         </div>
 
         <Tabs defaultValue="campus" className="w-full">
-          <TabsList className="w-full grid grid-cols-3">
+          <TabsList className="w-full grid grid-cols-2">
             <TabsTrigger value="campus">Create Community</TabsTrigger>
-            <TabsTrigger value="community">Drop a Post</TabsTrigger>
             <TabsTrigger value="groups">Community Groups</TabsTrigger>
           </TabsList>
 
@@ -114,12 +110,6 @@ const CampusCommunity = () => {
               onFetchParticipants={fetchParticipants}
               onDelete={deleteCircle}
             />
-          </TabsContent>
-
-          {/* Community Feed Tab — Drop a Post */}
-          <TabsContent value="community" className="space-y-6 mt-6">
-            <PostComposer onPostCreated={() => setFeedRefreshKey((k) => k + 1)} />
-            <PostFeed refreshKey={feedRefreshKey} />
           </TabsContent>
 
           {/* Local Groups Tab */}
