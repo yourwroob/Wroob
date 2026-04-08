@@ -77,6 +77,7 @@ const App = () => (
         <AuthProvider>
           <SessionTimeoutWarning />
           <LoginGreeting />
+          <ChatPopup />
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<Landing />} />
