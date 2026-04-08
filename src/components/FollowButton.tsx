@@ -9,12 +9,16 @@ interface FollowButtonProps {
 }
 
 const FollowButton = ({ targetUserId, className }: FollowButtonProps) => {
-  const { user } = useAuth();
+  const { user, role } = useAuth();
   const { isFollowing, follow, unfollow } = useFollows(targetUserId);
 
   if (!user || user.id === targetUserId) return null;
 
   const loading = follow.isPending || unfollow.isPending;
+
+  const isStudent = role === "student";
+  const activeLabel = isStudent ? "Connected" : "Unfollow";
+  const inactiveLabel = isStudent ? "Connect" : "Follow";
 
   return (
     <Button
@@ -31,7 +35,7 @@ const FollowButton = ({ targetUserId, className }: FollowButtonProps) => {
       ) : (
         <UserPlus className="h-4 w-4" />
       )}
-      {isFollowing ? "Unfollow" : "Follow"}
+      {isFollowing ? activeLabel : inactiveLabel}
     </Button>
   );
 };
