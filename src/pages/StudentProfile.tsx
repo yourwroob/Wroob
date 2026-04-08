@@ -73,8 +73,29 @@ const StudentProfile = () => {
                     )}
                     {profile.bio && <p className="text-sm mt-2">{profile.bio}</p>}
                     {user && user.id !== userId && (
-                      <div className="mt-3">
+                      <div className="mt-3 flex items-center gap-2">
                         <FollowButton targetUserId={userId!} />
+                        {role === "student" && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              // Dispatch custom event to open chat with this student
+                              window.dispatchEvent(
+                                new CustomEvent("open-dm", {
+                                  detail: {
+                                    partnerId: userId,
+                                    partnerName: profile.full_name || "Student",
+                                    partnerAvatar: profile.avatar_url,
+                                  },
+                                })
+                              );
+                            }}
+                          >
+                            <MessageCircle className="h-4 w-4 mr-1" />
+                            Message
+                          </Button>
+                        )}
                       </div>
                     )}
                   </div>
