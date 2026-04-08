@@ -13,7 +13,6 @@ import FollowButton from "@/components/FollowButton";
 import { StudentGridSkeleton } from "@/components/skeletons";
 import { motion } from "framer-motion";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import ProfileLink from "@/components/ProfileLink";
 
 interface StudentCard {
   user_id: string;
