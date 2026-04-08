@@ -20,6 +20,20 @@ const ChatPopup = () => {
   // Only show for students
   if (role !== "student") return null;
 
+  // Listen for open-dm events from profile pages
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      setActivePartnerId(detail.partnerId);
+      setActivePartnerName(detail.partnerName);
+      setActivePartnerAvatar(detail.partnerAvatar);
+      setIsOpen(true);
+      setIsMinimized(false);
+    };
+    window.addEventListener("open-dm", handler);
+    return () => window.removeEventListener("open-dm", handler);
+  }, []);
+
   const openConversation = (partnerId: string, name: string, avatar: string | null) => {
     setActivePartnerId(partnerId);
     setActivePartnerName(name);
