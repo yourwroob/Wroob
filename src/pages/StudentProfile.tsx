@@ -13,7 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 const StudentProfile = () => {
   const { userId } = useParams<{ userId: string }>();
-  const { user } = useAuth();
+  const { user, role } = useAuth();
 
   const { data, isLoading } = useQuery({
     queryKey: ["public-student-profile", userId],
