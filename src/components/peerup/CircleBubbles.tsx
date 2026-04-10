@@ -1,5 +1,6 @@
 import { PeerUpCircle } from "@/hooks/usePeerUpCircles";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { formatDistanceToNow } from "date-fns";
 import { Plus } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
