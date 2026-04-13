@@ -15,6 +15,9 @@ export interface Conversation {
   partnerId: string;
   partnerName: string;
   partnerAvatar: string | null;
+  // FIX (HIGH-chat-route): Role is needed so the chat header can link to the
+  // correct profile route (/student/:id vs /employers/:id).
+  partnerRole: "student" | "employer";
   lastMessage: string;
   lastMessageAt: string;
   unreadCount: number;
@@ -62,15 +65,26 @@ export function useDirectMessages() {
       return;
     }
 
-    const { data: profiles } = await supabase
-      .from("profiles")
-      .select("user_id, full_name, avatar_url")
-      .in("user_id", partnerIds);
+    const [profilesRes, rolesRes] = await Promise.all([
+      supabase
+        .from("profiles")
+        .select("user_id, full_name, avatar_url")
+        .in("user_id", partnerIds),
+      // FIX (HIGH-chat-route): Fetch partner roles so chat header can link to
+      // the correct profile route (/student/:id vs /employers/:id).
+      supabase
+        .from("user_roles")
+        .select("user_id, role")
+        .in("user_id", partnerIds),
+    ]);
 
     if (!mountedRef.current) return;
 
     const profileMap = new Map(
-      (profiles || []).map((p) => [p.user_id, p])
+      (profilesRes.data || []).map((p) => [p.user_id, p])
+    );
+    const roleMap = new Map(
+      (rolesRes.data || []).map((r) => [r.user_id, r.role as "student" | "employer"])
     );
 
     let unread = 0;
@@ -80,8 +94,9 @@ export function useDirectMessages() {
       unread += conv.unread;
       return {
         partnerId: pid,
-        partnerName: profile?.full_name || "Student",
+        partnerName: profile?.full_name || "User",
         partnerAvatar: profile?.avatar_url || null,
+        partnerRole: roleMap.get(pid) ?? "student",
         lastMessage: conv.messages[0]?.text || "",
         lastMessageAt: conv.messages[0]?.created_at || "",
         unreadCount: conv.unread,

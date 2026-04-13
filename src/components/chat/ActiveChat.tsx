@@ -12,10 +12,12 @@ interface ActiveChatProps {
   partnerId: string;
   partnerName: string;
   partnerAvatar: string | null;
+  // FIX (HIGH-chat-route): Role determines which profile route to navigate to.
+  partnerRole: "student" | "employer";
   onBack: () => void;
 }
 
-const ActiveChat = ({ partnerId, partnerName, partnerAvatar, onBack }: ActiveChatProps) => {
+const ActiveChat = ({ partnerId, partnerName, partnerAvatar, partnerRole, onBack }: ActiveChatProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { messages, sendMessage, loading } = useChatMessages(partnerId);
@@ -50,7 +52,10 @@ const ActiveChat = ({ partnerId, partnerName, partnerAvatar, onBack }: ActiveCha
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <button
-          onClick={() => navigate(`/student/${partnerId}`)}
+          // FIX (HIGH-chat-route): Use partnerRole to navigate to the correct
+          // profile route. Previously hardcoded /student/:id for all partners,
+          // routing employer partners to a non-existent student profile.
+          onClick={() => navigate(partnerRole === "employer" ? `/employers/${partnerId}` : `/student/${partnerId}`)}
           className="flex items-center gap-2 hover:opacity-80 transition-opacity"
         >
           <Avatar className="h-7 w-7">

@@ -6,7 +6,8 @@ import { formatDistanceToNowStrict } from "date-fns";
 interface ConversationListProps {
   conversations: Conversation[];
   loading: boolean;
-  onSelect: (partnerId: string, name: string, avatar: string | null) => void;
+  // FIX (HIGH-chat-route): Thread partnerRole through so ChatPopup can pass it to ActiveChat.
+  onSelect: (partnerId: string, name: string, avatar: string | null, role: "student" | "employer") => void;
 }
 
 const ConversationList = ({ conversations, loading, onSelect }: ConversationListProps) => {
@@ -41,7 +42,7 @@ const ConversationList = ({ conversations, loading, onSelect }: ConversationList
         {conversations.map((conv) => (
           <button
             key={conv.partnerId}
-            onClick={() => onSelect(conv.partnerId, conv.partnerName, conv.partnerAvatar)}
+            onClick={() => onSelect(conv.partnerId, conv.partnerName, conv.partnerAvatar, conv.partnerRole)}
             className="w-full flex items-center gap-3 px-4 py-3 hover:bg-muted/50 transition-colors text-left"
           >
             <div className="relative shrink-0">

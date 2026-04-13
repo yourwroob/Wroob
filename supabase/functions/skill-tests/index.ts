@@ -101,6 +101,18 @@ serve(async (req) => {
       });
     }
 
+    // FIX (HIGH-skill-rate): Parse and validate BEFORE rate limit check.
+    // Malformed requests used to consume a rate limit credit before returning 400,
+    // meaning N bad requests would silently exhaust a user's quota.
+    const rawBody = await req.json();
+    const parsed = skillTestBodySchema.safeParse(rawBody);
+    if (!parsed.success) {
+      return new Response(
+        JSON.stringify({ error: "Invalid input", details: parsed.error.issues.map(i => i.message).join("; ") }),
+        { status: 400, headers: { ...responseHeaders } }
+      );
+    }
+
     // ── Rate Limit Check (atomic) ─────────────────────────────────────────
     const rateLimitAdmin = createClient(supabaseUrl, serviceKey);
     const { data: rlAllowed, error: rlError } = await rateLimitAdmin.rpc(
@@ -122,15 +134,6 @@ serve(async (req) => {
       return new Response(
         JSON.stringify({ error: "Rate limit exceeded", retryAfter: 3600 }),
         { status: 429, headers: { ...responseHeaders } }
-      );
-    }
-
-    const rawBody = await req.json();
-    const parsed = skillTestBodySchema.safeParse(rawBody);
-    if (!parsed.success) {
-      return new Response(
-        JSON.stringify({ error: "Invalid input", details: parsed.error.issues.map(i => i.message).join("; ") }),
-        { status: 400, headers: { ...responseHeaders } }
       );
     }
     const body = parsed.data;

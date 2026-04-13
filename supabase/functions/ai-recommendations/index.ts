@@ -111,6 +111,22 @@ serve(async (req) => {
     // Service client for full access
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+    // FIX (HIGH-ai-rate): Validate that a student profile exists BEFORE consuming
+    // a rate limit credit. Previously, a user with no profile would hit the rate
+    // limit then receive a 404, eroding their quota on every call.
+    const { data: profileExists } = await supabase
+      .from("student_profiles")
+      .select("user_id")
+      .eq("user_id", studentId)
+      .maybeSingle();
+
+    if (!profileExists) {
+      return new Response(JSON.stringify({ error: "Student profile not found" }), {
+        status: 404,
+        headers: { ...responseHeaders },
+      });
+    }
+
     // ── Rate Limit Check (atomic) ─────────────────────────────────────────
     const { data: rlAllowed, error: rlError } = await supabase.rpc(
       "check_and_increment_rate_limit",

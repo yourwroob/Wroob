@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { useEmployerOnboardingStatus } from "@/hooks/useEmployerOnboardingStatus";
 import Navbar from "@/components/Navbar";
 import InternshipForm, { InternshipFormData } from "@/components/internship/InternshipForm";
 import { useToast } from "@/hooks/use-toast";
@@ -11,6 +12,16 @@ const PostInternship = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+
+  // FIX (HIGH-post-guard): Employers who abandon onboarding mid-flow could
+  // navigate directly to /post-internship and publish listings with an incomplete
+  // company profile. Redirect them back to onboarding until it is finished.
+  const { needsOnboarding, loading: onboardingLoading } = useEmployerOnboardingStatus();
+  useEffect(() => {
+    if (!onboardingLoading && needsOnboarding) {
+      navigate("/employer/onboarding/company", { replace: true });
+    }
+  }, [needsOnboarding, onboardingLoading, navigate]);
 
   const handleSubmit = async (form: InternshipFormData, status: "draft" | "published") => {
     if (!user) return;

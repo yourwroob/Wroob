@@ -78,13 +78,30 @@ const EmployerOnboardingTeam = () => {
       }
     }
 
-    await completeOnboarding();
+    // FIX (HIGH-employer-race): Check error before navigating — mirrors HIGH-14 student fix.
+    const { error: completeError } = await completeOnboarding();
     setLoading(false);
+    if (completeError) {
+      toast({
+        title: "Couldn't save progress",
+        description: "Please try again.",
+        variant: "destructive",
+      });
+      return;
+    }
     navigate("/employer/onboarding/done");
   };
 
   const handleSkip = async () => {
-    await completeOnboarding();
+    const { error: completeError } = await completeOnboarding();
+    if (completeError) {
+      toast({
+        title: "Couldn't save progress",
+        description: "Please try again.",
+        variant: "destructive",
+      });
+      return;
+    }
     navigate("/employer/onboarding/done");
   };
 

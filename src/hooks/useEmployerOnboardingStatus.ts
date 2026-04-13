@@ -38,10 +38,14 @@ export function useEmployerOnboardingStatus() {
       .eq("user_id", user.id);
   };
 
-  const completeOnboarding = async () => {
-    if (!user) return;
-    setStatus("completed");
-    await supabase
+  // FIX (HIGH-employer-race): Mirror the HIGH-14 student fix.
+  // Previously returned void — a failed DB write was silently ignored, leaving
+  // onboarding_status as "pending" while the user was navigated to Done, causing
+  // a redirect loop back to onboarding on next visit.
+  const completeOnboarding = async (): Promise<{ error: any }> => {
+    if (!user) return { error: null };
+    setStatus("completed"); // optimistic update
+    const { error } = await supabase
       .from("employer_profiles")
       .update({
         onboarding_status: "completed",
@@ -49,6 +53,8 @@ export function useEmployerOnboardingStatus() {
         onboarding_completed_at: new Date().toISOString(),
       } as any)
       .eq("user_id", user.id);
+    if (error) setStatus(null); // revert on failure so caller can retry
+    return { error };
   };
 
   return { status, step, loading, updateStep, completeOnboarding, needsOnboarding: status === "pending" };

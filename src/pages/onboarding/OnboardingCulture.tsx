@@ -74,7 +74,11 @@ const OnboardingCulture = () => {
       });
   }, [user]);
 
-  const toggleTech = (field: "tech_interests" | "tech_avoid", tech: string) => {
+  // FIX (CRITICAL-1): Narrow type to "tech_interests" only.
+  // "tech_avoid" was removed from INITIAL_CULTURE (field is cleared to null on submit)
+  // but lingered in the signature. Calling toggleTech("tech_avoid", …) would hit
+  // f[field].includes() on undefined and throw a runtime TypeError.
+  const toggleTech = (field: "tech_interests", tech: string) => {
     setForm((f) => {
       const arr = f[field];
       if (arr.includes(tech)) return { ...f, [field]: arr.filter((t) => t !== tech) };

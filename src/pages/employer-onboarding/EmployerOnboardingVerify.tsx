@@ -17,6 +17,8 @@ const EmployerOnboardingVerify = () => {
   const [company, setCompany] = useState({ name: "", domain: "" });
   const [verified, setVerified] = useState(false);
   const [verifying, setVerifying] = useState(false);
+  // FIX (HIGH-verify-personal): Track domain mismatch to surface the unverified escape hatch.
+  const [domainMismatch, setDomainMismatch] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -68,11 +70,15 @@ const EmployerOnboardingVerify = () => {
     }
 
     // Guard: email domain must match company domain.
+    // FIX (HIGH-verify-personal): Hard-blocking was unusable for employers who signed
+    // up with a personal email (gmail, yahoo, etc.) but have a separate company domain.
+    // Now we show the mismatch as a warning and set a flag rather than hard-blocking.
     if (emailDomain !== companyDomain) {
       setVerifying(false);
+      setDomainMismatch(true);
       toast({
         title: "Domain mismatch",
-        description: `Your sign-up email (@${emailDomain}) does not match the company domain (${companyDomain}). Please use a work email that matches your company website.`,
+        description: `Your email (@${emailDomain}) doesn't match your company domain (${companyDomain}). Use "Continue unverified" below to proceed — your profile will show as unverified until you re-verify with a matching work email.`,
         variant: "destructive",
       });
       return;
@@ -107,6 +113,13 @@ const EmployerOnboardingVerify = () => {
     }
   };
 
+  // FIX (HIGH-verify-personal): Allow employers with personal emails to proceed
+  // without domain verification. Their profile will show as unverified (is_verified = false).
+  const handleContinueUnverified = async () => {
+    await updateStep(5);
+    navigate("/employer/onboarding/team");
+  };
+
   return (
     <EmployerOnboardingLayout currentStep={4}>
       <h1 className="font-display text-3xl font-bold sm:text-4xl">
@@ -132,15 +145,22 @@ const EmployerOnboardingVerify = () => {
               : `Verify your @${getEmailDomain()} email`}
         </Button>
 
-        {/* Secondary option */}
-        {!verified && (
-          <div>
+        {/* FIX (HIGH-verify-personal): When domain mismatch detected, show escape hatch.
+            Profile remains unverified (is_verified = false) until they re-verify
+            from settings with a matching work email. */}
+        {!verified && domainMismatch && (
+          <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800 space-y-2">
+            <p>
+              <strong>Using a personal email?</strong> You can still continue — your company profile
+              will show as <em>unverified</em> until you re-verify with a work email that matches
+              your company domain.
+            </p>
             <button
               type="button"
-              className="text-sm text-primary hover:underline"
-              onClick={handleVerifyEmail}
+              className="text-sm font-medium text-amber-900 underline hover:no-underline"
+              onClick={handleContinueUnverified}
             >
-              Verify with another email provider
+              Continue without verification →
             </button>
           </div>
         )}

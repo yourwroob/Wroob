@@ -16,6 +16,8 @@ const ChatPopup = () => {
   const [activePartnerId, setActivePartnerId] = useState<string | null>(null);
   const [activePartnerName, setActivePartnerName] = useState("");
   const [activePartnerAvatar, setActivePartnerAvatar] = useState<string | null>(null);
+  // FIX (HIGH-chat-route): Track partner role so ActiveChat links to the right profile page.
+  const [activePartnerRole, setActivePartnerRole] = useState<"student" | "employer">("student");
 
   // Listen for open-dm events from profile pages
   useEffect(() => {
@@ -24,6 +26,9 @@ const ChatPopup = () => {
       setActivePartnerId(detail.partnerId);
       setActivePartnerName(detail.partnerName);
       setActivePartnerAvatar(detail.partnerAvatar);
+      // FIX (HIGH-chat-route): Read role from event — dispatch sites set this to
+      // "student" (StudentProfile) so the chat header links to the right page.
+      setActivePartnerRole(detail.partnerRole ?? "student");
       setIsOpen(true);
       setIsMinimized(false);
     };
@@ -36,10 +41,11 @@ const ChatPopup = () => {
   // read/write their own DMs. This guard was the only remaining blocker.
   if (role !== "student" && role !== "employer") return null;
 
-  const openConversation = (partnerId: string, name: string, avatar: string | null) => {
+  const openConversation = (partnerId: string, name: string, avatar: string | null, role: "student" | "employer" = "student") => {
     setActivePartnerId(partnerId);
     setActivePartnerName(name);
     setActivePartnerAvatar(avatar);
+    setActivePartnerRole(role);
   };
 
   const backToList = () => {
@@ -80,7 +86,7 @@ const ChatPopup = () => {
                   variant="ghost"
                   size="icon"
                   className="h-7 w-7"
-                  onClick={() => { setIsOpen(false); setActivePartnerId(null); }}
+                  onClick={() => { setIsOpen(false); setActivePartnerId(null); setActivePartnerRole("student"); }}
                 >
                   <X className="h-3.5 w-3.5" />
                 </Button>
@@ -94,6 +100,7 @@ const ChatPopup = () => {
                   partnerId={activePartnerId}
                   partnerName={activePartnerName}
                   partnerAvatar={activePartnerAvatar}
+                  partnerRole={activePartnerRole}
                   onBack={backToList}
                 />
               ) : (

@@ -22,7 +22,13 @@ const EmployerProfile = () => {
       if (!userId) throw new Error("No user ID");
 
       const [{ data: employer }, { data: internships }] = await Promise.all([
-        supabase.from("employer_profiles").select("*").eq("user_id", userId).maybeSingle(),
+        // FIX (HIGH-9-employer): Explicit field list — excludes sensitive fields
+        // (gstin, pan_number, cin, manager_email, head_office_mobile, company_domain,
+        // work_email_verified, verified_domain, etc.) that select("*") would expose
+        // to any authenticated viewer.
+        supabase.from("employer_profiles").select(
+          "user_id, company_name, logo_url, is_verified, industry, city, state, company_description, company_size, year_established, funding_stage, website, linkedin_profile"
+        ).eq("user_id", userId).maybeSingle(),
         supabase.from("internships").select("id, title, type, location, status, created_at").eq("employer_id", userId).eq("status", "published").order("created_at", { ascending: false }).limit(10),
       ]);
 

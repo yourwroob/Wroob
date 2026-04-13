@@ -92,6 +92,9 @@ const StudentProfile = () => {
                                     partnerId: userId,
                                     partnerName: profile.full_name || "Student",
                                     partnerAvatar: profile.avatar_url,
+                                    // FIX (HIGH-chat-route): Dispatch site always dispatches
+                                    // from a student profile page, so role is always "student".
+                                    partnerRole: "student",
                                   },
                                 })
                               );
