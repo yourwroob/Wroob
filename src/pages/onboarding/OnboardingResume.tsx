@@ -49,8 +49,9 @@ const OnboardingResume = () => {
         return;
       }
 
-      const { data: { publicUrl } } = supabase.storage.from("resumes").getPublicUrl(path);
-      await supabase.from("student_profiles").update({ resume_url: publicUrl } as any).eq("user_id", user.id);
+      // FIX (HIGH-resume-private): Store the storage path, not a public URL.
+      // The resumes bucket is private; signed URLs are generated at display time.
+      await supabase.from("student_profiles").update({ resume_url: path } as any).eq("user_id", user.id);
 
       // FIX (HIGH-14): Complete onboarding BEFORE showing success toast and navigating.
       // Old order: toast fires → completeOnboarding() → if DB write fails, user sees
@@ -75,7 +76,18 @@ const OnboardingResume = () => {
   };
 
   const handleSkip = async () => {
-    await completeOnboarding();
+    // FIX (HIGH-skip-persist): Check error before navigating.
+    // Previously discarded the return value — a DB failure would silently pass,
+    // leaving onboarding_status as "pending" and causing a redirect loop on next login.
+    const { error: completeError } = await completeOnboarding();
+    if (completeError) {
+      toast({
+        title: "Couldn't save progress",
+        description: "Please try again.",
+        variant: "destructive",
+      });
+      return;
+    }
     navigate("/onboarding/done");
   };
 

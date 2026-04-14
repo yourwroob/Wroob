@@ -289,9 +289,11 @@ const Profile = () => {
     if (error) {
       toast({ title: "Upload failed", description: error.message, variant: "destructive" });
     } else {
-      const { data: { publicUrl } } = supabase.storage.from("resumes").getPublicUrl(path);
-      setStudentProfile((p) => ({ ...p, resume_url: publicUrl }));
-      await supabase.from("student_profiles").update({ resume_url: publicUrl }).eq("user_id", user.id);
+      // FIX (HIGH-resume-private): Store the storage path, not a public URL.
+      // The resumes bucket is private; getPublicUrl() produces a /object/public/
+      // URL that returns 403. Signed URLs are generated at display time instead.
+      setStudentProfile((p) => ({ ...p, resume_url: path }));
+      await supabase.from("student_profiles").update({ resume_url: path }).eq("user_id", user.id);
       toast({ title: "Resume uploaded!" });
     }
     e.target.value = "";
@@ -299,10 +301,12 @@ const Profile = () => {
 
   const handleResumeDelete = async () => {
     if (!user || !studentProfile.resume_url) return;
-    // Extract storage path from URL
-    const urlParts = studentProfile.resume_url.split("/resumes/");
-    if (urlParts.length > 1) {
-      const storagePath = decodeURIComponent(urlParts[1]);
+    // Derive storage path: new format is the path directly (e.g. "userId/file.pdf");
+    // legacy format is a full URL — extract the part after "/resumes/".
+    const storagePath = studentProfile.resume_url.startsWith("http")
+      ? decodeURIComponent(studentProfile.resume_url.split("/resumes/")[1] || "")
+      : studentProfile.resume_url;
+    if (storagePath) {
       await supabase.storage.from("resumes").remove([storagePath]);
     }
     setStudentProfile((p) => ({ ...p, resume_url: "" }));

@@ -30,6 +30,8 @@ const ApplicantReview = () => {
   const [internship, setInternship] = useState<any>(null);
   const [applicants, setApplicants] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  // FIX (HIGH-resume-private): signed URLs generated at fetch time (1-hour TTL).
+  const [resumeSignedUrls, setResumeSignedUrls] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,7 +57,26 @@ const ApplicantReview = () => {
         .select("*, profiles:profiles!applications_student_id_fkey(full_name, avatar_url), student_profiles:student_profiles!applications_student_id_fkey(skills, university, resume_url, reputation_score)")
         .eq("internship_id", id!)
         .order("applied_at", { ascending: false });
-      setApplicants(apps || []);
+      const appsData = apps || [];
+      setApplicants(appsData);
+
+      // Generate 1-hour signed URLs for each applicant's resume.
+      // The resumes bucket is private; public URLs return 403 when opened in the browser.
+      const urlMap: Record<string, string> = {};
+      await Promise.all(
+        appsData.map(async (app: any) => {
+          const stored = app.student_profiles?.resume_url;
+          if (!stored) return;
+          // Support both new (path) and legacy (full URL) storage formats.
+          const storagePath = stored.startsWith("http")
+            ? decodeURIComponent(stored.split("/resumes/")[1] || "")
+            : stored;
+          if (!storagePath) return;
+          const { data } = await supabase.storage.from("resumes").createSignedUrl(storagePath, 3600);
+          if (data?.signedUrl) urlMap[app.id] = data.signedUrl;
+        })
+      );
+      setResumeSignedUrls(urlMap);
       setLoading(false);
     };
     fetchData();
@@ -144,9 +165,9 @@ const ApplicantReview = () => {
                                 <SelectItem value="rejected">Rejected</SelectItem>
                               </SelectContent>
                             </Select>
-                            {app.student_profiles?.resume_url && (
+                            {app.student_profiles?.resume_url && resumeSignedUrls[app.id] && (
                               <Button variant="outline" size="sm" className="gap-1" asChild>
-                                <a href={app.student_profiles.resume_url} target="_blank" rel="noopener">
+                                <a href={resumeSignedUrls[app.id]} target="_blank" rel="noopener">
                                   <Download className="h-3 w-3" /> Resume
                                 </a>
                               </Button>
