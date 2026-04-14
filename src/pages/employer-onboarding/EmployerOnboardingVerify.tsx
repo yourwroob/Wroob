@@ -105,7 +105,10 @@ const EmployerOnboardingVerify = () => {
     } else {
       setVerified(true);
       toast({ title: "Email verified!" });
-      await updateStep(5);
+      // FIX: advance to step 6 (team). Previously updateStep(5) overwrote the
+      // onboarding_step: 6 already written by the DB update above, causing the
+      // Dashboard to redirect back to /verify on next login.
+      await updateStep(6);
       navigate("/employer/onboarding/team");
     }
   };

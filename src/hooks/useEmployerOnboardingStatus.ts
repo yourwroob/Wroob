@@ -29,13 +29,17 @@ export function useEmployerOnboardingStatus() {
       });
   }, [user, role]);
 
+  // FIX (HIGH-updatestep-silent-fail): Same fix as useOnboardingStatus —
+  // capture error and revert optimistic step on DB failure.
   const updateStep = async (newStep: number) => {
     if (!user) return;
-    setStep(newStep);
-    await supabase
+    const prevStep = step;
+    setStep(newStep); // optimistic
+    const { error } = await supabase
       .from("employer_profiles")
       .update({ onboarding_step: newStep } as any)
       .eq("user_id", user.id);
+    if (error) setStep(prevStep); // revert on failure — prevents UI from advancing
   };
 
   // FIX (HIGH-employer-race): Mirror the HIGH-14 student fix.

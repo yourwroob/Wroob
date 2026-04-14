@@ -14,7 +14,7 @@ import { safeExternalUrl } from "@/lib/utils";
 
 const EmployerProfile = () => {
   const { userId } = useParams<{ userId: string }>();
-  const { user } = useAuth();
+  const { user, role } = useAuth();
 
   const { data, isLoading } = useQuery({
     queryKey: ["public-employer-profile", userId],

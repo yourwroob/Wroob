@@ -31,13 +31,19 @@ export function useOnboardingStatus() {
     fetch();
   }, [user, role]);
 
+  // FIX (HIGH-updatestep-silent-fail): Capture the DB error and revert the
+  // optimistic step update on failure. Previously the error was discarded and
+  // the step advanced in React state while remaining stale in the DB, causing
+  // a redirect loop back to the completed step on next login.
   const updateStep = async (newStep: number) => {
     if (!user) return;
-    setStep(newStep);
-    await supabase
+    const prevStep = step;
+    setStep(newStep); // optimistic
+    const { error } = await supabase
       .from("student_profiles")
       .update({ onboarding_step: newStep } as any)
       .eq("user_id", user.id);
+    if (error) setStep(prevStep); // revert on failure — prevents UI from advancing
   };
 
   // FIX (HIGH-14): Return the DB error so callers can detect failure.

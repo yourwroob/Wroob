@@ -73,7 +73,17 @@ Deno.serve(async (req) => {
       .eq("user_id", user.id)
       .maybeSingle();
 
-    if (roleError || !roleRow || roleRow.role !== "student") {
+    // FIX (HIGH-role-error-mask): Separate transient DB errors from authorization
+    // failures. Previously roleError collapsed into the same 403 branch as a
+    // missing/wrong role, so a valid student got "Only students can apply" on
+    // any user_roles table failure instead of a retryable 500.
+    if (roleError) {
+      return new Response(JSON.stringify({ error: "Internal server error" }), {
+        status: 500,
+        headers: { ...responseHeaders },
+      });
+    }
+    if (!roleRow || roleRow.role !== "student") {
       return new Response(
         JSON.stringify({ error: "Only students can apply to internships.", code: "FORBIDDEN" }),
         { status: 403, headers: { ...responseHeaders } }

@@ -34,6 +34,7 @@ const SkillTests = () => {
   const { data: reputation, recalculate } = useReputation(user?.id);
   const [tests, setTests] = useState<TestInfo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const [activeTest, setActiveTest] = useState<string | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<number[]>([]);
@@ -49,7 +50,15 @@ const SkillTests = () => {
     const { data, error } = await supabase.functions.invoke("skill-tests", {
       body: { action: "list_tests" },
     });
-    if (data?.tests) setTests(data.tests);
+    // FIX (HIGH-skilltests-silent-error): Previously error was never checked —
+    // a failed edge function call left tests=[] and loading=false, rendering an
+    // empty grid indistinguishable from "no tests published". Now we surface a
+    // descriptive error state so the user knows to retry.
+    if (error || data?.error) {
+      setFetchError(error?.message || data?.error || "Failed to load skill tests. Please try again.");
+    } else if (data?.tests) {
+      setTests(data.tests);
+    }
     setLoading(false);
   };
 
@@ -207,6 +216,12 @@ const SkillTests = () => {
 
         {loading ? (
           <SkillTestsSkeleton />
+        ) : fetchError ? (
+          <Card>
+            <CardContent className="py-12 text-center text-muted-foreground">
+              {fetchError}
+            </CardContent>
+          </Card>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
             {tests.map((test) => (
