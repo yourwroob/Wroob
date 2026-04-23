@@ -1,6 +1,5 @@
 import { forwardRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { lovable } from "@/integrations/lovable/index";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
@@ -13,25 +12,25 @@ export const GoogleSignInButton = forwardRef<HTMLButtonElement, GoogleSignInButt
   ({ label = "Continue with Google", className }, ref) => {
     const [loading, setLoading] = useState(false);
     const { toast } = useToast();
-    const navigate = useNavigate();
 
     const handleGoogleSignIn = async () => {
       setLoading(true);
       try {
-        const result = await lovable.auth.signInWithOAuth("google", {
-          // Send the user to /dashboard after OAuth so the onboarding-check
-          // redirect logic kicks in (student → /onboarding/profile,
-          // employer → /employer/onboarding/company, no role → /select-role).
-          // Sending to origin (/) bypassed onboarding entirely.
-          redirect_uri: `${window.location.origin}/dashboard`,
+        const result = await supabase.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+            // Send the user to /dashboard after OAuth so onboarding checks run.
+            redirectTo: `${window.location.origin}/dashboard`,
+          },
         });
 
         if (result.error) {
           toast({ title: "Error", description: String(result.error), variant: "destructive" });
         }
-      } catch (err: any) {
-        if (err?.message?.includes("popup")) return;
-        toast({ title: "Error", description: err.message || "Google sign-in failed.", variant: "destructive" });
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Google sign-in failed.";
+        if (message.includes("popup")) return;
+        toast({ title: "Error", description: message, variant: "destructive" });
       } finally {
         setLoading(false);
       }
